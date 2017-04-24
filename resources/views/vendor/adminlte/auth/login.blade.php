@@ -7,8 +7,6 @@
 @section('content')
 <body class="hold-transition login-page"  style="background-image: url('../img/fondo.jpg'); background-position: center center; background-attachment: fixed; background-size: cover;">
 
-
-
     <div id="app" v-cloak>
         <div class="login-box" >
             <div class="login-logo">
