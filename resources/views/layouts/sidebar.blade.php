@@ -1,7 +1,7 @@
 <div id="sidebar-menu" class="main_menu_side hidden-print ">
   <div class="menu_section">
     <h3>Administración</h3>
-    <ul class="nav side-menu">
+    <ul class="nav side-menu ">
       
       <li><a><i class="fa fa-users"></i> Gestión de Empleados</a>
       </li>
