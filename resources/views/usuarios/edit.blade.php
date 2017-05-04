@@ -1,88 +1,82 @@
-@extends('users-mgmt.base')
+@extends('layouts.master')
 
-@section('action-content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-        <br>
-            <div class="panel panel-default">            
-                <div class="panel-heading">Editar Usuario</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('user-management.update', ['id' => $user->id]) }}">
-                        <input type="hidden" name="_method" value="PATCH">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                            <label for="username" class="col-md-4 control-label">Usuario</label>
+@section('content')
+    
+    
 
-                            <div class="col-md-6">
-                                <input id="username" type="text" class="form-control" name="username" value="{{ $user->username }}" required autofocus>
+    <div class="right_col" role="main">
 
-                                @if ($errors->has('username'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
-                            <label for="firstname" class="col-md-4 control-label">Nombre</label>
-
-                            <div class="col-md-6">
-                                <input id="firstname" type="text" class="form-control" name="firstname" value="{{ $user->firstname }}" required>
-
-                                @if ($errors->has('firstname'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('firstname') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
-                            <label for="lastname" class="col-md-4 control-label">Apellido</label>
-
-                            <div class="col-md-6">
-                                <input id="lastname" type="text" class="form-control" name="lastname" value="{{ $user->lastname }}" required>
-
-                                @if ($errors->has('lastname'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('lastname') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Contraseña Nueva</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password">
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirmar Contraseña</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Actualizar
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+      <div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>Gestión de Usuarios</h3>
+          </div>
         </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Editar Usuario</h2>
+                    <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <form method="POST" data-parsley-validate class="form-horizontal form-label-left" action="{{ route('usuarios.update', ['id' => $user->id]) }}">
+
+                      <input type="hidden" name="_method" value="PATCH">
+                      {{ csrf_field() }}
+
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nombre <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12" name="name" value="{{ $user->name }}">
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="email" id="email" name="email" required="required" class="form-control col-md-7 col-xs-12" value="{{ $user->email }}">
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="password" class="control-label col-md-3 col-sm-3 col-xs-12">Contraseña</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="password" class="form-control col-md-7 col-xs-12" type="password" name="password">
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="password-confirm" class="control-label col-md-3 col-sm-3 col-xs-12">Confirmar Contraseña</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="password-confirm" class="form-control col-md-7 col-xs-12" type="password" name="password-confirm">
+                        </div>
+                      </div>
+
+                      <div class="ln_solid"></div>
+                      
+                      <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5 col-xs-offset-5">
+                          <button type="submit" class="btn btn-success">Actualizar</button>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
     </div>
-</div>
+<br><br>
 @endsection

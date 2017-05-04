@@ -4,7 +4,7 @@
     @include('layouts.head_content')
   </head>
 
-  <body class="nav-md footer_fixed" style="max-height: 1000px;">
+  <body class="nav-md footer_fixed" style="max-height: 1000px; overflow-x: hidden;">
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col menu_fixed">

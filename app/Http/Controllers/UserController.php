@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-	/**
-	 * Where to redirect users after registration.
-	 *
-	 * @var string
-	 */
-    	protected $redirectTo = '/usuarios';
+    /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+        protected $redirectTo = '/usuarios';
 
-	/**
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -51,9 +51,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validateInput($request);
-         User::create([
-            'name' => $request['username'],
+        //$this->validateInput($request);
+         \App\User::create([
+            'name' => $request['name'],
             'email' => $request['email'],
             'password' => bcrypt($request['password']),            
         ]);
@@ -69,7 +69,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
+        $user = \App\User::find($id);
         // Redirect to user list if updating user wasn't existed
         if ($user == null || count($user) == 0) {
             return redirect()->intended('/usuarios');
@@ -86,23 +86,33 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+    {        
+         
+
+        $user = \App\User::findOrFail($id);
         $constraints = [
-            'name' => 'required|max:60'
+            'name' => 'required|max:60',
+            'email' => 'required|email|max:255|unique:users',
             ];
+        
         $input = [
-            'name' => $request['name']
+            'name' => $request['name'],
+            'email' => $request['email'],
         ];
+
         if ($request['password'] != null && strlen($request['password']) > 0) {
             $constraints['password'] = 'required|min:6|confirmed';
-            $input['password'] =  bcrypt($request['password']);
+            $input['password'] =  bcrypt($request['password']);            
         }
+
         $this->validate($request, $constraints);
-        User::where('id', $id)
+
+        return redirect()->intended('/usuarios');
+
+        \App\User::where('id', $id)
             ->update($input);
         
-        return redirect()->intended('/usuarios');
+        
     }
 
 
@@ -114,16 +124,16 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        User::where('id', $id)->delete();
+        \App\User::where('id', $id)->delete();
          return redirect()->intended('/usuarios');
     }
 
 
     private function validateInput($request) {
         $this->validate($request, [
-	        'name' => 'required|max:60',
-	        'email' => 'required|email|max:255|unique:users',
-	        'password' => 'required|min:6|confirmed'
-    	]);
+            'name' => 'required|max:60',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed'
+        ]);
     }
 }

@@ -17,7 +17,7 @@
         </ul>
       </li>
 
-      <li><a><i class="fa fa-user"></i> Gestión de Usuarios</a>
+      <li><a href="{{ url('usuarios') }}"><i class="fa fa-user"></i> Gestión de Usuarios</a>
       </li>
       
     </ul>
