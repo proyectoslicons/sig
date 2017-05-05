@@ -22,3 +22,5 @@ Route::get('/home', 'HomeController@index');
 Route::post('/usuarios', 'UserControler@store');
 
 Route::resource('usuarios', 'UserController');
+
+Route::resource('parametros/departamentos', 'DepartmentController');

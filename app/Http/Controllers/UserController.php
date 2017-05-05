@@ -51,7 +51,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //$this->validateInput($request);
+        $this->validateInput($request);
+
          \App\User::create([
             'name' => $request['name'],
             'email' => $request['email'],
@@ -87,14 +88,15 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {        
-         
-
         $user = \App\User::findOrFail($id);
-        $constraints = [
-            'name' => 'required|max:60',
-            'email' => 'required|email|max:255|unique:users',
-            ];
         
+        $constraints = [
+            'name' => 'required|max:60',            
+        ];
+        
+        if($request['email'] != $user->email)
+            $constraints['email'] = 'required|email|max:255|unique:users';
+
         $input = [
             'name' => $request['name'],
             'email' => $request['email'],
@@ -107,12 +109,10 @@ class UserController extends Controller
 
         $this->validate($request, $constraints);
 
-        return redirect()->intended('/usuarios');
-
         \App\User::where('id', $id)
             ->update($input);
         
-        
+        return redirect()->intended('/usuarios');
     }
 
 

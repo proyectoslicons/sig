@@ -8,7 +8,7 @@
 
       <li><a><i class="fa fa-gears"></i> Parámetros del Sistema <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="form.html">Departamentos</a></li>
+          <li><a href="{{ url('parametros.departamentos') }}">Departamentos</a></li>
           <li><a href="form_advanced.html">Cargos</a></li>
           <li><a href="form_validation.html">Países</a></li>
           <li><a href="form_wizards.html">Estados</a></li>
