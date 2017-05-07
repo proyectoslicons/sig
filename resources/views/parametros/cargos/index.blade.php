@@ -7,7 +7,7 @@
       <div class="">
         <div class="page-title">
           <div class="title_left">
-            <h3>Gestión de Departamentos</h3>
+            <h3>Parámetros del Sistema</h3>
           </div>
         </div>
 
@@ -18,7 +18,7 @@
 
             <div class="x_panel">
               <div class="x_title">
-                <h2>Registrar Departamentos</h2>
+                <h2>Registrar Cargo</h2>
                 <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                   <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                   </li>                      
@@ -27,14 +27,14 @@
               </div>                  
 
               <div class="x_content">                  
-                  <a href="{{ route('departamentos.create') }}" class="btn btn-success" style="background-color: rgb(51, 204, 204)"><i class="fa fa-plus-circle"></i> Registrar Departamento</a>
+                  <a href="{{ route('cargos.create') }}" class="btn btn-success" style="background-color: rgb(51, 204, 204)"><i class="fa fa-plus-circle"></i> Registrar Cargo</a>
               </div>
             </div>
 
 
             <div class="x_panel">
               <div class="x_title">
-                <h2>Lista de Departamentos</h2>
+                <h2>Lista de Cargos</h2>
                 <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                   <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                   </li>                      
@@ -46,27 +46,27 @@
                 <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap table-hover" cellspacing="0" width="100%">
                   <thead>
                     <tr style="background-color: rgb(51, 204, 204)">
-                      <th style="width: 50%">Nombre del Departamento</th>                      
+                      <th style="width: 50%">Nombre del Cargo</th>
                       <th style="width: 50%">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     @php 
-                      $departamentos = App\Department::chunk(10, function($departamentos){
-                      foreach ($departamentos as $depart){
+                      $usuarios = App\Position::chunk(10, function($positions){
+                      foreach ($positions as $pos){
                     @endphp
                       <tr>
-                        <td>{{ $depart->name }}</td>                        
+                        <td>{{ $pos->name }}</td>
                         <td>
 
-                          <form class="row" method="POST" action="{{ route('departamentos.destroy', ['id' => $depart->id]) }}" onsubmit = "return confirm('Eliminar Departamento?')">
+                          <form class="row" method="POST" action="{{ route('cargos.destroy', ['id' => $pos->id]) }}" onsubmit = "return confirm('Eliminar Usuario?')">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             
-                            <a href="{{ route('departamentos.edit', ['id' => $depart->id]) }}" class="btn btn-warning col-sm-3 col-xs-5 btn-margin" style="margin-left: 5px; margin-right: 5px;">
+                            <a href="{{ route('cargos.edit', ['id' => $pos->id]) }}" class="btn btn-warning col-sm-3 col-xs-5 btn-margin" style="margin-left: 5px; margin-right: 5px;">
                               Editar
                             </a>
-                            
+                                                        
                             <button type="submit" class="btn btn-danger col-sm-3 col-xs-5 btn-margin">
                               Eliminar
                             </button>

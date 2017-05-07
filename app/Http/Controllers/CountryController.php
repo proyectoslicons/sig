@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\department;
+use App\Country;
 
-class DepartmentController extends Controller
+class CountryController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -25,7 +25,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        return view('parametros/departamentos/index');
+        return view('parametros/paises/index');
     }
 
     /**
@@ -35,7 +35,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        return view('parametros/departamentos/create');
+        return view('parametros/paises/create');
     }
 
     /**
@@ -47,11 +47,11 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         $this->validateInput($request);
-         Department::create([
+         Country::create([
             'name' => $request['name']
         ]);
 
-        return redirect()->intended('parametros/departamentos');
+        return redirect()->intended('parametros/paises');
     }
 
     /**
@@ -73,13 +73,13 @@ class DepartmentController extends Controller
      */
     public function edit($id)
     {
-        $department = Department::find($id);
-        // Redirect to department list if updating department wasn't existed
-        if ($department == null || count($department) == 0) {
-            return redirect()->intended('/parametros/departamentos');
+        $country = Country::find($id);
+        // Redirect to country list if updating country wasn't existed
+        if ($country == null || count($country) == 0) {
+            return redirect()->intended('/parametros/paises');
         }
 
-        return view('parametros/departamentos/edit', ['department' => $department]);
+        return view('parametros/paises/edit', ['country' => $country]);
     }
 
     /**
@@ -91,15 +91,17 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $department = Department::findOrFail($id);
-        $this->validateInput($request);
+        $country = Country::findOrFail($id);
         $input = [
             'name' => $request['name']
         ];
-        Department::where('id', $id)
+        $this->validate($request, [
+        'name' => 'required|max:60'
+        ]);
+        Country::where('id', $id)
             ->update($input);
         
-        return redirect()->intended('parametros/departamentos');
+        return redirect()->intended('parametros/paises');
     }
 
     /**
@@ -110,13 +112,13 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        Department::where('id', $id)->delete();
-         return redirect()->intended('parametros/departamentos');
+        Country::where('id', $id)->delete();
+         return redirect()->intended('parametros/paises');
     }
 
     private function validateInput($request) {
         $this->validate($request, [
-        'name' => 'required|max:60|unique:department'
+        'name' => 'required|max:60|unique:country'
     ]);
     }
 }

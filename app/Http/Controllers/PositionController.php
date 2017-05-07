@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\department;
+use App\Position;
 
-class DepartmentController extends Controller
+class PositionController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -25,7 +25,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        return view('parametros/departamentos/index');
+        return view('parametros/cargos/index');
     }
 
     /**
@@ -35,7 +35,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        return view('parametros/departamentos/create');
+        return view('parametros/cargos/create');
     }
 
     /**
@@ -47,11 +47,11 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         $this->validateInput($request);
-         Department::create([
+         Position::create([
             'name' => $request['name']
         ]);
 
-        return redirect()->intended('parametros/departamentos');
+        return redirect()->intended('parametros/cargos');
     }
 
     /**
@@ -73,13 +73,13 @@ class DepartmentController extends Controller
      */
     public function edit($id)
     {
-        $department = Department::find($id);
-        // Redirect to department list if updating department wasn't existed
-        if ($department == null || count($department) == 0) {
-            return redirect()->intended('/parametros/departamentos');
+        $position = Position::find($id);
+        // Redirect to position list if updating position wasn't existed
+        if ($position == null || count($position) == 0) {
+            return redirect()->intended('/parametros/cargos');
         }
 
-        return view('parametros/departamentos/edit', ['department' => $department]);
+        return view('parametros/cargos/edit', ['position' => $position]);
     }
 
     /**
@@ -91,15 +91,15 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $department = Department::findOrFail($id);
+        $position = Position::findOrFail($id);
         $this->validateInput($request);
         $input = [
             'name' => $request['name']
         ];
-        Department::where('id', $id)
+        Position::where('id', $id)
             ->update($input);
         
-        return redirect()->intended('parametros/departamentos');
+        return redirect()->intended('parametros/cargos');
     }
 
     /**
@@ -110,13 +110,13 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        Department::where('id', $id)->delete();
-         return redirect()->intended('parametros/departamentos');
+        Position::where('id', $id)->delete();
+         return redirect()->intended('parametros/cargos');
     }
 
     private function validateInput($request) {
         $this->validate($request, [
-        'name' => 'required|max:60|unique:department'
+        'name' => 'required|max:60|unique:position'
     ]);
     }
 }

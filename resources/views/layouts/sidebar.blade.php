@@ -8,9 +8,9 @@
 
       <li><a><i class="fa fa-gears"></i> Parámetros del Sistema <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="{{ url('parametros.departamentos') }}">Departamentos</a></li>
-          <li><a href="form_advanced.html">Cargos</a></li>
-          <li><a href="form_validation.html">Países</a></li>
+          <li><a href="{{ url('parametros/departamentos') }}">Departamentos</a></li>
+          <li><a href="{{ url('parametros/cargos') }}">Cargos</a></li>
+          <li><a href="{{ url('parametros/paises') }}">Países</a></li>
           <li><a href="form_wizards.html">Estados</a></li>
           <li><a href="form_upload.html">Ciudades</a></li>
           <li><a href="form_buttons.html">Reportes</a></li>
