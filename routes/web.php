@@ -28,3 +28,5 @@ Route::resource('parametros/departamentos', 'DepartmentController');
 Route::resource('parametros/cargos', 'PositionController');
 
 Route::resource('parametros/paises', 'CountryController');
+
+Route::resource('parametros/estados', 'StateController');

@@ -11,7 +11,7 @@
           <li><a href="{{ url('parametros/departamentos') }}">Departamentos</a></li>
           <li><a href="{{ url('parametros/cargos') }}">Cargos</a></li>
           <li><a href="{{ url('parametros/paises') }}">Países</a></li>
-          <li><a href="form_wizards.html">Estados</a></li>
+          <li><a href="{{ url('parametros/estados') }}">Estados</a></li>
           <li><a href="form_upload.html">Ciudades</a></li>
           <li><a href="form_buttons.html">Reportes</a></li>
         </ul>
