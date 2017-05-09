@@ -19,7 +19,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Editar Unidad Funcional</h2>
+                    <h2>Editar Ciudad</h2>
                     <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
@@ -27,19 +27,30 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form method="POST" data-parsley-validate class="form-horizontal form-label-left" action="{{ route('departamentos.update', ['id' => $department->id]) }}">
+                    <form method="POST" data-parsley-validate class="form-horizontal form-label-left" action="{{ route('ciudades.update', ['id' => $city->id]) }}">
 
                       <input type="hidden" name="_method" value="PATCH">
                       {{ csrf_field() }}
 
 
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nombre de la Unidad Funcional <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nombre de la ciudad <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12" name="name" value="{{ $department->name }}">
+                          <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12" name="name" value="{{ $city->name }}">
                         </div>
-                      </div>
+                      </div> 
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Estado</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="select2_single form-control" name="state_id">
+                            @foreach($states as $state)
+                              <option value="{{$state->id}}" {{$state->id == $city->state_id ? 'selected' : ''}}>{{$state->name}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>                   
 
                       <div class="ln_solid"></div>
                       

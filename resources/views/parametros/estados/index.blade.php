@@ -61,11 +61,12 @@ use App\Country;
 
                       $states = DB::table('state')
                       ->leftJoin('country', 'state.country_id', '=', 'country.id')
-                      ->select('state.id', 'state.name', 'country.name as country_name', 'country.id as country_id');
+                      ->select('state.id', 'state.name', 'country.name as country_name', 'country.id as country_id')->get();
                       
                       
 
                       foreach ($states as $state){
+                        
                     @endphp
 
 

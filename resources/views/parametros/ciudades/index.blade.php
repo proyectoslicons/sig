@@ -1,5 +1,10 @@
 @extends('layouts.master')
 
+@php
+use App\State;
+use App\Country;
+@endphp
+
 @section('content')
     
     <div class="right_col" role="main">
@@ -7,7 +12,7 @@
       <div class="">
         <div class="page-title">
           <div class="title_left">
-            <h3>Gestión de Unidades Funcionales</h3>
+            <h3>Parámetros del Sistema</h3>
           </div>
         </div>
 
@@ -18,7 +23,7 @@
 
             <div class="x_panel">
               <div class="x_title">
-                <h2>Registrar Unidades Funcionales</h2>
+                <h2>Registrar Ciudad</h2>
                 <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                   <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                   </li>                      
@@ -27,14 +32,14 @@
               </div>                  
 
               <div class="x_content">                  
-                  <a href="{{ route('departamentos.create') }}" class="btn btn-success" style="background-color: rgb(51, 204, 204)"><i class="fa fa-plus-circle"></i> Registrar Unidad Funcional</a>
+                  <a href="{{ route('ciudades.create') }}" class="btn btn-success" style="background-color: rgb(51, 204, 204)"><i class="fa fa-plus-circle"></i> Registrar ciudad</a>
               </div>
             </div>
 
 
             <div class="x_panel">
               <div class="x_title">
-                <h2>Lista de Unidades Funcionales</h2>
+                <h2>Lista de Estados</h2>
                 <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                   <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                   </li>                      
@@ -46,27 +51,35 @@
                 <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap table-hover" cellspacing="0" width="100%">
                   <thead>
                     <tr style="background-color: rgb(51, 204, 204)">
-                      <th style="width: 50%">Unidad Funcional</th>                      
-                      <th style="width: 50%">Acciones</th>
+                      <th style="width: 33%">Estado</th>
+                      <th style="width: 33%">Nombre de la Ciudad</th>
+                      <th style="width: 33%">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     @php 
-                      $departamentos = App\Department::chunk(10, function($departamentos){
-                      foreach ($departamentos as $depart){
+
+                      $cities = DB::table('city')
+                      ->leftJoin('state', 'city.state_id', '=', 'state.id')
+                      ->select('city.id', 'city.name', 'state.name as state_name', 'state.id as state_id')->get();                                                              
+                      foreach ($cities as $city){
+                        
                     @endphp
+
+
                       <tr>
-                        <td>{{ $depart->name }}</td>                        
+                        <td>{{ $city->state_name }}</td>
+                        <td>{{ $city->name }}</td>
                         <td>
 
-                          <form class="row" method="POST" action="{{ route('departamentos.destroy', ['id' => $depart->id]) }}" onsubmit = "return confirm('Eliminar Departamento?')">
+                          <form class="row" method="POST" action="{{ route('ciudades.destroy', ['id' => $city->id]) }}" onsubmit = "return confirm('Eliminar Ciudad?')">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             
-                            <a href="{{ route('departamentos.edit', ['id' => $depart->id]) }}" class="btn btn-warning col-sm-3 col-xs-5 btn-margin" style="margin-left: 5px; margin-right: 5px;">
+                            <a href="{{ route('ciudades.edit', ['id' => $city->id]) }}" class="btn btn-warning col-sm-3 col-xs-5 btn-margin" style="margin-left: 5px; margin-right: 5px;">
                               Editar
                             </a>
-                            
+                                                        
                             <button type="submit" class="btn btn-danger col-sm-3 col-xs-5 btn-margin">
                               Eliminar
                             </button>
@@ -76,7 +89,7 @@
                       </tr>
                     @php                        
                         }
-                      });
+                      
                     @endphp
                   </tbody>
                 </table>

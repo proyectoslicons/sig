@@ -27,19 +27,30 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form method="POST" data-parsley-validate class="form-horizontal form-label-left" action="{{ route('paises.update', ['id' => $country->id]) }}">
+                    <form method="POST" data-parsley-validate class="form-horizontal form-label-left" action="{{ route('estados.update', ['id' => $state->id]) }}">
 
                       <input type="hidden" name="_method" value="PATCH">
                       {{ csrf_field() }}
 
 
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nombre del País <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nombre del Estado <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12" name="name" value="{{ $country->name }}">
+                          <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12" name="name" value="{{ $state->name }}">
                         </div>
-                      </div>                    
+                      </div> 
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">País</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="select2_single form-control" name="country_id">
+                            @foreach($countries as $country)
+                              <option value="{{$country->id}}" {{$country->id == $state->country_id ? 'selected' : ''}}>{{$country->name}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>                   
 
                       <div class="ln_solid"></div>
                       

@@ -30,3 +30,9 @@ Route::resource('parametros/cargos', 'PositionController');
 Route::resource('parametros/paises', 'CountryController');
 
 Route::resource('parametros/estados', 'StateController');
+
+Route::resource('parametros/ciudades', 'CityController');
+
+Route::resource('solicitudes/crearTicket', 'TicketController');
+
+Route::resource('solicitudes/listarTickets', 'TicketListController');
