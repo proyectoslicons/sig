@@ -36,3 +36,7 @@ Route::resource('parametros/ciudades', 'CityController');
 Route::resource('solicitudes/crearTicket', 'TicketController');
 
 Route::resource('solicitudes/listarTickets', 'TicketListController');
+
+Route::post('solicitudes/nuevo_ticket', 'TicketController@store');
+
+Route::get('solicitudes/ticket/{ticket_id}', 'TicketController@show');

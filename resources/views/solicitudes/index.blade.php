@@ -29,42 +29,64 @@
               <div class="x_content">                  
                 <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap table-hover" cellspacing="0" width="100%">
                   <thead>
-                    <tr style="background-color: rgb(51, 204, 204)">
-                      <th style="width: 33%">Nombre</th>
-                      <th style="width: 33%">Email</th>
-                      <th style="width: 33%">Acciones</th>
+                    <tr style="background-color: rgb(51, 204, 204)">                      
+                      <th style="width: 10%">Cód. Ticket</th>
+                      <th style="width: 20%">Título</th>
+                      <th style="width: 10%">Estado</th>
+                      <th style="width: 20%">Categoría</th>
+                      <th style="width: 20%">Actualizado</th>
+                      <th style="width: 20%;">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     @php 
-                      $usuarios = App\User::chunk(10, function($usuarios){
-                      foreach ($usuarios as $user){
+                      
+                      foreach ($tickets as $ticket){
                     @endphp
                       <tr>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
+                        
                         <td>
-
-                          <form class="row" method="POST" action="{{ route('usuarios.destroy', ['id' => $user->id]) }}" onsubmit = "return confirm('Eliminar Usuario?')">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            
-                            <a href="{{ route('usuarios.edit', ['id' => $user->id]) }}" class="btn btn-warning col-sm-3 col-xs-5 btn-margin" style="margin-left: 5px; margin-right: 5px;">
-                              Editar
+                            <a href="{{ url('solicitudes/ticket/'. $ticket->ticket_id) }}">
+                                {{ $ticket->ticket_id }}
                             </a>
-                            
-                            @if ($user->name != Auth::user()->name)
-                              <button type="submit" class="btn btn-danger col-sm-3 col-xs-5 btn-margin">
-                                Eliminar
-                              </button>
-                            @endif
-                          </form>
+                        </td>
+
+                        <td>
+                             {{ $ticket->title }}                            
+                        </td>
+
+                        <td>
+                            <center>
+                              @if ($ticket->status === 'Open')
+                                  <div class="label label-success">{{ "Abierto" }}</div>
+                              @else
+                                  <div class="label label-danger">{{ "Cerrado" }}</div>
+                              @endif
+                            </center>                          
+                        </td>
+
+                        <td>
+                          @php
+                            $category = DB::table('categories')->where('id', $ticket->category_id)->value('name');
+                          @endphp                          
+                          {{ $category }}                                                        
+                        </td>
+
+                        <td>{{ $ticket->updated_at }}</td>
+
+                        <td>
+                            <form action="#" method="POST">
+                                {{ csrf_field() }}
+                                <a href="{{ url('solicitudes/ticket/' . $ticket->ticket_id) }}" class="btn btn-primary btn-xs">Comentar</a>
+                                <button type="submit" class="btn btn-danger btn-xs">Cerrar</button>
+                            </form>                                                    
                         </td>
                       </tr>
+                  
                     @php                        
-                        }
-                      });
+                        }                      
                     @endphp
+                  
                   </tbody>
                 </table>
               </div>

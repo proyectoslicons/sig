@@ -65,12 +65,12 @@
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             
-                            <a href="{{ route('usuarios.edit', ['id' => $user->id]) }}" class="btn btn-warning col-sm-3 col-xs-5 btn-margin" style="margin-left: 5px; margin-right: 5px;">
+                            <a href="{{ route('usuarios.edit', ['id' => $user->id]) }}" class="btn btn-warning col-sm-3 col-xs-5 btn-margin btn-xs" style="margin-left: 5px; margin-right: 5px;">
                               Editar
                             </a>
                             
                             @if ($user->name != Auth::user()->name)
-                              <button type="submit" class="btn btn-danger col-sm-3 col-xs-5 btn-margin">
+                              <button type="submit" class="btn btn-danger col-sm-3 col-xs-5 btn-margin  btn-xs">
                                 Eliminar
                               </button>
                             @endif
