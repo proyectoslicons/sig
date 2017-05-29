@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\City;
 use App\State;
+use Session;
 
 class CityController extends Controller
 {
@@ -50,11 +51,12 @@ class CityController extends Controller
     {
         State::findOrFail($request['state_id']);
         $this->validateInput($request);
-         city::create([
+        city::create([
             'name' => $request['name'],
             'state_id' => $request['state_id']
         ]);
 
+        Session::flash('status', "Se ha registrado una nueva ciudad.");
         return redirect()->intended('parametros/ciudades');
     }
 
@@ -122,37 +124,14 @@ class CityController extends Controller
          return redirect()->intended('parametros/ciudades');
     }
 
-    /**
-     * Search city from database base on some specific constraints
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *  @return \Illuminate\Http\Response
-     */
-    public function search(Request $request) {
-        $constraints = [
-            'name' => $request['name']
-            ];
 
-       $cities = $this->doSearchingQuery($constraints);
-       return view('parametros/ciudades/index', ['cities' => $cities, 'searchingVals' => $constraints]);
-    }
-
-    private function doSearchingQuery($constraints) {
-        $query = City::query();
-        $fields = array_keys($constraints);
-        $index = 0;
-        foreach ($constraints as $constraint) {
-            if ($constraint != null) {
-                $query = $query->where( $fields[$index], 'like', '%'.$constraint.'%');
-            }
-
-            $index++;
-        }
-        return $query->paginate(5);
-    }
     private function validateInput($request) {
-        $this->validate($request, [
-        'name' => 'required|max:60|unique:city'
-    ]);
+        $reglas = ['name' => 'required|max:60|unique:city'];
+        $mensajes = [
+            'name.required'     => 'El nombre de la ciudad no puede estar vacío.',
+            'name.max'       => 'El nombre de la ciudad no puede exceder de 60 caracteres.',
+            'name.unique'  => 'El nombre de la ciudad no puede estar repetido.'
+        ];
+        $this->validate($request, $reglas, $mensajes);
     }
 }

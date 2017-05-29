@@ -24,7 +24,7 @@
             <li><a href="{{ route('logout') }}" 
                    onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
-                                            <i class="fa fa-sign-out pull-right"></i>Log Out</a>
+                                            <i class="fa fa-sign-out pull-right"></i>Salir</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     {{ csrf_field() }}
                 </form>
@@ -34,9 +34,13 @@
         </li>
 
         <li role="presentation" class="dropdown">
-          <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-            <i class="fa fa-envelope-o"></i>
-            <span class="badge bg-green">{{ App\User::count() }}</span>
+          <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false" >
+            
+              <i class="fa fa-ticket"></i>
+              <div id="app">
+                <span class="badge bg-green">@{{ count }}</span>
+              </div>
+            
           </a>
           <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
             <li>
@@ -101,3 +105,4 @@
     </nav>
   </div>
 </div>
+

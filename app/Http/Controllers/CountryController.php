@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Country;
+use Session;
 
 class CountryController extends Controller
 {
@@ -51,6 +52,7 @@ class CountryController extends Controller
             'name' => $request['name']
         ]);
 
+        Session::flash('status', "Se ha registrado un nuevo país.");
         return redirect()->intended('parametros/paises');
     }
 

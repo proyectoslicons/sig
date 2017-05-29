@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\department;
+use Session;
 
 class DepartmentController extends Controller
 {
@@ -25,7 +26,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        return view('parametros/departamentos/index');
+        return view('parametros/unidades/index');
     }
 
     /**
@@ -35,7 +36,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        return view('parametros/departamentos/create');
+        return view('parametros/unidades/create');
     }
 
     /**
@@ -51,7 +52,8 @@ class DepartmentController extends Controller
             'name' => $request['name']
         ]);
 
-        return redirect()->intended('parametros/departamentos');
+        Session::flash('status', "Se ha registrado una nueva unidad funcional.");
+        return redirect()->intended('parametros/unidades');
     }
 
     /**
@@ -76,10 +78,10 @@ class DepartmentController extends Controller
         $department = Department::find($id);
         // Redirect to department list if updating department wasn't existed
         if ($department == null || count($department) == 0) {
-            return redirect()->intended('/parametros/departamentos');
+            return redirect()->intended('/parametros/unidades');
         }
 
-        return view('parametros/departamentos/edit', ['department' => $department]);
+        return view('parametros/unidades/edit', ['department' => $department]);
     }
 
     /**
@@ -99,7 +101,7 @@ class DepartmentController extends Controller
         Department::where('id', $id)
             ->update($input);
         
-        return redirect()->intended('parametros/departamentos');
+        return redirect()->intended('parametros/unidades');
     }
 
     /**
@@ -111,7 +113,7 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         Department::where('id', $id)->delete();
-         return redirect()->intended('parametros/departamentos');
+         return redirect()->intended('parametros/unidades');
     }
 
     private function validateInput($request) {

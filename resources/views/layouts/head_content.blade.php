@@ -23,3 +23,12 @@
 <!-- Custom Theme Style -->
 <link href="{{ URL::asset('build/css/custom.min.css') }}" rel="stylesheet">
 
+
+
+<script>
+// rename myToken as you like
+window.Laravel =  <?php echo json_encode([
+    'csrfToken' => csrf_token(),
+]); ?>
+</script>
+

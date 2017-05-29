@@ -23,7 +23,7 @@ Route::post('/usuarios', 'UserControler@store');
 
 Route::resource('usuarios', 'UserController');
 
-Route::resource('parametros/departamentos', 'DepartmentController');
+Route::resource('parametros/unidades', 'DepartmentController');
 
 Route::resource('parametros/cargos', 'PositionController');
 
@@ -40,3 +40,5 @@ Route::resource('solicitudes/listarTickets', 'TicketListController');
 Route::post('solicitudes/nuevo_ticket', 'TicketController@store');
 
 Route::get('solicitudes/ticket/{ticket_id}', 'TicketController@show');
+
+Route::post('comentar', 'CommentsController@postComment');

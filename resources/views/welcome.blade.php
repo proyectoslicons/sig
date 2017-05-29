@@ -56,7 +56,7 @@
                <div class="s-12 m-6 l-6">
                   <div class="social right">
                    <div class="dropdown">
-  <button onclick="myFunction()" class="dropbtn"><a href="#"><i class="fa fa-user-circle" aria-hidden="true"></i></button>
+  <button onclick="myFunction()" class="dropbtn"><a href="#"><i class="fa fa-user-circle" aria-hidden="true"></i></a> LICONSIG</button>
   <div id="myDropdown" class="dropdown-content">
     <a href="{{ url('/login') }}">Login</a>
   </div>

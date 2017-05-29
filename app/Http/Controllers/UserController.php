@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Session;
 
 class UserController extends Controller
 {
@@ -58,6 +59,8 @@ class UserController extends Controller
             'email' => $request['email'],
             'password' => bcrypt($request['password']),            
         ]);
+
+        Session::flash('status', "Se ha registrado un nuevo usuario.");
 
         return redirect()->intended('/usuarios');
     }

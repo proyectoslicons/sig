@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
+  <head>    
     @include('layouts.head_content')
   </head>
 

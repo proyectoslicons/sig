@@ -7,7 +7,7 @@
       <div class="">
         <div class="page-title">
           <div class="title_left">
-            <h3>Gestión de Usuarios</h3>
+            <h3>Gestión de Solicitudes</h3>
           </div>
         </div>
 
@@ -24,13 +24,10 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <br />
+                                      
 
-                    @if (session('status'))
-                      <div class="alert alert-success">
-                          {{ session('status') }}
-                      </div>
-                    @endif
+                    @include('layouts.errors')
+                    @include('layouts.success')                  
 
                     <form class="form-horizontal form-label-left" method="POST" action="{{ url('/solicitudes/nuevo_ticket') }}">
 
@@ -62,9 +59,9 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">                        
                           <select id="priority" type="" class="form-control" name="priority">
                               <option value="">Seleccionar Prioridad</option>
-                              <option value="low">Baja</option>
-                              <option value="medium">Media</option>
-                              <option value="high">Alta</option>
+                              <option value="baja">Baja</option>
+                              <option value="media">Media</option>
+                              <option value="alta">Alta</option>
                           </select>
                         </div>
                       </div>
@@ -84,9 +81,7 @@
                         </div>
                       </div>
 
-                    </form>
-
-                    @include('layouts.errors')
+                    </form>                    
 
                   </div>
                 </div>

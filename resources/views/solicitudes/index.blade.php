@@ -24,6 +24,10 @@
                   </li>                      
                 </ul>
                 <div class="clearfix"></div>
+
+                @include('layouts.errors')
+                @include('layouts.success')
+              
               </div>                  
 
               <div class="x_content">                  
@@ -31,11 +35,12 @@
                   <thead>
                     <tr style="background-color: rgb(51, 204, 204)">                      
                       <th style="width: 10%">Cód. Ticket</th>
-                      <th style="width: 20%">Título</th>
+                      <th style="width: 40%">Título</th>
                       <th style="width: 10%">Estado</th>
+                      <th style="width: 10%">Prioridad</th>
                       <th style="width: 20%">Categoría</th>
-                      <th style="width: 20%">Actualizado</th>
-                      <th style="width: 20%;">Acciones</th>
+                      <th style="width: 30%">Acciones</th>
+                      <th>F. Creación</th>                      
                     </tr>
                   </thead>
                   <tbody>
@@ -66,13 +71,27 @@
                         </td>
 
                         <td>
+                            <center>
+                              @if($ticket->priority === 'baja')
+                                <div class="label label-info">{{ ucfirst($ticket->priority) }}</div>
+                              @endif
+                              
+                              @if($ticket->priority === 'media')
+                                <div class="label label-warning">{{ ucfirst($ticket->priority) }}</div>
+                              @endif
+
+                              @if($ticket->priority === 'alta')
+                                <div class="label label-danger">{{ ucfirst($ticket->priority) }}</div>
+                              @endif
+                            </center>                          
+                        </td>                        
+
+                        <td>
                           @php
                             $category = DB::table('categories')->where('id', $ticket->category_id)->value('name');
                           @endphp                          
                           {{ $category }}                                                        
-                        </td>
-
-                        <td>{{ $ticket->updated_at }}</td>
+                        </td>                        
 
                         <td>
                             <form action="#" method="POST">
@@ -81,8 +100,12 @@
                                 <button type="submit" class="btn btn-danger btn-xs">Cerrar</button>
                             </form>                                                    
                         </td>
+
+                        <td>{{ $ticket->created_at }}</td>
                       </tr>
                   
+                      
+
                     @php                        
                         }                      
                     @endphp

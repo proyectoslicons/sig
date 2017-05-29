@@ -48,6 +48,7 @@
                     </form>
 
                     @include('layouts.errors')
+                    @include('layouts.success')
 
                   </div>
                 </div>

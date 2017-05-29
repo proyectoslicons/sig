@@ -5,7 +5,7 @@
 
       <li><a><i class="fa fa-gears"></i> Parámetros del Sistema <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="{{ url('parametros/departamentos') }}">Unidades Funcionales</a></li>
+          <li><a href="{{ url('parametros/unidades') }}">Unidades Funcionales</a></li>
           <li><a href="{{ url('parametros/cargos') }}">Cargos</a></li>
           <li><a href="{{ url('parametros/paises') }}">Países</a></li>
           <li><a href="{{ url('parametros/estados') }}">Estados</a></li>

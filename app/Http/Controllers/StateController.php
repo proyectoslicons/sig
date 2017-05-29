@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\State;
 use App\Country;
+use Session;
 
 class StateController extends Controller
 {
@@ -55,6 +56,8 @@ class StateController extends Controller
             'name' => $request['name'],
             'country_id' => $request['country_id']
         ]);
+
+        Session::flash('status', "Se ha registrado un nuevo estado.");
 
         return redirect()->intended('parametros/estados');
     }
