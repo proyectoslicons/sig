@@ -51,7 +51,7 @@
                       <tr>
                         
                         <td>
-                            <a href="{{ url('solicitudes/ticket/'. $ticket->ticket_id) }}">
+                            <a style="color: rgb(51, 204, 204); font-weight: bold" href="{{ url('solicitudes/ticket/'. $ticket->ticket_id) }}">
                                 {{ $ticket->ticket_id }}
                             </a>
                         </td>
@@ -90,7 +90,7 @@
                           @php
                             $category = DB::table('categories')->where('id', $ticket->category_id)->value('name');
                           @endphp                          
-                          {{ $category }}                                                        
+                          <center>{{ $category }}</center>                     
                         </td>                        
 
                         <td>
@@ -120,4 +120,14 @@
       </div>
     </div>
 <br><br>
+
+<script>
+  
+  $(document).ready(function() {
+    $('#datatable-responsive').DataTable( {
+        "order": [[ 3, "asc" ], [6, "desc"]],
+    });
+  });
+
+</script>
 @endsection

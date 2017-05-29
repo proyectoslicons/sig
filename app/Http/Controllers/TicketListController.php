@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Ticket;
 use App\Category;
+use DB;
 
 class TicketListController extends Controller
 {
@@ -14,7 +15,7 @@ class TicketListController extends Controller
 	}
 
     public function index(){	   
-	    $tickets = Ticket::all();
+	    $tickets = Ticket::where('status', 'Open')->get();
 	    $categories = Category::all();	    
 
 	    return view('solicitudes.index', compact('tickets', 'categories'));
