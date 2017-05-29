@@ -59,6 +59,16 @@
                             </div>
                           </div>
                           <br>
+
+                          <div style="width:100%; font-size: 14px;">           
+                            <div style="float:left;  color: rgb(51, 204, 204); font-weight: bold">
+                              Solicitado por:
+                            </div>
+                            <div style="margin-left: 150px; font-weight: bold; word-wrap: break-word; "> 
+                              {{ ucwords(DB::table('users')->where('id', $ticket->user_id)->value('name')) }}
+                            </div>
+                          </div>
+                          <br>
                                                                         
                           <div style="width:100%; font-size: 14px;">           
                             <div style="float:left;  color: rgb(51, 204, 204); font-weight: bold">
@@ -136,7 +146,7 @@
                             
                           </div>
                             
-                              <textarea class="form-control" rows="10" style="width:100%;font-weight: bold;" readonly="true">{{ ucfirst($ticket->message) }}</textarea>
+                              <textarea class="form-control" rows="5" style="width:100%;font-weight: bold;" readonly="true">{{ ucfirst($ticket->message) }}</textarea>
                             
                           <br>                          
                                                      

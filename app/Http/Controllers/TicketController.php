@@ -63,6 +63,7 @@ class TicketController extends Controller
 	    $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
 	    $comments = $ticket->comments;
 	    $category = $ticket->category;
+
 	    return view('solicitudes.show', compact('comments', 'category', 'ticket'));
 	}
 }
