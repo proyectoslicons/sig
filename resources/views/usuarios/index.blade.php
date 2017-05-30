@@ -77,7 +77,7 @@
     $(document).ready(function() {  
 
       $('#datatable-responsive').DataTable( {
-          "processing": true,
+          "processing": false,
           "serverSide": true,
           "ajax": "/api/users",
           "columns" : [

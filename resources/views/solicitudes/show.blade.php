@@ -215,7 +215,61 @@
                   <div class="row">
 
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                                                       
+                         
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-delegar-modal-sm">Delegar Ticket</button>
+
+                      <div class="modal fade bs-delegar-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                          <div class="modal-content">
+
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                              </button>
+                              <h4 class="modal-title" id="myModalLabel2">Delegar Ticket</h4>
+                            </div>
+                            <div class="modal-body">
+                              <h4>Text in a modal</h4>
+                              <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                              <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                            </div>
+                            <div class="modal-footer">
+                              <center>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                              </center>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-escalar-modal-sm">Escalar Ticket</button>
+
+                      <div class="modal fade bs-escalar-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                          <div class="modal-content">
+
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                              </button>
+                              <h4 class="modal-title" id="myModalLabel2">Escarlar Ticket</h4>
+                            </div>
+                            <div class="modal-body">
+                              <h4>Text in a modal</h4>
+                              <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                              <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                            </div>
+                            <div class="modal-footer">
+                              <center>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                              </center>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                     
                   </div>

@@ -33,14 +33,14 @@
               <div class="x_content">                  
                 <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap table-hover" cellspacing="0" width="100%">
                   <thead>
-                    <tr style="background-color: rgb(51, 204, 204)">                      
-                      <th >Cód. Ticket</th>
-                      <th >Título</th>
-                      <th >Estado</th>
-                      <th >Prioridad</th>
-                      <th >Solicita</th>
-                      <th >Acciones</th>
-                      <th>F. Creación</th>                      
+                    <tr style="background-color: rgb(51, 204, 204);">                      
+                      <th style="width: 10%">Cód. Ticket</th>
+                      <th style="width: 10%">Título</th>
+                      <th style="width: 10%">Estado</th>
+                      <th style="width: 10%">Prioridad</th>
+                      <th style="width: 10%">Solicita</th>
+                      <th style="width: 10%">Acciones</th>
+                      <th style="width: 10%">F. Creación</th>                      
                     </tr>
                   </thead>
                   <tbody>
@@ -126,8 +126,14 @@
         "sScrollY": false,
         "order": [[ 3, "asc" ], [6, "desc"]],
     });
+
+
+    setTimeout( function(){
+       $('#datatable-responsive').DataTable().search( '' ).draw();
+    }, 10 );
   });
 
+  
 </script>
 
 
