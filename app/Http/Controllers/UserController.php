@@ -121,14 +121,26 @@ class UserController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
+     * es válido usar cualquiera de los 2 métodos
+     * ya sea destroy o show, sólo usar el destroy
+     * cuando se esté intentando eliminar desde un formulario
+     * de lo contrario usar el método show
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    {   
         \App\User::where('id', $id)->delete();
          return redirect()->intended('/usuarios');
+    }
+
+    /**
+     * método modificado para eliminar un usuario
+     * 
+    */
+    public function show($id){
+        \App\User::where('id', $id)->delete();
+         return redirect()->intended('/usuarios');   
     }
 
 

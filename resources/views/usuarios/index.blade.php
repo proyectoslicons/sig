@@ -55,35 +55,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @php 
-                      $usuarios = App\User::chunk(10, function($usuarios){
-                      foreach ($usuarios as $user){
-                    @endphp
-                      <tr>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>
-
-                          <form class="row" method="POST" action="{{ route('usuarios.destroy', ['id' => $user->id]) }}" onsubmit = "return confirm('Eliminar Usuario?')">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            
-                            <a href="{{ route('usuarios.edit', ['id' => $user->id]) }}" class="btn btn-warning col-sm-3 col-xs-5 btn-margin btn-xs" style="margin-left: 5px; margin-right: 5px;">
-                              Editar
-                            </a>
-                            
-                            @if ($user->name != Auth::user()->name)
-                              <button type="submit" class="btn btn-danger col-sm-3 col-xs-5 btn-margin  btn-xs">
-                                Eliminar
-                              </button>
-                            @endif
-                          </form>
-                        </td>
-                      </tr>
-                    @php                        
-                        }
-                      });
-                    @endphp
+                    
                   </tbody>
                 </table>
               </div>
@@ -94,4 +66,39 @@
       </div>
     </div>
 <br><br>
+
+<script>
+    
+
+    function preguntar(){
+        return confirm("¿Desea eliminar el usuario?");
+    }
+
+    $(document).ready(function() {  
+
+      $('#datatable-responsive').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax": "/api/users",
+          "columns" : [
+              {data: 'name'},
+              {data: 'email'},
+              {
+                name: 'actions',
+                data: null,
+                sortable: false,
+                searchable: false,
+                render: function (data) {
+                    var actions = '';
+                    actions += '<a class="btn btn-warning col-sm-3 col-xs-5 btn-margin btn-xs" href="{{ route('usuarios.edit', ':id') }}"> Editar</a>';
+                    actions += '<a class="btn btn-danger col-sm-3 col-xs-5 btn-margin btn-xs" href="{{ route('usuarios.destroy', ':id') }}" onclick="return preguntar()"> Eliminar</a>';
+                    return actions.replace(/:id/g, data.id);
+                }
+              }
+          ]
+      });
+    });
+
+</script>
+
 @endsection

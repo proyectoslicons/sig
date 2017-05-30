@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('api/users', function(){
+	return Datatables::eloquent(App\User::query())->make(true);
+});
+
 Route::get('/home', 'HomeController@index');
 
 Route::post('/usuarios', 'UserControler@store');

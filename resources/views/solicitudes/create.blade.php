@@ -42,7 +42,20 @@
                       </div>
                       
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Categoría <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="department">Departamento <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="select2_single form-control" name="department">
+                            <option value="">Seleccionar Departamento</option>
+                            @foreach($departments as $department)
+                              <option value="{{$department->id}}">{{$department->name}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="category">Categoría <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <select class="select2_single form-control" name="category">

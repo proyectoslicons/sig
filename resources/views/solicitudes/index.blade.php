@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    
+
     <div class="right_col" role="main">
 
       <div class="">
@@ -34,12 +34,12 @@
                 <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap table-hover" cellspacing="0" width="100%">
                   <thead>
                     <tr style="background-color: rgb(51, 204, 204)">                      
-                      <th style="width: 10%">Cód. Ticket</th>
-                      <th style="width: 40%">Título</th>
-                      <th style="width: 10%">Estado</th>
-                      <th style="width: 10%">Prioridad</th>
-                      <th style="width: 20%">Categoría</th>
-                      <th style="width: 30%">Acciones</th>
+                      <th >Cód. Ticket</th>
+                      <th >Título</th>
+                      <th >Estado</th>
+                      <th >Prioridad</th>
+                      <th >Solicita</th>
+                      <th >Acciones</th>
                       <th>F. Creación</th>                      
                     </tr>
                   </thead>
@@ -87,10 +87,7 @@
                         </td>                        
 
                         <td>
-                          @php
-                            $category = DB::table('categories')->where('id', $ticket->category_id)->value('name');
-                          @endphp                          
-                          <center>{{ $category }}</center>                     
+                          {{ ucwords(DB::table('users')->where('id', $ticket->user_id)->value('name')) }}                    
                         </td>                        
 
                         <td>
@@ -125,9 +122,14 @@
   
   $(document).ready(function() {
     $('#datatable-responsive').DataTable( {
+        "deferRender": true,
+        "sScrollY": false,
         "order": [[ 3, "asc" ], [6, "desc"]],
     });
   });
 
 </script>
+
+
+
 @endsection
