@@ -17,9 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('api/users', function(){
-	return Datatables::eloquent(App\User::query())->make(true);
-});
+Route::get('api/users', ['as'=>'api.users','uses'=>'apiController@getUsers']);
 
 Route::get('/home', 'HomeController@index');
 

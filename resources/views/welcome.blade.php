@@ -352,7 +352,7 @@
       </footer>
       <script type="text/javascript" src="owl-carousel/owl.carousel.js"></script>
       <script type="text/javascript">
-         jQuery(document).ready(function($) {
+         $(document).ready(function($) {
             var theme_slider = $("#owl-demo");
             $("#owl-demo").owlCarousel({
                 navigation: false,

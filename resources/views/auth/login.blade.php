@@ -5,7 +5,7 @@
 
     <div class="row">
         <div class="login-logo" style="margin-top: 10%">
-            <a href="{{ url('/home') }}"><img src="../img/logo.png" style=" display: block; width: 40%; height: auto; margin-left: auto; margin-right: auto;"></a>
+            <a href="{{ url('/home') }}"><img src="{{ URL::asset('/img/logo.png') }}" style=" display: block; width: 40%; height: auto; margin-left: auto; margin-right: auto;"></a>
         </div><!-- /.login-logo -->
 
         <hr style="width: 80%">
@@ -22,7 +22,7 @@
                             <label for="email" class="col-md-4 control-label">Email</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+                                <input id="email" type="text" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">

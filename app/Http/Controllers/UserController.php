@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Session;
+use App\Department;
+use App\Position;
 
 class UserController extends Controller
 {
@@ -79,7 +81,9 @@ class UserController extends Controller
             return redirect()->intended('/usuarios');
         }
 
-        return view('usuarios/edit', ['user' => $user]);
+        $departments = Department::all();
+        $positions = Position::all();
+        return view('usuarios/edit', compact('user', 'departments', 'positions'));
     }
 
     /**

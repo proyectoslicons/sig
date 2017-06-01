@@ -2,8 +2,7 @@
 
 
 
-    <!-- jQuery -->
-    <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+    
 
      <!-- Bootstrap -->
     <script src="{{ URL::asset('vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -36,7 +35,7 @@
     <script src="{{ URL::asset('build/js/custom.min.js') }}"></script>
 
 
-    <script src="https://unpkg.com/vue@2.3.3"></script>
+    <script src="{{ URL::asset('build/js/vue.js') }}"></script>
 
     <script>
 

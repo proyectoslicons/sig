@@ -33,7 +33,7 @@
                           foreach ($usuarios as $user){
                         @endphp
                           <tr>
-                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->primer_nombre . " " . $user->primer_apellido }}</td>
                             <td>{{ $user->email }}</td>
                             <td></td>
                           </tr>

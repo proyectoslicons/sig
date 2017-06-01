@@ -20,7 +20,7 @@
         ]) !!};
     </script>
 </head>
-<body class="hold-transition login-page"  style="background-image: url('../img/fondo.jpg'); background-position: center center; background-attachment: fixed; background-size: cover;">
+<body class="hold-transition login-page"  style="background-image: url({{ URL::asset('/img/fondo.jpg') }}); background-position: center center; background-attachment: fixed; background-size: cover;">
     <div id="app">
        
 

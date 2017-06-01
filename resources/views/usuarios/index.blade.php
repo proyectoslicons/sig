@@ -49,7 +49,8 @@
                 <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap table-hover" cellspacing="0" width="100%">
                   <thead>
                     <tr style="background-color: rgb(51, 204, 204)">
-                      <th style="width: 33%">Nombre</th>
+                      <th style="width: 16%">Nombre</th>
+                      <th style="width: 16%">Apellido</th>
                       <th style="width: 33%">Email</th>
                       <th style="width: 33%">Acciones</th>
                     </tr>
@@ -79,9 +80,10 @@
       $('#datatable-responsive').DataTable( {
           "processing": false,
           "serverSide": true,
-          "ajax": "/api/users",
+          "ajax": "{{ route('api.users') }}",
           "columns" : [
-              {data: 'name'},
+              {data: 'primer_nombre'},
+              {data: 'primer_apellido'},
               {data: 'email'},
               {
                 name: 'actions',

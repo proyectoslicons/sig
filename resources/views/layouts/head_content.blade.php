@@ -23,7 +23,8 @@
 <!-- Custom Theme Style -->
 <link href="{{ URL::asset('build/css/custom.min.css') }}" rel="stylesheet">
 
-
+<!-- jQuery -->
+<script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
 
 <script>
 // rename myToken as you like
