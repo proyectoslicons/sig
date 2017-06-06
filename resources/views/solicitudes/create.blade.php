@@ -37,7 +37,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">Título <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="title" class="form-control col-md-7 col-xs-12" name="title" autofocus>
+                          <input type="text" id="title" class="form-control col-md-7 col-xs-12" name="title" autofocus required="required">
                         </div>
                       </div>
                       
@@ -45,7 +45,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="department">Departamento <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select class="select2_single form-control" name="department">
+                          <select class="select2_single form-control" name="department" required="required">
                             <option value="">Seleccionar Departamento</option>
                             @foreach($departments as $department)
                               <option value="{{$department->id}}">{{$department->name}}</option>
@@ -55,10 +55,21 @@
                       </div>
 
                       <div class="form-group">
+                        <label for="priority" class="control-label col-md-3 col-sm-3 col-xs-12">Tipo <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">                        
+                          <select id="tipo" required="required" class="form-control" name="tipo">
+                              <option value="">Seleccionar tipo</option>
+                              <option value="true">Público</option>
+                              <option value="false">Privado</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="category">Categoría <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select class="select2_single form-control" name="category">
+                          <select class="select2_single form-control" name="category" required="required">
                             <option value="">Seleccionar Categoría</option>
                             @foreach($categories as $category)
                               <option value="{{$category->id}}">{{$category->name}}</option>
@@ -70,7 +81,7 @@
                       <div class="form-group">
                         <label for="priority" class="control-label col-md-3 col-sm-3 col-xs-12">Prioridad</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">                        
-                          <select id="priority" type="" class="form-control" name="priority">
+                          <select id="priority" type="" class="form-control" name="priority" required="required">
                               <option value="">Seleccionar Prioridad</option>
                               <option value="baja">Baja</option>
                               <option value="media">Media</option>
@@ -82,7 +93,7 @@
                       <div class="form-group">
                         <label for="message" class="control-label col-md-3 col-sm-3 col-xs-12">Mensaje</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <textarea rows="10" id="message" class="form-control" name="message" style="resize: none;"></textarea>
+                          <textarea rows="10" id="message" class="form-control" name="message" style="resize: none;" required="required"></textarea>
                         </div>
                       </div>
 

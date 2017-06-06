@@ -26,7 +26,8 @@
       <li><a><i class="fa fa-ticket"></i> Gestión de Tickets <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="{{ url('solicitudes/listarTickets') }}">Lista de Tickets</a></li>
-          <li><a href="{{ url('solicitudes/crearTicket') }}">Abrir Ticket</a></li>                     
+          <li><a href="{{ url('solicitudes/crearTicket') }}">Abrir Ticket</a></li>
+          <li><a href="{{ url('solicitudes/categorias') }}">Categorías de Ticket</a></li>
         </ul>
       </li> 
       

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Ticket;
-use App\Category;
+use App\Categories;
 use App\Department;
 use Session;
 use Auth;
@@ -18,7 +18,7 @@ class TicketController extends Controller
 	}
 
     public function index(){	   
-	    $categories = Category::all();
+	    $categories = Categories::all();
 	    $departments = Department::all();
 
 	    return view('solicitudes.create', compact('categories', 'departments'));

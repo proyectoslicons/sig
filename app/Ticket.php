@@ -12,8 +12,8 @@ class Ticket extends Model
 	];
 
 
-	public function category(){
-	    return $this->belongsTo(Category::class);
+	public function categories(){
+	    return $this->belongsTo(Categories::class);
 	}
 
 	public function comments(){
