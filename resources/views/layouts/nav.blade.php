@@ -8,7 +8,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="">
           <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <img src="{{ URL::asset('images/'.Auth::user()->primer_nombre.' '. Auth::user()->primer_apellido.'.jpg') }}" alt="">{{ Auth::user()->primer_nombre.' '. Auth::user()->primer_apellido }}
+            <img src="{{ URL::asset('images/'.Auth::user()->cedula.Auth::user()->primer_nombre.' '. Auth::user()->primer_apellido.'.jpg') }}" alt="">{{ Auth::user()->primer_nombre.' '. Auth::user()->primer_apellido }}
             <span class=" fa fa-angle-down"></span>
           </a>
           <ul class="dropdown-menu dropdown-usermenu pull-right">

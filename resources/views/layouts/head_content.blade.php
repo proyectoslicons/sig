@@ -21,10 +21,17 @@
 <link href="{{ URL::asset('vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css') }}" rel="stylesheet">
 
 <!-- Custom Theme Style -->
+<link href="{{ URL::asset('css/bootstrap-datepicker3.css') }}" rel="stylesheet">
+
+<!-- Custom Theme Style -->
 <link href="{{ URL::asset('build/css/custom.min.css') }}" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+
+<!-- boostrap datepicker -->
+<script src="{{ URL::asset('js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ URL::asset('js/bootstrap-datepicker.es.min.js') }}"></script>
 
 <script>
 // rename myToken as you like

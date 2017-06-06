@@ -35,7 +35,7 @@ class CreateUsersTable extends Migration
             $table->integer('pareja');
             $table->integer('hijos');
             $table->string('estado_civil');
-            $table->string('lugar_nacimiento');
+            $table->integer('lugar_nacimiento')->unsigned();
             $table->date('fecha_egreso')->nullable();
             $table->string('email')->unique();
             $table->string('password');
@@ -43,6 +43,9 @@ class CreateUsersTable extends Migration
             $table->integer('is_coordinator')->unsigned()->default(0);
             $table->integer('is_auditor')->unsigned()->default(0);
             $table->integer('is_active')->unsigned()->default(1);
+            $table->foreign('departamento_id')->references('id')->on('department');
+            $table->foreign('cargo_id')->references('id')->on('position');
+            $table->foreign('lugar_nacimiento')->references('id')->on('city');
             $table->rememberToken();
             $table->timestamps();
         });

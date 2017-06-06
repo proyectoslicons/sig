@@ -32,9 +32,9 @@ class CreateEmployeesTable extends Migration
             $table->date('birthdate');
             $table->date('date_hired');
             $table->integer('department_id')->unsigned();
-            $table->integer('division_id')->unsigned();            
+            $table->integer('position_id')->unsigned();            
             $table->foreign('department_id')->references('id')->on('department');
-            $table->foreign('division_id')->references('id')->on('division');            
+            $table->foreign('position_id')->references('id')->on('position');            
             $table->string('picture', 60);
             $table->timestamps();
             $table->softDeletes();

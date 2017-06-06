@@ -1,7 +1,7 @@
 <div class="profile clearfix">
   <div class="profile_pic">
 
-    <img src="{{ URL::asset('images/'.Auth::user()->primer_nombre.' ' . Auth::user()->primer_apellido. '.jpg') }}" alt="..." class="img-circle profile_img">
+    <img src="{{ URL::asset('images/'.Auth::user()->cedula.Auth::user()->primer_nombre.' ' . Auth::user()->primer_apellido. '.jpg') }}" alt="..." class="img-circle profile_img">
   </div>
   <div class="profile_info">
     <span>Bienvenido,</span>

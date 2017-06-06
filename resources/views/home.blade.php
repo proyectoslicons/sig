@@ -27,21 +27,7 @@
                           <th style="width: 33%">Acciones</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        @php 
-                          $usuarios = App\User::chunk(10, function($usuarios){
-                          foreach ($usuarios as $user){
-                        @endphp
-                          <tr>
-                            <td>{{ $user->primer_nombre . " " . $user->primer_apellido }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td></td>
-                          </tr>
-                        @php                        
-                            }
-                          });
-                        @endphp
-                      </tbody>
+                      
                     </table>
                   </div>
                 </div>

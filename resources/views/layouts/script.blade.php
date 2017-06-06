@@ -29,8 +29,6 @@
     <script src="{{ URL::asset('vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>
     <script src="{{ URL::asset('vendors/datatables.net-scroller/js/dataTables.scroller.min.js') }}"></script>
 
-    
-
     <!-- Custom Theme Scripts -->
     <script src="{{ URL::asset('build/js/custom.min.js') }}"></script>
 

@@ -2,8 +2,6 @@
 
 @section('content')
     
-    
-
     <div class="right_col" role="main">
 
       <div class="">
@@ -27,7 +25,7 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form method="POST" data-parsley-validate class="form-horizontal form-label-left" action="{{ route('usuarios.update', ['id' => $user->id]) }}">
+                    <form method="POST" data-parsley-validate class="form-horizontal form-label-left" action="{{ route('usuarios.update', ['id' => $user->id]) }}" enctype="multipart/form-data">
 
                       <input type="hidden" name="_method" value="PATCH">
                       {{ csrf_field() }}
@@ -109,20 +107,39 @@
                         </div>
                       </div>
 
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_nacimiento">Fecha de Nacimiento <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="fecha_nacimiento" required="required" class="form-control col-md-7 col-xs-12" name="fecha_nacimiento" value="{{ $user->fecha_nacimiento }}">
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_nacimiento">Fecha de Nacimiento <span class="required">*</span></label>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input id="fecha_nacimiento" type="text" class="form-control has-feedback-left" name="fecha_nacimiento" value="{{ $user->fecha_nacimiento }}">
+                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                          </div>
+
+                          <script>
+                            $('#fecha_nacimiento').datepicker({
+                              language: "es",
+                              autoclose: true,
+                              todayHighlight: true,
+                              format: 'yyyy-mm-dd',
+                            });
+                          </script>
                         </div>
-                      </div>
 
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_ingreso">Fecha de Ingreso <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="fecha_ingreso" required="required" class="form-control col-md-7 col-xs-12" name="fecha_ingreso" value="{{ $user->fecha_ingreso }}">
+                          <input id="fecha_ingreso" type="text" class="form-control has-feedback-left" name="fecha_ingreso" value="{{ $user->fecha_ingreso }}">
+                          <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                         </div>
+
+                        <script>
+                          $('#fecha_ingreso').datepicker({
+                            language: "es",
+                            autoclose: true,
+                            todayHighlight: true,
+                            format: 'yyyy-mm-dd',
+                          });
+                        </script>
                       </div>
 
                       <div class="form-group">
@@ -181,9 +198,7 @@
 
                         </div>
                       </div>                      
-
-                      
-
+                    
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cargo_id">Cargo <span class="required">*</span>
                         </label>
@@ -205,7 +220,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="sueldo">Sueldo <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="number" id="sueldo" required="required" class="form-control col-md-7 col-xs-12" name="sueldo" value="{{ $user->sueldo }}">
+                          <input type="number" step="any" id="sueldo" required="required" class="form-control col-md-7 col-xs-12" name="sueldo" value="{{ $user->sueldo }}">
                         </div>
                       </div>
 
@@ -231,21 +246,39 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input type="number" id="hijos" required="required" class="form-control col-md-7 col-xs-12" name="hijos" value="{{ $user->hijos }}" min=0>
                         </div>
-                      </div>
-                      
+                      </div>                    
+
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="estado_civil">Estado Civil <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="estado_civil" required="required" class="form-control col-md-7 col-xs-12" name="estado_civil" value="{{ $user->estado_civil }}">
+                          <select class="select2_single form-control" id="estado_civil" name="estado_civil">
+                            <option value="Soltero">Soltero</option>
+                            <option value="Casado">Casado</option>
+                            <option value="Divorciado">Divorciado</option>
+                          </select>   
+
+                          <script> 
+                            $("#estado_civil").val("{{$user->estado_civil}}");        
+                          </script>
+
                         </div>
-                      </div>
+                      </div>                  
 
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lugar_nacimiento">Lugar Nacimiento <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="lugar_nacimiento" required="required" class="form-control col-md-7 col-xs-12" name="lugar_nacimiento" value="{{ $user->lugar_nacimiento }}">
+                          <select class="select2_single form-control" id="lugar_nacimiento" name="lugar_nacimiento">                            
+                            @foreach($cities as $city)
+                              <option value="{{$city->id}}">{{$city->name}}</option>
+                            @endforeach
+                          </select>   
+
+                          <script> 
+                            $("#lugar_nacimiento").val("{{$user->lugar_nacimiento}}");        
+                          </script>
+
                         </div>
                       </div>
 
@@ -253,7 +286,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="email" required="required" class="form-control col-md-7 col-xs-12" name="email" value="{{ $user->email }}">
+                          <input type="email" id="email" required="required" class="form-control col-md-7 col-xs-12" name="email" value="{{ $user->email }}">
                         </div>
                       </div>        
 
@@ -282,8 +315,34 @@
                           </script>
 
                         </div>
+                      </div>            
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_egreso">Fecha de Egreso <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="fecha_egreso" type="text" class="form-control has-feedback-left" name="fecha_egreso" value="{{ $user->fecha_egreso }}">
+                          <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <script>
+                          $('#fecha_egreso').datepicker({
+                            language: "es",
+                            autoclose: true,
+                            todayHighlight: true,
+                            format: 'yyyy-mm-dd',
+                          });
+                        </script>
                       </div>
 
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="foto">Foto <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12"  style="top: 4px">
+                          <input type="file" name="foto" id="foto">
+                        </div>
+                      </div>
+                      
                       <div class="form-group">
                         <label for="password" class="control-label col-md-3 col-sm-3 col-xs-12">Contraseña</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -292,7 +351,7 @@
                       </div>
                       
                       <div class="form-group">
-                        <label for="password-confirm" class="control-label col-md-3 col-sm-3 col-xs-12">Confirmar Contraseña</label>
+                        <label for="password_confirmation" class="control-label col-md-3 col-sm-3 col-xs-12">Confirmar Contraseña</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="password_confirmation" class="form-control col-md-7 col-xs-12" type="password" name="password_confirmation">
                         </div>
