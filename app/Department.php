@@ -19,4 +19,8 @@ class Department extends Model
     * @var array
     */
     protected $guarded = [];
+
+    public function tickets(){
+        return $this->hasMany(Ticket::class);
+    }
 }

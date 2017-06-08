@@ -35,6 +35,8 @@ Route::resource('parametros/estados', 'StateController');
 
 Route::resource('parametros/ciudades', 'CityController');
 
+Route::resource('parametros/profesiones', 'OccupationController');
+
 Route::resource('solicitudes/crearTicket', 'TicketController');
 
 Route::resource('solicitudes/listarTickets', 'TicketListController');

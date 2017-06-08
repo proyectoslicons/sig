@@ -9,7 +9,8 @@
           <li><a href="{{ url('parametros/cargos') }}">Cargos</a></li>
           <li><a href="{{ url('parametros/paises') }}">Países</a></li>
           <li><a href="{{ url('parametros/estados') }}">Estados</a></li>
-          <li><a href="{{ url('parametros/ciudades') }}">Ciudades</a></li>          
+          <li><a href="{{ url('parametros/ciudades') }}">Ciudades</a></li> 
+          <li><a href="{{ url('parametros/profesiones') }}">Profesiones</a></li>          
         </ul>
       </li>
 
@@ -27,7 +28,7 @@
         <ul class="nav child_menu">
           <li><a href="{{ url('solicitudes/listarTickets') }}">Lista de Tickets</a></li>
           <li><a href="{{ url('solicitudes/crearTicket') }}">Abrir Ticket</a></li>
-          <li><a href="{{ url('solicitudes/categorias') }}">Categorías de Ticket</a></li>
+          <li><a href="{{ url('solicitudes/categorias') }}">Categorías</a></li>
         </ul>
       </li> 
       

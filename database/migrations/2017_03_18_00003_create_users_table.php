@@ -21,28 +21,31 @@ class CreateUsersTable extends Migration
             $table->string('primer_apellido');
             $table->string('segundo_apellido');
             $table->string('cedula')->unique();
+            $table->string('rif')->unique();
             $table->date('fecha_nacimiento');
+            $table->integer('edad');
+            $table->string('sexo');
             $table->date('fecha_ingreso');
             $table->string('direccion');
             $table->string('telefono_habitacion');
             $table->string('telefono_movil');
+            $table->string('telefono_corporativo')->nullable();
             $table->string('extension');
-            $table->string('profesion');
+            $table->integer('profesion_id')->unsigned();
             $table->integer('departamento_id')->unsigned();
             $table->integer('cargo_id')->unsigned();
             $table->double('sueldo', 15, 2);
             $table->integer('cargas');
-            $table->integer('pareja');
-            $table->integer('hijos');
             $table->string('estado_civil');
             $table->integer('lugar_nacimiento')->unsigned();
             $table->date('fecha_egreso')->nullable();
-            $table->string('email')->unique();
+            $table->string('email_personal')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('password');
             $table->integer('is_admin')->unsigned()->default(0);
-            $table->integer('is_coordinator')->unsigned()->default(0);
             $table->integer('is_auditor')->unsigned()->default(0);
             $table->integer('is_active')->unsigned()->default(1);
+            $table->foreign('profesion_id')->references('id')->on('occupation');
             $table->foreign('departamento_id')->references('id')->on('department');
             $table->foreign('cargo_id')->references('id')->on('position');
             $table->foreign('lugar_nacimiento')->references('id')->on('city');
@@ -61,3 +64,5 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('users');
     }
 }
+
+

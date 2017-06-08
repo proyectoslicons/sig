@@ -107,6 +107,16 @@
                         </div>
                       </div>
 
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="rif">RIF <span class="required">*</span>
+                        </label>                  
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          
+                          <input type="text" id="rif" required="required" class="form-control col-md-7 col-xs-12" name="rif" value="{{$user->rif}}">
+                        </div>
+                      </div>
+
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_nacimiento">Fecha de Nacimiento <span class="required">*</span></label>
                           <div class="col-md-6 col-sm-6 col-xs-12">
@@ -121,6 +131,31 @@
                               todayHighlight: true,
                               format: 'yyyy-mm-dd',
                             });
+                          </script>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="edad">Edad <span class="required">*</span>
+                          </label>                  
+                          
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            
+                            <input type="number" id="edad" min=0 required="required" class="form-control col-md-7 col-xs-12" name="edad" value="{{$user->edad}}">
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="sexo">Sexo <span class="required">*</span>
+                          </label>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="select2_single form-control" id="sexo" name="sexo">
+                              <option value="F">Femenino</option>
+                              <option value="M">Masculino</option>
+                            </select>   
+                          </div>
+
+                          <script>         
+                            $("#sexo").val("{{$user->sexo}}");
                           </script>
                         </div>
 
@@ -167,6 +202,14 @@
                       </div>
 
                       <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telefono_corporativo">Teléfono Corporativo
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" id="telefono_corporativo" class="form-control col-md-7 col-xs-12" name="telefono_corporativo" value="{{$user->telefono_corporativo}}">
+                        </div>
+                      </div>
+
+                      <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="extension">Extensión <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -175,15 +218,23 @@
                       </div>
 
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="profesion">Profesión <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="profesion_id">Profesión <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="profesion" required="required" class="form-control col-md-7 col-xs-12" name="profesion" value="{{ $user->profesion }}">
+                          <select class="select2_single form-control" name="profesion_id" id="profesion_id" required="required">                              
+                            @foreach($occupations as $occupation)
+                              <option value="{{$occupation->id}}">{{$occupation->name}}</option>
+                            @endforeach
+                          </select>
                         </div>
-                      </div>
+
+                        <script>         
+                          $("#profesion_id").val("{{$user->profesion_id}}");
+                        </script>
+                      </div> 
 
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="departamento_id">Departamento <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="departamento_id">Unidad Funcional <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <select class="select2_single form-control" name="departamento_id" id="departamento_id">                              
@@ -225,28 +276,12 @@
                       </div>
 
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cargas">Cargas <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cargas">Cargas Familiares <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input type="number" id="cargas" required="required" class="form-control col-md-7 col-xs-12" name="cargas" value="{{ $user->cargas }}" min=0>
                         </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pareja">Pareja <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="number" id="pareja" required="required" class="form-control col-md-7 col-xs-12" name="pareja" value="{{ $user->pareja }}" min=0>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hijos">Hijos <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="number" id="hijos" required="required" class="form-control col-md-7 col-xs-12" name="hijos" value="{{ $user->hijos }}" min=0>
-                        </div>
-                      </div>                    
+                      </div>                                        
 
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="estado_civil">Estado Civil <span class="required">*</span>
@@ -256,6 +291,7 @@
                             <option value="Soltero">Soltero</option>
                             <option value="Casado">Casado</option>
                             <option value="Divorciado">Divorciado</option>
+                            <option value="Viudo">Viudo</option>
                           </select>   
 
                           <script> 
@@ -283,7 +319,15 @@
                       </div>
 
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email_personal">Email Personal <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="email" id="email_personal" class="form-control col-md-7 col-xs-12" name="email_personal" required="required" value="{{ $user->email_personal }}">
+                        </div>
+                      </div> 
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email Corporativo <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input type="email" id="email" required="required" class="form-control col-md-7 col-xs-12" name="email" value="{{ $user->email }}">

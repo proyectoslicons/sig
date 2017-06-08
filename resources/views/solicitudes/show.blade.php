@@ -65,7 +65,7 @@
                               Solicitado por:
                             </div>
                             <div style="margin-left: 150px; font-weight: bold; word-wrap: break-word; "> 
-                              {{ ucwords(DB::table('users')->where('id', $ticket->user_id)->value('name')) }}
+                              {{ ucwords(DB::table('users')->where('id', $ticket->user_id)->value('primer_nombre')) . " " . ucwords(DB::table('users')->where('id', $ticket->user_id)->value('primer_apellido'))}} 
                             </div>
                           </div>
                           <br>
@@ -101,7 +101,7 @@
                                 <span class="label label-success">{{ "Abierto" }}</span>
                               @endif                                                          
 
-                              @if($ticket->status === 'alta')
+                              @if($ticket->status === 'Close')
                                 <span class="label label-danger">{{ "Cerrado" }}</span>
                               @endif
                             </div>
@@ -201,7 +201,7 @@
             <div class="col-md-4 col-sm-12 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Delegar Atención</h2>
+                  <h2>Acciones</h2>
                   <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>                      
@@ -214,12 +214,12 @@
 
                   <div class="row">
 
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                         
+                    <div class="col-md-12 col-sm-12 col-xs-12">                    
+
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-delegar-modal-sm">Delegar Ticket</button>
 
                       <div class="modal fade bs-delegar-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-sm">
+                        <div class="modal-dialog modal-md">
                           <div class="modal-content">
 
                             <div class="modal-header">
@@ -228,14 +228,25 @@
                               <h4 class="modal-title" id="myModalLabel2">Delegar Ticket</h4>
                             </div>
                             <div class="modal-body">
-                              <h4>Text in a modal</h4>
-                              <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                              <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                              <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delegar">Empleados
+                                </label>
+                                <div class="col-md-9 col-sm-6 col-xs-12">
+                                  <select class="select2_single form-control" name="delegar" id="delegar">                              
+                                    @foreach($empleados as $empleado)
+                                      <option value="{{$empleado->id}}">{{ ucwords($empleado->primer_nombre . " " . $empleado->primer_apellido)}}
+                                      </option>
+                                    @endforeach
+                                  </select>
+                                  <br>
+                                  </div>
+                              </div>
                             </div>
+                            <br>
                             <div class="modal-footer">
                               <center>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                                <button type="button" onclick="delegar()" class="btn btn-primary">Guardar Cambios</button>
                               </center>
                             </div>
 
@@ -246,23 +257,34 @@
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-escalar-modal-sm">Escalar Ticket</button>
 
                       <div class="modal fade bs-escalar-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-sm">
+                        <div class="modal-dialog modal-md">
                           <div class="modal-content">
 
                             <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                               </button>
-                              <h4 class="modal-title" id="myModalLabel2">Escarlar Ticket</h4>
+                              <h4 class="modal-title" id="myModalLabel2">Escalar Ticket</h4>
                             </div>
                             <div class="modal-body">
-                              <h4>Text in a modal</h4>
-                              <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                              <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                              <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="escalar">Empleados
+                                </label>
+                                <div class="col-md-9 col-sm-6 col-xs-12">
+                                  <select class="select2_single form-control" name="escalar" id="escalar">                              
+                                    @foreach($empleados as $empleado)
+                                      <option value="{{$empleado->id}}">{{ ucwords($empleado->primer_nombre . " " . $empleado->primer_apellido)}}
+                                      </option>
+                                    @endforeach
+                                  </select>
+                                  <br>
+                                  </div>
+                              </div>
                             </div>
+                            <br>
                             <div class="modal-footer">
                               <center>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                                <button type="button" onclick="delegar()" class="btn btn-primary">Guardar Cambios</button>
                               </center>
                             </div>
 
@@ -270,9 +292,61 @@
                         </div>
                       </div>
 
+                      <form>
+                        <button type="submit" class="btn btn-danger">Cerrar Ticket</button>
+                      </form>
+
                     </div>
                     
                   </div>
+                  
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Recorrido de Atención</h2>
+                  <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>                      
+                  </ul>
+                  <div class="clearfix"></div>
+                
+                </div>                  
+
+                <div class="x_content">      
+                @php  
+                  $mes[1]  = 'Ene';
+                  $mes[2]  = 'Feb';
+                  $mes[3]  = 'Mar';  
+                  $mes[4]  = 'Abr';
+                  $mes[5]  = 'May'; 
+                  $mes[6]  = 'Jun';
+                  $mes[7]  = 'Jul'; 
+                  $mes[8]  = 'Ago'; 
+                  $mes[9]  = 'Sep'; 
+                  $mes[10] = 'Oct'; 
+                  $mes[11] = 'Nov';
+                  $mes[12] = 'Dic';                                                        
+                @endphp
+                  @foreach($bitacora as $bit)
+                    @php
+                      $current = \App\User::where(['id' => $bit->user_id])->first();
+                    @endphp
+
+                    <article class="media event">
+                      <a class="pull-left date" style="background-color: rgb(51, 204, 204)">
+                        <p class="month">{{ $mes[$bit->created_at->month] }}</p>
+                        <p class="day">{{ $bit->created_at->day }}</p>
+                      </a>
+                      <div class="media-body">
+                        <a class="title" href="#">Ticket enviado a:</a>
+                        <p>El ticket se ha enviado a: {{ ucwords($current->primer_nombre . " " . $current->primer_apellido) }}</p>
+                      </div>
+                    </article>
+                  @endforeach                                
                   
                 </div>
               </div>
@@ -295,13 +369,13 @@
 
                 <div class="row">
 
-                  <div class="col-md-12">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
                           
-                     <div class="col-md-12">
+                     <div class="col-md-12 col-sm-12 col-xs-12">
                       @foreach ($comments as $comment)
                           <div class="col-md-12 col-sm-12 col-xs-12 panel panel-@if($ticket->user->id === $comment->user_id) {{"default"}}@else{{"success"}}@endif">
                               <div class="panel panel-heading" style="background-color: rgb(51, 204, 204); color: white; font-weight: bold">
-                                  {{ $comment->user->name }}
+                                  {{ ucwords($comment->user->primer_nombre . " " . $comment->user->primer_apellido) }}
                                   <span class="pull-right">{{ $comment->created_at->format('Y-m-d') }}</span>
                               </div>
 
@@ -331,5 +405,25 @@
       </div>
       </div>
     </div>
+
+    <script>
+      function delegar(id){
+        var req = { "asignar" : $("#delegar").val() };
+
+        if(req.id != ""){
+          $.ajax({
+             url: '',
+             type: 'PUT',
+             data: req,
+             success: function(response) {
+               console.log(response);
+             }
+          });
+        }
+        else{
+          alert("Delegar vacio");
+        }
+      }
+    </script>
 <br><br>
 @endsection

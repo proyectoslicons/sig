@@ -9,6 +9,8 @@ use App\Department;
 use Session;
 use Auth;
 use App\User;
+use App\TicketBitacora;
+use DB;
 
 class TicketController extends Controller
 {
@@ -27,45 +29,100 @@ class TicketController extends Controller
 	public function store(Request $request){
 
 		$reglas = [
-	        'title'     => 'required',
-	        'category'  => 'required',
-	        'priority'  => 'required',
-	        'message'   => 'required'
+	        'title'     	=> 'required',
+	        'category'  	=> 'required|integer',
+	        'priority'  	=> 'required|string',
+	        'message'   	=> 'required|string|max:1000',
+	        'tipo' 			=> 'required|boolean',
+	        'department'	=> 'required',
+	        'encargado' 	=> 'required'		
         ];
 
 		$mensajes = [
-        	'title.required'    => 'El título del ticket es necesario.',
-        	'category.required' => 'Debe seleccionar una categoría para el ticket.',
-        	'priority.required' => 'Debe seleccionar una prioridad.',
-        	'message.required'  => 'Debe llenar el campo de mensaje.',
+        	'title.required'    	=> 'El título del ticket es necesario.',
+        	'category.required' 	=> 'Debe seleccionar una categoría para el ticket.',
+        	'priority.required' 	=> 'Debe seleccionar una prioridad.',
+        	'message.required'  	=> 'Debe llenar el campo de mensaje.',
+        	'message.max'  			=> 'La cantidad máxima de caracteres para el mensaje es de 1000.',
+        	'tipo.required' 		=> 'Debe seleccionar un tipo para el ticket.',
+        	'tipo.boolean' 			=> 'El tipo seleccionado para el ticket no es un valor aceptado, contacte al administrador.',
+        	'encargado.required'	=> 'No se encuentra un coordinador asociado al departamento, contacte al administrador.'
     	];
+
+    	$id_encargado = "";
+
+    	$ids = DB::table('department')
+    		->join('users', function($join){
+    			$join->on('department.id', '=', 'users.departamento_id')
+    			->where('users.cargo_id', '=', 4);
+    		})
+    		->select('users.id')->get();
+
+		foreach ($ids as $default) {
+	    	$id_encargado = $default->id;
+		}
+        
+        $request->request->add(['encargado' => $id_encargado]);
 
 	    $this->validate($request, $reglas, $mensajes);
 
-	        $ticket = new Ticket([
-	            'title'     => $request->input('title'),
-	            'user_id'   => Auth::user()->id,
-	            'ticket_id' => strtoupper(str_random(10)),
-	            'category_id'  => $request->input('category'),
-	            'priority'  => $request->input('priority'),
-	            'message'   => $request->input('message'),
-	            'status'    => "Open",
-	        ]);
+	    array_except($request->all(), ['encargado']);
+    		
+        $ticket = new Ticket([
+            'title'     		=> $request->input('title'),
+            'user_id'   		=> Auth::user()->id,
+            'user_default_id' 	=> $id_encargado,
+            'user_assigned_id' 	=> $id_encargado,
+            'ticket_id' 		=> strtoupper(str_random(10)),
+            'category_id'  		=> $request->input('category'),
+            'department_id'		=> $request['department'],
+            'type'				=> $request['tipo'],
+            'priority'  		=> $request->input('priority'),
+            'message'   		=> $request->input('message'),
+            'status'    		=> "Open",
+        ]);
 
-	        $ticket->save();	    
+        $bitacora = new TicketBitacora([
+            'user_id'   => $id_encargado,
+            'ticket_id' => $ticket->ticket_id,
+        ]);
 
-	        User::find(3003)->notify(new \App\Notifications\NewTicket(Auth::user(), $ticket->ticket_id));
+        $bitacora->save();
 
-	        //event(new \App\Events\TicketCreated('Hi there Pusher!'));
+        $ticket->save();
 
-	        return redirect()->back()->with("status", "Se ha abierto un nuevo ticket con el código: $ticket->ticket_id");
+
+
+        User::find($id_encargado)->notify(new \App\Notifications\NewTicket(Auth::user(), $ticket->ticket_id));
+
+        //event(new \App\Events\TicketCreated('Hi there Pusher!'));
+
+        return redirect()->back()->with("status", "Se ha abierto un nuevo ticket con el código: " . $ticket->ticket_id);
 	}
 
 	public function show($ticket_id){
 	    $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
 	    $comments = $ticket->comments;
-	    $category = $ticket->category;
+	    $category = Categories::where('id', $ticket->category_id)->firstOrFail();
+        $empleados = User::where('departamento_id', $ticket->department_id)->get();
+        $bitacora = TicketBitacora::where('ticket_id', $ticket_id)->get();
+        $users = \App\User::all();
 
-	    return view('solicitudes.show', compact('comments', 'category', 'ticket'));
+	    return view('solicitudes.show', compact('comments', 'category', 'ticket', 'empleados', 'bitacora', 'users'));
 	}
+
+    public function update(Request $request, $id){
+        $input = ['user_assigned_id' => $request['asignar']];
+        \App\Ticket::where('id', $id)->update($input);
+
+        echo "Ticket delegado";
+    }
+
+    public function close($ticket_id)
+    {   
+        $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
+        $ticket->status = 'Closed';
+        $ticket->save();
+        return redirect()->back()->with("status", "El ticket " . $ticket_id . " se ha cerrado.");
+    }
 }

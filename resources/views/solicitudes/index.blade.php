@@ -39,7 +39,6 @@
                       <th style="width: 10%">Estado</th>
                       <th style="width: 10%">Prioridad</th>
                       <th style="width: 10%">Solicita</th>
-                      <th style="width: 10%">Acciones</th>
                       <th style="width: 10%">F. Creación</th>                      
                     </tr>
                   </thead>
@@ -87,16 +86,8 @@
                         </td>                        
 
                         <td>
-                          {{ ucwords(DB::table('users')->where('id', $ticket->user_id)->value('name')) }}                    
-                        </td>                        
-
-                        <td>
-                            <form action="#" method="POST">
-                                {{ csrf_field() }}
-                                <a href="{{ url('solicitudes/ticket/' . $ticket->ticket_id) }}" class="btn btn-primary btn-xs">Comentar</a>
-                                <button type="submit" class="btn btn-danger btn-xs">Cerrar</button>
-                            </form>                                                    
-                        </td>
+                          {{ ucwords(DB::table('users')->where('id', $ticket->user_id)->value('primer_nombre')) . " " . ucwords(DB::table('users')->where('id', $ticket->user_id)->value('primer_apellido'))}}                    
+                        </td>                                    
 
                         <td>{{ $ticket->created_at }}</td>
                       </tr>
@@ -124,7 +115,7 @@
     $('#datatable-responsive').DataTable( {
         "deferRender": true,
         "sScrollY": false,
-        "order": [[ 3, "asc" ], [6, "desc"]],
+        "order": [[ 3, "asc" ], [5, "desc"]],
     });
 
 

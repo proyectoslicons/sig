@@ -42,11 +42,11 @@
                       </div>
                       
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="department">Departamento <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="department">Unidad Funcional <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <select class="select2_single form-control" name="department" required="required">
-                            <option value="">Seleccionar Departamento</option>
+                            <option value="">Seleccionar Unidad Funcional</option>
                             @foreach($departments as $department)
                               <option value="{{$department->id}}">{{$department->name}}</option>
                             @endforeach
@@ -59,8 +59,8 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">                        
                           <select id="tipo" required="required" class="form-control" name="tipo">
                               <option value="">Seleccionar tipo</option>
-                              <option value="true">Público</option>
-                              <option value="false">Privado</option>
+                              <option value="0">Público</option>
+                              <option value="1">Privado</option>
                           </select>
                         </div>
                       </div>
