@@ -1,3 +1,13 @@
+<script>      
+
+  var pusher = new Pusher('dd41cdbc530d473d6e24', {
+    encrypted: true
+  });
+
+  var channel = pusher.subscribe('app-ticket-' + {{ Auth::id() }} );    
+
+</script>
+
 <div class="top_nav">
   <div class="nav_menu">
     <nav>
@@ -30,71 +40,47 @@
             
               <i class="fa fa-ticket"></i>
               <div id="app">
-                <span class="badge bg-green">@{{ count }}</span>
+                <span class="badge bg-green" v-text="count"></span>
               </div>
             
           </a>
-          <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-            <li>
-              <a>
-                <span class="image"><img src="{{ URL::asset('images/img.jpg') }}" alt="Profile Image" /></span>
-                <span>
-                  <span>John Smith</span>
-                  <span class="time">3 mins ago</span>
-                </span>
-                <span class="message">
-                  Film festivals used to be do-or-die moments for movie makers. They were where...
-                </span>
-              </a>
-            </li>
-            <li>
-              <a>
-                <span class="image"><img src="{{ URL::asset('images/img.jpg') }}" alt="Profile Image" /></span>
-                <span>
-                  <span>John Smith</span>
-                  <span class="time">3 mins ago</span>
-                </span>
-                <span class="message">
-                  Film festivals used to be do-or-die moments for movie makers. They were where...
-                </span>
-              </a>
-            </li>
-            <li>
-              <a>
-                <span class="image"><img src="{{ URL::asset('images/img.jpg') }}" alt="Profile Image" /></span>
-                <span>
-                  <span>John Smith</span>
-                  <span class="time">3 mins ago</span>
-                </span>
-                <span class="message">
-                  Film festivals used to be do-or-die moments for movie makers. They were where...
-                </span>
-              </a>
-            </li>
-            <li>
-              <a>
-                <span class="image"><img src="{{ URL::asset('images/img.jpg') }}" alt="Profile Image" /></span>
-                <span>
-                  <span>John Smith</span>
-                  <span class="time">3 mins ago</span>
-                </span>
-                <span class="message">
-                  Film festivals used to be do-or-die moments for movie makers. They were where...
-                </span>
-              </a>
-            </li>
-            <li>
-              <div class="text-center">
-                <a>
-                  <strong>See All Alerts</strong>
-                  <i class="fa fa-angle-right"></i>
-                </a>
+          
+            <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+              <div id="root">
+                <li v-for="noti in notifications">
+                  <a>
+
+                    <span class="image"><img :src="noti.foto" alt="Profile Image" />
+                    </span>
+                    
+                    <span>                      
+                      <span v-text="noti.nombre"></span>
+                      <span class="time" v-text="noti.fecha"></span>
+                    </span>
+
+                    <span class="message" v-text="noti.mensaje"></span>
+
+                  </a>
+                </li>
               </div>
-            </li>
-          </ul>
+
+              <li>
+                <div class="text-center">
+                  <a>
+                    <strong>Ver todos los tickets</strong>
+                    <i class="fa fa-angle-right"></i>
+                  </a>
+                </div>
+              </li>
+
+            </ul>
+          
+
         </li>
       </ul>
     </nav>
   </div>
 </div>
+
+
 

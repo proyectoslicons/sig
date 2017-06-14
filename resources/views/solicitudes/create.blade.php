@@ -83,9 +83,12 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">                        
                           <select id="priority" type="" class="form-control" name="priority" required="required">
                               <option value="">Seleccionar Prioridad</option>
-                              <option value="baja">Baja</option>
-                              <option value="media">Media</option>
-                              <option value="alta">Alta</option>
+                              <option value="inmediato">Inmediato - Hasta   4 horas</option>
+                              <option value="imperativo">Imperativo - Hasta  24 horas</option>
+                              <option value="prudente">Prudente - Hasta  48 horas</option>
+                              <option value="moderado">Moderado - Hasta  72 horas</option>
+                              <option value="leve">Leve - Hasta 120 horas</option>
+                              <option value="premeditado">Premeditado - Hasta 720 horas</option>
                           </select>
                         </div>
                       </div>
@@ -94,6 +97,13 @@
                         <label for="message" class="control-label col-md-3 col-sm-3 col-xs-12">Mensaje</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <textarea rows="10" id="message" class="form-control" name="message" style="resize: none;" required="required"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="archivos" class="control-label col-md-3 col-sm-3 col-xs-12">Adjuntos</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12" style="top: 4px">
+                          <input type="file" name="archivos" id="archivos" multiple>
                         </div>
                       </div>
 

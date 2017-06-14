@@ -39,10 +39,10 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="segundo_nombre">Segundo Nombre <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="segundo_nombre">Segundo Nombre 
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" id="segundo_nombre" required="required" class="form-control col-md-7 col-xs-12" name="segundo_nombre">
+                      <input type="text" id="segundo_nombre" class="form-control col-md-7 col-xs-12" name="segundo_nombre">
                     </div>
                   </div>
 
@@ -55,10 +55,10 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="segundo_apellido">Segundo Apellido <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="segundo_apellido">Segundo Apellido 
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" id="segundo_apellido" required="required" class="form-control col-md-7 col-xs-12" name="segundo_apellido">
+                      <input type="text" id="segundo_apellido" class="form-control col-md-7 col-xs-12" name="segundo_apellido">
                     </div>
                   </div>
 
@@ -180,10 +180,10 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="extension">Extensión <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="extension">Extensión
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" id="extension" required="required" class="form-control col-md-7 col-xs-12" name="extension">
+                      <input type="text" id="extension" class="form-control col-md-7 col-xs-12" name="extension">
                     </div>
                   </div>                  
 
@@ -267,10 +267,10 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email_personal">Email Personal <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email_personal">Email Personal 
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="email" id="email_personal" class="form-control col-md-7 col-xs-12" name="email_personal" required="required">
+                      <input type="email" id="email_personal" class="form-control col-md-7 col-xs-12" name="email_personal">
                     </div>
                   </div>  
 
@@ -294,7 +294,7 @@
                   </div>                  
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_egreso">Fecha de Egreso <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_egreso">Fecha de Egreso 
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input id="fecha_egreso" type="text" class="form-control has-feedback-left" name="fecha_egreso">

@@ -76,17 +76,30 @@
                             </div>
                             <div style="margin-left: 150px; font-weight: bold"> 
                               
-                              @if($ticket->priority === 'baja')
-                                <span class="label label-info">{{ ucfirst($ticket->priority) }}</span>
+                              @if($ticket->priority === 'inmediato')
+                                <div class="label label-danger">{{ ucfirst($ticket->priority) }}</div>
                               @endif
                               
-                              @if($ticket->priority === 'media')
-                                <span class="label label-warning">{{ ucfirst($ticket->priority) }}</span>
+                              @if($ticket->priority === 'imperativo')
+                                <div class="label label-warning">{{ ucfirst($ticket->priority) }}</div>
                               @endif
 
-                              @if($ticket->priority === 'alta')
-                                <span class="label label-danger">{{ ucfirst($ticket->priority) }}</span>
+                              @if($ticket->priority === 'prudente')
+                                <div class="label label-info">{{ ucfirst($ticket->priority) }}</div>
                               @endif
+
+                              @if($ticket->priority === 'moderado')
+                                <div class="label label-success">{{ ucfirst($ticket->priority) }}</div>
+                              @endif
+                              
+                              @if($ticket->priority === 'leve')
+                                <div class="label label-primary">{{ ucfirst($ticket->priority) }}</div>
+                              @endif
+
+                              @if($ticket->priority === 'premeditado')
+                                <div class="label label-default">{{ ucfirst($ticket->priority) }}</div>
+                              @endif
+                              
                             </div>
                           </div>
                           <br>
@@ -216,7 +229,9 @@
 
                     <div class="col-md-12 col-sm-12 col-xs-12">                    
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-delegar-modal-sm">Delegar Ticket</button>
+                    @if(Auth::id() === $ticket->user_default_id)
+
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-delegar-modal-sm">Delegar Ticket</button>
 
                       <div class="modal fade bs-delegar-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-md">
@@ -229,11 +244,11 @@
                             </div>
                             <div class="modal-body">
                               <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delegar">Empleados
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delegar">Colaborador
                                 </label>
                                 <div class="col-md-9 col-sm-6 col-xs-12">
                                   <select class="select2_single form-control" name="delegar" id="delegar">                              
-                                    @foreach($empleados as $empleado)
+                                    @foreach($empleados as $empleado)   
                                       <option value="{{$empleado->id}}">{{ ucwords($empleado->primer_nombre . " " . $empleado->primer_apellido)}}
                                       </option>
                                     @endforeach
@@ -254,6 +269,10 @@
                         </div>
                       </div>
 
+                    @endif
+
+                    @if(Auth::id() === $ticket->user_default_id || Auth::id() === $ticket->user_assigned_id)
+                    
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-escalar-modal-sm">Escalar Ticket</button>
 
                       <div class="modal fade bs-escalar-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
@@ -267,12 +286,12 @@
                             </div>
                             <div class="modal-body">
                               <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="escalar">Empleados
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="escalar">Unidad Funcional
                                 </label>
                                 <div class="col-md-9 col-sm-6 col-xs-12">
                                   <select class="select2_single form-control" name="escalar" id="escalar">                              
-                                    @foreach($empleados as $empleado)
-                                      <option value="{{$empleado->id}}">{{ ucwords($empleado->primer_nombre . " " . $empleado->primer_apellido)}}
+                                    @foreach($departments as $department)
+                                      <option value="{{$department->id}}">{{ ucwords($department->name)}}
                                       </option>
                                     @endforeach
                                   </select>
@@ -292,9 +311,15 @@
                         </div>
                       </div>
 
+                    @endif
+
+                    @if(Auth::id() === $ticket->user_id)
+                      
                       <form>
                         <button type="submit" class="btn btn-danger">Cerrar Ticket</button>
                       </form>
+
+                    @endif
 
                     </div>
                     

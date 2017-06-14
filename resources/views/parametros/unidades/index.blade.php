@@ -49,8 +49,9 @@
                 <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap table-hover" cellspacing="0" width="100%">
                   <thead>
                     <tr style="background-color: rgb(51, 204, 204)">
-                      <th style="width: 50%">Unidad Funcional</th>                      
-                      <th style="width: 50%">Acciones</th>
+                      <th style="width: 40%">Unidad Funcional</th>
+                      <th style="width: 30%">Iniciales</th>                      
+                      <th style="width: 30%">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -59,7 +60,8 @@
                       foreach ($departamentos as $depart){
                     @endphp
                       <tr>
-                        <td>{{ $depart->name }}</td>                        
+                        <td>{{ $depart->name }}</td>
+                        <td>{{ $depart->iniciales }}</td>                        
                         <td>
 
                           <form class="row" method="POST" action="{{ route('unidades.destroy', ['id' => $depart->id]) }}" onsubmit = "return confirm('Eliminar Unidad Funcional?')">

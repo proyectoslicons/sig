@@ -11,6 +11,7 @@ use App\Position;
 use App\City;
 use App\Occupation;
 use App\User;
+use Auth;
 
 class UserController extends Controller
 {
@@ -38,7 +39,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('usuarios/index');
+        if(Auth::user()->is_admin){
+            return view('usuarios/index');
+        }
+        else{
+            return redirect()->intended('/home');
+        }
     }
 
     /**
@@ -53,7 +59,12 @@ class UserController extends Controller
         $cities = City::all();
         $occupations = Occupation::all();
 
-        return view('usuarios/create', compact('departments', 'positions', 'cities', 'occupations'));
+        if(Auth::user()->is_admin){
+            return view('usuarios/create', compact('departments', 'positions', 'cities', 'occupations'));
+        }
+        else{
+            return redirect()->intended('/home');
+        }        
     }
 
     /**
@@ -135,7 +146,12 @@ class UserController extends Controller
         $cities = City::all();
         $occupations = Occupation::all();
 
-        return view('usuarios/edit', compact('user', 'departments', 'positions', 'cities', 'occupations'));
+        if(Auth::user()->is_admin){
+            return view('usuarios/edit', compact('user', 'departments', 'positions', 'cities', 'occupations'));
+        }
+        else{
+            return redirect()->intended('/home');
+        }        
     }
 
     /**
@@ -151,9 +167,9 @@ class UserController extends Controller
 
         $constraints = [
             'primer_nombre'         => 'required|max:20|alpha', 
-            'segundo_nombre'        => 'max:20|alpha', 
+            'segundo_nombre'        => 'nullable|max:20|alpha', 
             'primer_apellido'       => 'required|max:20|alpha', 
-            'segundo_apellido'      => 'max:20|alpha', 
+            'segundo_apellido'      => 'nullable|max:20|alpha', 
             'cedula'                => 'required|max:8',
             'rif'                   => 'required|max:12', 
             'fecha_nacimiento'      => 'required|date', 
@@ -164,7 +180,7 @@ class UserController extends Controller
             'telefono_habitacion'   => 'required', 
             'telefono_movil'        => 'required',
             'telefono_corporativo'  => 'nullable', 
-            'extension'             => 'numeric', 
+            'extension'             => 'nullable|numeric', 
             'profesion_id'          => 'required|numeric', 
             'departamento_id'       => 'required|numeric', 
             'cargo_id'              => 'required|numeric', 
@@ -218,7 +234,6 @@ class UserController extends Controller
             'fecha_egreso.date'             => 'Fecha de egreso: el formato de la fecha no es válido.', 
             'foto.required'                 => 'Debe seleccionar una foto.',
             'foto.mimes'                    => 'Sólo se aceptan formatos de imagen .jpg.',
-            'email_personal.required'       => 'El email personal no puede estar vacío.', 
             'email_personal.email'          => 'Email Personal: el campo no tiene un formato válido.', 
             'email_personal.max'            => 'Email Personal: máximo 255 caracteres.', 
             'email_personal.unique'         => 'Email Personal: ya se ha asociado ese correo a otro usuario', 
@@ -263,12 +278,12 @@ class UserController extends Controller
         }
 
         if($request['email_personal'] != $user->email_personal){
-            $constraints['email_personal'] = 'required|email|max:255|unique:users';
+            $constraints['email_personal'] = 'nullable|email|max:255|unique:users';
             $input['email_personal'] = $request['email_personal'];
         } 
 
         if($request['email'] != $user->email){
-            $constraints['email'] = 'email|max:255|unique:users';
+            $constraints['email'] = 'nullable|email|max:255|unique:users';
             $input['email'] = $request['email'];
         }        
 
@@ -317,8 +332,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {   
-        \App\User::where('id', $id)->delete();
-         return redirect()->intended('/usuarios');
+        if(Auth::user()->is_admin){
+            \App\User::where('id', $id)->delete();
+            return redirect()->intended('/usuarios');    
+        }
+        else{
+            return redirect()->intended('/home');
+        }
+        
     }
 
     /**
@@ -326,16 +347,21 @@ class UserController extends Controller
      * 
     */
     public function show($id){
-        \App\User::where('id', $id)->delete();
-         return redirect()->intended('/usuarios');   
+        if(Auth::user()->is_admin){
+            \App\User::where('id', $id)->delete();
+            return redirect()->intended('/usuarios');
+        }
+        else{
+            return redirect()->intended('/home');
+        }   
     }
 
     private function validateInput($request) {
         $reglas = [
             'primer_nombre'         => 'required|max:20|alpha', 
-            'segundo_nombre'        => 'max:20|alpha', 
+            'segundo_nombre'        => 'nullable|max:20|alpha', 
             'primer_apellido'       => 'required|max:20|alpha', 
-            'segundo_apellido'      => 'max:20|alpha', 
+            'segundo_apellido'      => 'nullable|max:20|alpha', 
             'cedula'                => 'required|max:8',
             'rif'                   => 'required|max:12', 
             'fecha_nacimiento'      => 'required|date', 
@@ -346,7 +372,7 @@ class UserController extends Controller
             'telefono_habitacion'   => 'required', 
             'telefono_movil'        => 'required',
             'telefono_corporativo'  => 'nullable', 
-            'extension'             => 'numeric', 
+            'extension'             => 'nullable|numeric', 
             'profesion_id'          => 'required|numeric', 
             'departamento_id'       => 'required|numeric', 
             'cargo_id'              => 'required|numeric', 
@@ -356,8 +382,8 @@ class UserController extends Controller
             'lugar_nacimiento'      => 'required|max:200', 
             'fecha_egreso'          => 'nullable|date',
             'foto'                  => 'required|mimes:jpeg', 
-            'email_personal'        => 'required|email|max:255|unique:users',                      
-            'email'                 => 'email|max:255|unique:users',            
+            'email_personal'        => 'nullable|email|max:255|unique:users',                      
+            'email'                 => 'nullable|email|max:255|unique:users',            
             'password'              => 'required|min:6|confirmed'
         ];
 
@@ -404,8 +430,7 @@ class UserController extends Controller
             'lugar_nacimiento.max'          => 'Lugar de Nacimiento: Máximo 200 caracteres.',
             'fecha_egreso.date'             => 'Fecha de egreso: el formato de la fecha no es válido.', 
             'foto.required'                 => 'Debe seleccionar una foto.',
-            'foto.mimes'                    => 'Sólo se aceptan formatos de imagen .jpg.',
-            'email_personal.required'       => 'El email personal no puede estar vacío.', 
+            'foto.mimes'                    => 'Sólo se aceptan formatos de imagen .jpg.', 
             'email_personal.email'          => 'Email Personal: el campo no tiene un formato válido.', 
             'email_personal.max'            => 'Email Personal: máximo 255 caracteres.', 
             'email_personal.unique'         => 'Email Personal: ya se ha asociado ese correo a otro usuario',  

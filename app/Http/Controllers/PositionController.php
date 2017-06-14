@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Position;
 use Session;
+use Auth;
 
 class PositionController extends Controller
 {

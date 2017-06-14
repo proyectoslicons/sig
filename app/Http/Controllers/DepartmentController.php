@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\department;
 use Session;
+use Auth;
 
 class DepartmentController extends Controller
 {
@@ -49,7 +50,8 @@ class DepartmentController extends Controller
     {
         $this->validateInput($request);
          Department::create([
-            'name' => $request['name']
+            'name'      => $request['name'],
+            'iniciales' => $request['iniciales'],
         ]);
 
         Session::flash('status', "Se ha registrado una nueva unidad funcional.");
@@ -96,7 +98,8 @@ class DepartmentController extends Controller
         $department = Department::findOrFail($id);
         $this->validateInput($request);
         $input = [
-            'name' => $request['name']
+            'name' => $request['name'],
+            'iniciales' => $request['iniciales'],
         ];
         Department::where('id', $id)
             ->update($input);
@@ -118,7 +121,8 @@ class DepartmentController extends Controller
 
     private function validateInput($request) {
         $this->validate($request, [
-        'name' => 'required|max:60|unique:department'
+        'name'          => 'required|max:60|unique:department',
+        'iniciales'     => 'required|max:3|unique:department',
     ]);
     }
 }

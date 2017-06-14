@@ -54,10 +54,11 @@ class TicketController extends Controller
     	$ids = DB::table('department')
     		->join('users', function($join){
     			$join->on('department.id', '=', 'users.departamento_id')
-    			->where('users.cargo_id', '=', 4);
-    		})
+    			->where('users.cargo_id', '=', 4);                
+    		})            
+            ->where('departamento_id', '=', $request['department'])
     		->select('users.id')->get();
-
+            
 		foreach ($ids as $default) {
 	    	$id_encargado = $default->id;
 		}
@@ -68,17 +69,71 @@ class TicketController extends Controller
 
 	    array_except($request->all(), ['encargado']);
     		
+        $department = \App\Department::where('id', Auth::user()->departamento_id)->get();
+
+        foreach ($department as $dep) {
+            $iniciales = $dep->iniciales;
+        }
+
+        $fechaTicket = date("Y").date("m").date("d");
+
+        $cant_tickets = Ticket::count() + 1;        
+
+        if($request->input('priority') === "inmediato"){
+            $fecha = date('Y-m-d H:i:s');
+            $nuevafecha = strtotime ( '+4 hour' , strtotime ( $fecha ) ) ;
+            $nuevafecha = date ( 'Y-m-d H:i:s' , $nuevafecha );             
+        }
+        else{
+            if($request->input('priority') === "imperativo"){
+                $fecha = date('Y-m-d H:i:s');
+                $nuevafecha = strtotime ( '+24 hour' , strtotime ( $fecha ) ) ;
+                $nuevafecha = date ( 'Y-m-d H:i:s' , $nuevafecha );             
+            }                
+            else{
+                if($request->input('priority') === "prudente"){
+                    $fecha = date('Y-m-d H:i:s');
+                    $nuevafecha = strtotime ( '+48 hour' , strtotime ( $fecha ) ) ;
+                    $nuevafecha = date ( 'Y-m-d H:i:s' , $nuevafecha );             
+                }
+                else{
+                    if($request->input('priority') === "moderado"){
+                        $fecha = date('Y-m-d H:i:s');
+                        $nuevafecha = strtotime ( '+72 hour' , strtotime ( $fecha ) ) ;
+                        $nuevafecha = date ( 'Y-m-d H:i:s' , $nuevafecha );             
+                    }
+                    else{
+                        if($request->input('priority') === "leve"){
+                            $fecha = date('Y-m-d H:i:s');
+                            $nuevafecha = strtotime ( '+120 hour' , strtotime ( $fecha ) ) ;
+                            $nuevafecha = date ( 'Y-m-d H:i:s' , $nuevafecha );             
+                        }
+                        else{
+                            if($request->input('priority') === "premeditado"){
+                                $fecha = date('Y-m-d H:i:s');
+                                $nuevafecha = strtotime ( '+720 hour' , strtotime ( $fecha ) ) ;
+                                $nuevafecha = date ( 'Y-m-d H:i:s' , $nuevafecha );             
+                            }
+                        }
+                    }
+                }
+            }
+        }       
+
+        $fecha_atencion = $nuevafecha;        
+        
         $ticket = new Ticket([
             'title'     		=> $request->input('title'),
             'user_id'   		=> Auth::user()->id,
             'user_default_id' 	=> $id_encargado,
             'user_assigned_id' 	=> $id_encargado,
-            'ticket_id' 		=> strtoupper(str_random(10)),
+            'ticket_id' 		=> $iniciales. "-" . $fechaTicket . "-" . $cant_tickets,
             'category_id'  		=> $request->input('category'),
             'department_id'		=> $request['department'],
             'type'				=> $request['tipo'],
             'priority'  		=> $request->input('priority'),
-            'message'   		=> $request->input('message'),
+            'message'   		=> $request->input('message'), 
+            'fecha_atencion'    => $fecha_atencion,           
             'status'    		=> "Open",
         ]);
 
@@ -91,9 +146,7 @@ class TicketController extends Controller
 
         $ticket->save();
 
-
-
-        User::find($id_encargado)->notify(new \App\Notifications\NewTicket(Auth::user(), $ticket->ticket_id));
+        User::find($id_encargado)->notify(new \App\Notifications\NewTicket($id_encargado, Auth::user(), $ticket->ticket_id));
 
         //event(new \App\Events\TicketCreated('Hi there Pusher!'));
 
@@ -107,8 +160,9 @@ class TicketController extends Controller
         $empleados = User::where('departamento_id', $ticket->department_id)->get();
         $bitacora = TicketBitacora::where('ticket_id', $ticket_id)->get();
         $users = \App\User::all();
+        $departments = \App\Department::where('id', "NOT LIKE", $ticket->department_id)->get();
 
-	    return view('solicitudes.show', compact('comments', 'category', 'ticket', 'empleados', 'bitacora', 'users'));
+	    return view('solicitudes.show', compact('comments', 'category', 'ticket', 'empleados', 'bitacora', 'users', 'departments'));
 	}
 
     public function update(Request $request, $id){

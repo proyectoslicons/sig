@@ -33,10 +33,15 @@
 <script src="{{ URL::asset('js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ URL::asset('js/bootstrap-datepicker.es.min.js') }}"></script>
 
+<script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+<script src="{{ URL::asset('build/js/vue.js') }}"></script>
+
 <script>
 // rename myToken as you like
 window.Laravel =  <?php echo json_encode([
     'csrfToken' => csrf_token(),
 ]); ?>
 </script>
+
+
 

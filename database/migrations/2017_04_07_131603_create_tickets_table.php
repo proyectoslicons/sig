@@ -25,7 +25,9 @@ class CreateTicketsTable extends Migration
             $table->string('title');
             $table->string('priority');
             $table->integer('type');
-            $table->text('message');
+            $table->text('message');            
+            $table->string('fecha_atencion')->default(NULL);
+            $table->integer('atencion_finalizada')->default(0);
             $table->string('status');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('user_default_id')->references('id')->on('users');

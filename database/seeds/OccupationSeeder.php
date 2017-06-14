@@ -18,5 +18,14 @@ class OccupationSeeder extends Seeder
         App\Occupation::create([
             'name' => 'Ingeniero en Sistemas'             
         ]);
+
+        App\Occupation::create([
+            'name' => 'Ingeniero Industrial'             
+        ]);
+
+        App\Occupation::create([
+            'name' => 'Ingeniero Electrónico'             
+        ]);
+
     }
 }

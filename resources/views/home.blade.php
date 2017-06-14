@@ -11,7 +11,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Gestión de Usuarios</h2>
+                    <h2>Menú General</h2>
                     <ul class="nav navbar-right panel_toolbox" style="right: -50px">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>                      
@@ -19,16 +19,29 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">                  
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap table-hover" cellspacing="0" width="100%">
-                      <thead>
-                        <tr style="background-color: rgb(51, 204, 204)">
-                          <th style="width: 33%">Nombre</th>
-                          <th style="width: 33%">Email</th>
-                          <th style="width: 33%">Acciones</th>
-                        </tr>
-                      </thead>
-                      
-                    </table>
+                    <div class="bs-glyphicons">
+                        <ul class="bs-glyphicons-list">   
+                          @if(Auth::user()->is_admin)                                          
+                          <a>
+                            <li>                            
+                              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                              <span class="glyphicon-class">Parámetros del Sistema</span>
+                            </li>
+                          </a>
+
+                          <li>
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                            <span class="glyphicon-class">Gestión de Usuarios</span>
+                          </li>                     
+                          @endif                             
+                                                                                                      
+                          <li>
+                            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                            <span class="glyphicon-class">Gestión de Solicitudes</span>
+                          </li>                                                                       
+
+                        </ul>
+                      </div>
                   </div>
                 </div>
                     

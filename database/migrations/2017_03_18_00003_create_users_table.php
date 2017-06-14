@@ -17,9 +17,9 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('primer_nombre');
-            $table->string('segundo_nombre');
+            $table->string('segundo_nombre')->nullable();
             $table->string('primer_apellido');
-            $table->string('segundo_apellido');
+            $table->string('segundo_apellido')->nullable();
             $table->string('cedula')->unique();
             $table->string('rif')->unique();
             $table->date('fecha_nacimiento');
@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('telefono_habitacion');
             $table->string('telefono_movil');
             $table->string('telefono_corporativo')->nullable();
-            $table->string('extension');
+            $table->string('extension')->nullable();
             $table->integer('profesion_id')->unsigned();
             $table->integer('departamento_id')->unsigned();
             $table->integer('cargo_id')->unsigned();
@@ -39,7 +39,7 @@ class CreateUsersTable extends Migration
             $table->string('estado_civil');
             $table->integer('lugar_nacimiento')->unsigned();
             $table->date('fecha_egreso')->nullable();
-            $table->string('email_personal')->unique();
+            $table->string('email_personal')->unique()->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password');
             $table->integer('is_admin')->unsigned()->default(0);

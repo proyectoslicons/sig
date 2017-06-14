@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Occupation;
 use Session;
+use Auth;
 
 class OccupationController extends Controller
 {

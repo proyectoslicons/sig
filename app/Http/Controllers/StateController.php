@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\State;
 use App\Country;
 use Session;
+use Auth;
 
 class StateController extends Controller
 {

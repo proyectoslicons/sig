@@ -16,7 +16,11 @@ class TicketListController extends Controller
 	}
 
     public function index(){	   
-	    $tickets = Ticket::where('status', 'Open')->where('user_id', Auth::user()->id)->get();
+	    $tickets = Ticket::where('status', 'Open')
+	    ->where('user_id', Auth::user()->id)
+	    ->orwhere('user_default_id', Auth::user()->id)
+	    ->orwhere('user_assigned_id', Auth::user()->id)
+	    ->get();
 	    $categories = Categories::all();	    
 
 	    return view('solicitudes.index', compact('tickets', 'categories'));

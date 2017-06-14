@@ -1,10 +1,4 @@
-  
-
-
-
-    
-
-     <!-- Bootstrap -->
+    <!-- Bootstrap -->
     <script src="{{ URL::asset('vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <!-- FastClick -->
     <script src="{{ URL::asset('vendors/fastclick/lib/fastclick.js') }}"></script>
@@ -31,19 +25,43 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{{ URL::asset('build/js/custom.min.js') }}"></script>
-
-
-    <script src="{{ URL::asset('build/js/vue.js') }}"></script>
-
+    
     <script>
 
-      new Vue({
+      var cont = new Vue({
         el: '#app',
         data : {
-            count : 3
+            count : 0
         }
       })
 
     </script>
+
+    <script>
+
+      var app = new Vue({
+        el: '#root',
+        
+        data: {       
+          notifications : []
+        },
+
+        methods:{
+          addNotification(data){
+
+            this.notifications.push(data);  
+            cont.count++;   
+            var audio = new Audio("{{ URL::asset('sound/notification.mp3') }}");
+            audio.play();     
+
+          }
+        }
+      });
+      
+      channel.bind('ticket_created', function(data) {
+        app.addNotification(data);
+      });
+      
+    </script> 
 
     

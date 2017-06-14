@@ -38,6 +38,7 @@
                       <th style="width: 10%">Título</th>
                       <th style="width: 10%">Estado</th>
                       <th style="width: 10%">Prioridad</th>
+                      <th style="width: 10%">Horas Atención</th>
                       <th style="width: 10%">Solicita</th>
                       <th style="width: 10%">F. Creación</th>                      
                     </tr>
@@ -71,19 +72,79 @@
 
                         <td>
                             <center>
-                              @if($ticket->priority === 'baja')
-                                <div class="label label-info">{{ ucfirst($ticket->priority) }}</div>
+                              @if($ticket->priority === 'inmediato')
+                                <div class="label label-danger">{{ ucfirst($ticket->priority) }}</div>
+                                @php
+                                  $total = 4;
+                                @endphp
                               @endif
                               
-                              @if($ticket->priority === 'media')
+                              @if($ticket->priority === 'imperativo')
                                 <div class="label label-warning">{{ ucfirst($ticket->priority) }}</div>
+                                @php
+                                  $total = 24;
+                                @endphp
                               @endif
 
-                              @if($ticket->priority === 'alta')
-                                <div class="label label-danger">{{ ucfirst($ticket->priority) }}</div>
+                              @if($ticket->priority === 'prudente')
+                                <div class="label label-info">{{ ucfirst($ticket->priority) }}</div>
+                                @php
+                                  $total = 48;
+                                @endphp
+                              @endif
+
+                              @if($ticket->priority === 'moderado')
+                                <div class="label label-success">{{ ucfirst($ticket->priority) }}</div>
+                                @php
+                                  $total = 72;
+                                @endphp
+                              @endif
+                              
+                              @if($ticket->priority === 'leve')
+                                <div class="label label-primary">{{ ucfirst($ticket->priority) }}</div>
+                                @php
+                                  $total = 120;
+                                @endphp
+                              @endif
+
+                              @if($ticket->priority === 'premeditado')
+                                <div class="label label-default">{{ ucfirst($ticket->priority) }}</div>
+                                @php
+                                  $total = 720;
+                                @endphp
                               @endif
                             </center>                          
-                        </td>                        
+                        </td>       
+
+                        <td>
+                          @php
+                            $date1 = new DateTime(date('Y-m-d H:i:s'));
+                            $date2 = new DateTime($ticket->fecha_atencion);
+                            
+                            $interval = new DateInterval('PT1H');                
+                            $periods = new DatePeriod($date1, $interval, $date2);
+                            $hours = iterator_count($periods);
+
+                            $diferencia = $total - $hours;
+                            $treinta = $total * 0.33;
+                            $sesenta  = $total * 0.66;
+                          @endphp
+
+                          <center>
+                            @if($diferencia < $treinta)
+                              <div class="label label-success">{{ $hours . ' horas'}}</div>
+                            @endif
+
+                            @if($diferencia >= $treinta && $diferencia < $sesenta)
+                              <div class="label label-warning">{{ $hours . ' horas'}}</div>
+                            @endif
+
+                            @if($diferencia >= $sesenta)
+                              <div class="label label-danger">{{ $hours . ' horas'}}</div>
+                            @endif
+                          </center>
+
+                        </td>                 
 
                         <td>
                           {{ ucwords(DB::table('users')->where('id', $ticket->user_id)->value('primer_nombre')) . " " . ucwords(DB::table('users')->where('id', $ticket->user_id)->value('primer_apellido'))}}                    
@@ -115,7 +176,7 @@
     $('#datatable-responsive').DataTable( {
         "deferRender": true,
         "sScrollY": false,
-        "order": [[ 3, "asc" ], [5, "desc"]],
+        "order": [[ 3, "desc" ], [5, "desc"]],
     });
 
 

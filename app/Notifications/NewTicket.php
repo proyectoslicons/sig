@@ -7,23 +7,26 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Pusher;
+use URL;
 
 class NewTicket extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public $user;
-    public $ticket;  
+    public $ticket;
+    public $id_destination;  
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user, $ticket)
+    public function __construct($id_destino, $usuario_origen, $ticket)
     {
-        $this->user = $user;
+        $this->user = $usuario_origen;
         $this->ticket = $ticket;
+        $this->id_destination = $id_destino;
     }
 
     /**
@@ -41,8 +44,15 @@ class NewTicket extends Notification implements ShouldQueue
             '342744'
         );
 
-        $data['message'] = 'Notificando';
-        $pusher->trigger('app-ticket-'.$this->user->id, 'ticket_created', $data);
+        $data['nombre']  = ucwords($this->user->primer_nombre." ". $this->user->primer_apellido);
+
+        $data['mensaje'] = "Ha enviado un nuevo ticket";        
+
+        $data['foto']    = URL::asset('images/'.$this->user->cedula . $this->user->primer_nombre.' '. $this->user->primer_apellido.'.jpg');
+
+        $data['fecha']   = date('d/m/Y');
+
+        $pusher->trigger('app-ticket-'.$this->id_destination, 'ticket_created', $data);
 
         return ['mail'];
     }
@@ -56,7 +66,7 @@ class NewTicket extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->user->name . ' te ha enviado un nuevo ticket.')
+                    ->line($this->user->primer_nombre . ' te ha enviado un nuevo ticket.')
                     ->action('Ver Ticket', url('solicitudes/listarTickets'))
                     ->line('Has clic en el enlace para ver el ticket creado.');
     }

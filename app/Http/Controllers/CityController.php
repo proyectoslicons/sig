@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\City;
 use App\State;
 use Session;
+use Auth;
 
 class CityController extends Controller
 {
