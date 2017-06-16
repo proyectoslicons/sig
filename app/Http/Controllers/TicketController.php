@@ -155,28 +155,49 @@ class TicketController extends Controller
 
 	public function show($ticket_id){
 	    $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
+
 	    $comments = $ticket->comments;
-	    $category = Categories::where('id', $ticket->category_id)->firstOrFail();
-        $empleados = User::where('departamento_id', $ticket->department_id)->get();
+	    
+        $category = Categories::where('id', $ticket->category_id)->firstOrFail();
+        
+        $empleados = User::where('departamento_id', $ticket->department_id)
+                    ->where('id', 'NOT LIKE', Auth::id())
+                    ->get();
+        
         $bitacora = TicketBitacora::where('ticket_id', $ticket_id)->get();
+        
         $users = \App\User::all();
+        
         $departments = \App\Department::where('id', "NOT LIKE", $ticket->department_id)->get();
+
+        $input = ['status' => 1];
+        $notificacion = \App\Ticket_Notification::where('ticket_id', $ticket_id)
+                        ->update($input);        
 
 	    return view('solicitudes.show', compact('comments', 'category', 'ticket', 'empleados', 'bitacora', 'users', 'departments'));
 	}
 
-    public function update(Request $request, $id){
+    public function delegar(Request $request){
         $input = ['user_assigned_id' => $request['asignar']];
         \App\Ticket::where('id', $id)->update($input);
 
         echo "Ticket delegado";
     }
 
-    public function close($ticket_id)
+    public function escalar(Request $request){
+        $input = ['user_assigned_id' => $request['asignar']];
+        \App\Ticket::where('id', $id)->update($input);
+
+        echo "Ticket escalado";
+    }
+
+    public function close(Request $request)
     {   
-        $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
+        $ticket = Ticket::where('ticket_id', $request['ticket_id'])->firstOrFail();
         $ticket->status = 'Closed';
         $ticket->save();
-        return redirect()->back()->with("status", "El ticket " . $ticket_id . " se ha cerrado.");
+
+        Session::flash('status', "El ticket " . $request['ticket_id'] . " se ha cerrado.");
+        return redirect()->intended('solicitudes/listarTickets');
     }
 }

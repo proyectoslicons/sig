@@ -69,6 +69,16 @@
                             </div>
                           </div>
                           <br>
+
+                          <div style="width:100%; font-size: 14px;">           
+                            <div style="float:left;  color: rgb(51, 204, 204); font-weight: bold">
+                              Atendido por:
+                            </div>
+                            <div style="margin-left: 150px; font-weight: bold; word-wrap: break-word; "> 
+                              {{ ucwords(DB::table('users')->where('id', $ticket->user_assigned_id)->value('primer_nombre')) . " " . ucwords(DB::table('users')->where('id', $ticket->user_assigned_id)->value('primer_apellido'))}} 
+                            </div>
+                          </div>
+                          <br>
                                                                         
                           <div style="width:100%; font-size: 14px;">           
                             <div style="float:left;  color: rgb(51, 204, 204); font-weight: bold">
@@ -242,28 +252,31 @@
                               </button>
                               <h4 class="modal-title" id="myModalLabel2">Delegar Ticket</h4>
                             </div>
-                            <div class="modal-body">
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delegar">Colaborador
-                                </label>
-                                <div class="col-md-9 col-sm-6 col-xs-12">
-                                  <select class="select2_single form-control" name="delegar" id="delegar">                              
-                                    @foreach($empleados as $empleado)   
-                                      <option value="{{$empleado->id}}">{{ ucwords($empleado->primer_nombre . " " . $empleado->primer_apellido)}}
-                                      </option>
-                                    @endforeach
-                                  </select>
-                                  <br>
-                                  </div>
+
+                            <form action="{{ url('delegarTicket') }}">
+                              <div class="modal-body">
+                                <div class="form-group">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delegar">Colaborador
+                                  </label>
+                                  <div class="col-md-9 col-sm-6 col-xs-12">
+                                    <select class="select2_single form-control" name="delegar" id="delegar">                              
+                                      @foreach($empleados as $empleado)   
+                                        <option value="{{$empleado->id}}">{{ ucwords($empleado->primer_nombre . " " . $empleado->primer_apellido)}}
+                                        </option>
+                                      @endforeach
+                                    </select>
+                                    <br>
+                                    </div>
+                                </div>
                               </div>
-                            </div>
-                            <br>
-                            <div class="modal-footer">
-                              <center>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                <button type="button" onclick="delegar()" class="btn btn-primary">Guardar Cambios</button>
-                              </center>
-                            </div>
+                              <br>
+                              <div class="modal-footer">
+                                <center>
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                  <button type="button" onclick="delegar()" class="btn btn-primary">Guardar Cambios</button>
+                                </center>
+                              </div>
+                            </form>
 
                           </div>
                         </div>
@@ -315,7 +328,9 @@
 
                     @if(Auth::id() === $ticket->user_id)
                       
-                      <form>
+                      <form action="{{ url('cerrarTicket') }}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="ticket_id" value="{{ $ticket->ticket_id }}">
                         <button type="submit" class="btn btn-danger">Cerrar Ticket</button>
                       </form>
 

@@ -2,6 +2,7 @@
 <html lang="es">
   <head>    
     @include('layouts.head_content')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
   </head>
 
   <body class="nav-md footer_fixed" style="max-height: 1000px; overflow-x: hidden;">

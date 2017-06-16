@@ -48,7 +48,8 @@
             <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
               <div id="root">
                 <li v-for="noti in notifications">
-                  <a>
+
+                  <a href="{{ url('solicitudes/listarTickets') }}">
 
                     <span class="image"><img :src="noti.foto" alt="Profile Image" />
                     </span>
@@ -66,7 +67,7 @@
 
               <li>
                 <div class="text-center">
-                  <a>
+                  <a href="{{ url('solicitudes/listarTickets') }}">
                     <strong>Ver todos los tickets</strong>
                     <i class="fa fa-angle-right"></i>
                   </a>

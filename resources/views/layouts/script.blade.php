@@ -25,19 +25,19 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{{ URL::asset('build/js/custom.min.js') }}"></script>
-    
-    <script>
 
+    <script>
+      
       var cont = new Vue({
         el: '#app',
+
         data : {
             count : 0
-        }
-      })
+        }                       
 
-    </script>
+      });
 
-    <script>
+      cont.count = {{ App\Ticket_Notification::where('user_id', Auth::id())->where('status', 0)->count() }};     
 
       var app = new Vue({
         el: '#root',
@@ -49,7 +49,7 @@
         methods:{
           addNotification(data){
 
-            this.notifications.push(data);  
+            this.notifications.unshift(data);  
             cont.count++;   
             var audio = new Audio("{{ URL::asset('sound/notification.mp3') }}");
             audio.play();     
@@ -57,11 +57,45 @@
           }
         }
       });
+
       
+
+      @php
+        
+
+        $notificaciones = App\Ticket_Notification::where('user_id', Auth::id())
+                          ->where('status', 0)
+                          ->orderBy('created_at', 'desc')
+                          ->take(5)
+                          ->get();        
+        
+        foreach ($notificaciones as $noti) {
+          $data = [];
+          $data['nombre']  = $noti->nombre;
+          $data['mensaje'] = $noti->mensaje;        
+          $data['foto']    = $noti->foto;
+          $time            = strtotime($noti->created_at);
+          $newformat = date('d/m/Y', $time);
+          $data['fecha']   = $newformat;
+      
+      @endphp
+
+          app.notifications.push({
+              'nombre'  : '{{ $data['nombre'] }}',
+              'mensaje' : '{{ $data['mensaje'] }}',
+              'foto'    : '{{ $data['foto'] }}',
+              'fecha'   : '{{ $data['fecha'] }}',
+            }
+          );  
+
+      @php  
+        }
+
+      @endphp
+
       channel.bind('ticket_created', function(data) {
         app.addNotification(data);
       });
-      
     </script> 
 
     

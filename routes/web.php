@@ -48,3 +48,9 @@ Route::post('solicitudes/nuevo_ticket', 'TicketController@store');
 Route::get('solicitudes/ticket/{ticket_id}', 'TicketController@show');
 
 Route::post('comentar', 'CommentsController@postComment');
+
+Route::post('cerrarTicket', 'TicketController@close');
+
+Route::post('delegarTicket', 'TicketController@delegar');
+
+Route::post('escalarTicket', 'TicketController@escalar');

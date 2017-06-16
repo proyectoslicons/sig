@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Pusher;
 use URL;
+use App\Ticket_Notification;
 
 class NewTicket extends Notification implements ShouldQueue
 {
@@ -51,6 +52,16 @@ class NewTicket extends Notification implements ShouldQueue
         $data['foto']    = URL::asset('images/'.$this->user->cedula . $this->user->primer_nombre.' '. $this->user->primer_apellido.'.jpg');
 
         $data['fecha']   = date('d/m/Y');
+
+        $notificacion = new Ticket_Notification([
+            'ticket_id' => $this->ticket,
+            'user_id'   => $this->id_destination,
+            'foto'      => $data['foto'],
+            'mensaje'   => $data['mensaje'],
+            'nombre'    => $data['nombre'],
+        ]);
+
+        $notificacion->save();
 
         $pusher->trigger('app-ticket-'.$this->id_destination, 'ticket_created', $data);
 

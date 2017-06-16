@@ -30,7 +30,7 @@ class VerifyCsrfToken
      *
      * @var array
      */
-    protected $except = [];
+    protected $except = [''];
 
     /**
      * Create a new middleware instance.
@@ -55,7 +55,7 @@ class VerifyCsrfToken
      * @throws \Illuminate\Session\TokenMismatchException
      */
     public function handle($request, Closure $next)
-    {
+    {   
         if (
             $this->isReading($request) ||
             $this->runningUnitTests() ||
