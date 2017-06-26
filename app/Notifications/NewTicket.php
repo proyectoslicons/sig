@@ -53,6 +53,8 @@ class NewTicket extends Notification implements ShouldQueue
 
         $data['fecha']   = date('d/m/Y');
 
+        $data['ticket_id'] = "" . url('solicitudes/ticket') . "/" . $this->ticket;
+
         $notificacion = new Ticket_Notification([
             'ticket_id' => $this->ticket,
             'user_id'   => $this->id_destination,

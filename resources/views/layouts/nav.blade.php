@@ -5,7 +5,7 @@
   });
 
   var channel = pusher.subscribe('app-ticket-' + {{ Auth::id() }} );    
-
+  
 </script>
 
 <div class="top_nav">
@@ -13,6 +13,22 @@
     <nav>
       <div class="nav toggle">
         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+        
+        <script>
+          $('#menu_toggle').click(
+            function() {
+                var str = "" + $('#logo').attr('src');
+                var res = str.split('//');
+                str = res[1];
+                res = str.split('/');
+                if(res[4] == 'logo.png')
+                  $('#logo').attr('src', '{{ URL::asset('img/mini.png') }}');
+                else
+                  $('#logo').attr('src', '{{ URL::asset('img/logo.png') }}');
+            }
+          );          
+        </script>
+
       </div>
 
       <ul class="nav navbar-nav navbar-right">
@@ -49,7 +65,7 @@
               <div id="root">
                 <li v-for="noti in notifications">
 
-                  <a href="{{ url('solicitudes/listarTickets') }}">
+                  <a v-bind:href="noti.ticket_id">
 
                     <span class="image"><img :src="noti.foto" alt="Profile Image" />
                     </span>
@@ -78,6 +94,29 @@
           
 
         </li>
+
+
+        <li role="presentation" class="dropdown">
+          <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-comments"></i>
+            <span class="badge bg-green">6</span>
+          </a>
+          <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+            <li>
+              <a>
+                <span class="image"><img src="images/img.jpg" alt="Profile Image"></span>
+                <span>
+                  <span>John Smith</span>
+                  <span class="time">3 mins ago</span>
+                </span>
+                <span class="message">
+                  Film festivals used to be do-or-die moments for movie makers. They were where...
+                </span>
+              </a>
+            </li>                    
+          </ul>
+        </li>
+
       </ul>
     </nav>
   </div>

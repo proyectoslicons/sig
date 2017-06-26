@@ -29,16 +29,20 @@
                             </li>
                           </a>
 
-                          <li>
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                            <span class="glyphicon-class">Gestión de Usuarios</span>
-                          </li>                     
+                          <a href="{{ url('usuarios') }}"> 
+                            <li>
+                              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                              <span class="glyphicon-class">Gestión de Usuarios</span>
+                            </li>
+                          </a>                     
                           @endif                             
-                                                                                                      
-                          <li>
-                            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-                            <span class="glyphicon-class">Gestión de Solicitudes</span>
-                          </li>                                                                       
+                            
+                          <a href="{{ url('solicitudes/listarTickets') }}">         
+                            <li>                            
+                              <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                              <span class="glyphicon-class">Gestión de Solicitudes</span>
+                            </li>  
+                          </a>                                                                     
 
                         </ul>
                       </div>

@@ -29,7 +29,7 @@
                     @include('layouts.errors')
                     @include('layouts.success')                  
 
-                    <form class="form-horizontal form-label-left" method="POST" action="{{ url('/solicitudes/nuevo_ticket') }}">
+                    <form class="form-horizontal form-label-left" method="POST" action="{{ url('/solicitudes/nuevo_ticket') }}" enctype="multipart/form-data">
 
                       {{ csrf_field() }}
                     
@@ -79,7 +79,7 @@
                       </div>
                       
                       <div class="form-group">
-                        <label for="priority" class="control-label col-md-3 col-sm-3 col-xs-12">Prioridad</label>
+                        <label for="priority" class="control-label col-md-3 col-sm-3 col-xs-12">Prioridad <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">                        
                           <select id="priority" type="" class="form-control" name="priority" required="required">
                               <option value="">Seleccionar Prioridad</option>
@@ -94,7 +94,7 @@
                       </div>
                       
                       <div class="form-group">
-                        <label for="message" class="control-label col-md-3 col-sm-3 col-xs-12">Mensaje</label>
+                        <label for="message" class="control-label col-md-3 col-sm-3 col-xs-12">Mensaje <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <textarea rows="10" id="message" class="form-control" name="message" style="resize: none;" required="required"></textarea>
                         </div>
@@ -103,7 +103,7 @@
                       <div class="form-group">
                         <label for="archivos" class="control-label col-md-3 col-sm-3 col-xs-12">Adjuntos</label>
                         <div class="col-md-6 col-sm-6 col-xs-12" style="top: 4px">
-                          <input type="file" name="archivos" id="archivos" multiple>
+                          <input type="file" name="archivos[]" id="archivos" multiple>
                         </div>
                       </div>
 

@@ -71,20 +71,22 @@
         
         foreach ($notificaciones as $noti) {
           $data = [];
-          $data['nombre']  = $noti->nombre;
-          $data['mensaje'] = $noti->mensaje;        
-          $data['foto']    = $noti->foto;
-          $time            = strtotime($noti->created_at);
-          $newformat = date('d/m/Y', $time);
-          $data['fecha']   = $newformat;
+          $data['nombre']     = $noti->nombre;
+          $data['mensaje']    = $noti->mensaje;        
+          $data['foto']       = $noti->foto;
+          $data['ticket_id']  = "" . url('solicitudes/ticket') . "/" . $noti->ticket_id;
+          $time               = strtotime($noti->created_at);
+          $newformat          = date('d/m/Y', $time);
+          $data['fecha']      = $newformat;
       
       @endphp
 
           app.notifications.push({
-              'nombre'  : '{{ $data['nombre'] }}',
-              'mensaje' : '{{ $data['mensaje'] }}',
-              'foto'    : '{{ $data['foto'] }}',
-              'fecha'   : '{{ $data['fecha'] }}',
+              'nombre'    : '{{ $data['nombre'] }}',
+              'mensaje'   : '{{ $data['mensaje'] }}',
+              'foto'      : '{{ $data['foto'] }}',
+              'fecha'     : '{{ $data['fecha'] }}',
+              'ticket_id' : '{{ $data['ticket_id'] }}',
             }
           );  
 

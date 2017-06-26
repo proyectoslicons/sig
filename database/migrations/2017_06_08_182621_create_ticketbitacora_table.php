@@ -16,7 +16,7 @@ class CreateTicketbitacoraTable extends Migration
         Schema::create('ticketbitacora', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->string('ticket_id')->unique();
+            $table->string('ticket_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

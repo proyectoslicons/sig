@@ -124,8 +124,12 @@
                                 <span class="label label-success">{{ "Abierto" }}</span>
                               @endif                                                          
 
-                              @if($ticket->status === 'Close')
+                              @if($ticket->status === 'Closed')
                                 <span class="label label-danger">{{ "Cerrado" }}</span>
+                              @endif
+
+                              @if($ticket->status === 'Pending')
+                                <span class="label label-warning">{{ "Pendiente por Cerrar" }}</span>
                               @endif
                             </div>
                           </div>
@@ -174,17 +178,17 @@
                           <br>                          
                                                      
                   </div>
-                  
-                </div>
+
+                </div>                
                 
               </div>
               </div>
             </div>
-
+          
             <div class="col-md-4 col-sm-12 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Enviar Mensaje</h2>
+                  <h2>Enviar Comentario</h2>
                   <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>                      
@@ -199,13 +203,20 @@
 
                     <div class="col-md-12 col-sm-12 col-xs-12">
 
-                      <form action="{{ url('comentar') }}" method="POST" class="form">
+                      <form action="{{ url('comentar') }}" method="POST" class="form" enctype="multipart/form-data">
                             {{ csrf_field() }}
 
                             <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
+                            <input type="hidden" name="ticket" value="{{$ticket->ticket_id}}">
 
                             <div class="form-group">
                                 <textarea rows="10" id="comment" class="form-control" name="comment" required></textarea>                                
+                            </div>
+
+                            <div class="form-group">
+                              <div style="top: 4px">
+                                <input type="file" name="archivos[]" id="archivos" multiple>
+                              </div>
                             </div>
 
                             <div class="form-group">
@@ -214,13 +225,19 @@
                         </form>
                                                        
                     </div>
+
+
                     
                   </div>
+
+
                   
                 </div>
+
+
               </div>
             </div>
-
+          
             <div class="col-md-4 col-sm-12 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
@@ -239,7 +256,7 @@
 
                     <div class="col-md-12 col-sm-12 col-xs-12">                    
 
-                    @if(Auth::id() === $ticket->user_default_id)
+                    @if(Auth::id() === $ticket->user_default_id || Auth::id() === $ticket->user_assigned_id)
 
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-delegar-modal-sm">Delegar Ticket</button>
 
@@ -253,38 +270,48 @@
                               <h4 class="modal-title" id="myModalLabel2">Delegar Ticket</h4>
                             </div>
 
-                            <form action="{{ url('delegarTicket') }}">
+                            <form action="{{ url('delegarTicket') }}" method="POST">
+
                               <div class="modal-body">
+                                
                                 <div class="form-group">
-                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delegar">Colaborador
+                                
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="id_asignar">Colaborador
                                   </label>
+                                  
                                   <div class="col-md-9 col-sm-6 col-xs-12">
-                                    <select class="select2_single form-control" name="delegar" id="delegar">                              
+                                    
+                                    {{ csrf_field() }}
+
+                                    <input type="hidden" name="ticket_id" value="{{ $ticket->ticket_id }}">
+
+                                    <select class="select2_single form-control" name="id_asignar" id="id_asignar">
                                       @foreach($empleados as $empleado)   
                                         <option value="{{$empleado->id}}">{{ ucwords($empleado->primer_nombre . " " . $empleado->primer_apellido)}}
                                         </option>
                                       @endforeach
                                     </select>
+
                                     <br>
-                                    </div>
+                                  </div>
+                                
                                 </div>
+                              
                               </div>
                               <br>
+                              
                               <div class="modal-footer">
                                 <center>
                                   <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                  <button type="button" onclick="delegar()" class="btn btn-primary">Guardar Cambios</button>
+                                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                                 </center>
                               </div>
+                            
                             </form>
 
                           </div>
                         </div>
-                      </div>
-
-                    @endif
-
-                    @if(Auth::id() === $ticket->user_default_id || Auth::id() === $ticket->user_assigned_id)
+                      </div>                                      
                     
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-escalar-modal-sm">Escalar Ticket</button>
 
@@ -297,28 +324,39 @@
                               </button>
                               <h4 class="modal-title" id="myModalLabel2">Escalar Ticket</h4>
                             </div>
-                            <div class="modal-body">
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="escalar">Unidad Funcional
-                                </label>
-                                <div class="col-md-9 col-sm-6 col-xs-12">
-                                  <select class="select2_single form-control" name="escalar" id="escalar">                              
-                                    @foreach($departments as $department)
-                                      <option value="{{$department->id}}">{{ ucwords($department->name)}}
-                                      </option>
-                                    @endforeach
-                                  </select>
-                                  <br>
-                                  </div>
+
+                            <form action="{{ url('escalarTicket') }}" method="POST">
+
+                              <div class="modal-body">
+                                <div class="form-group">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="departamento_id">Unidad Funcional
+                                  </label>
+                                  <div class="col-md-9 col-sm-6 col-xs-12">
+
+                                    {{ csrf_field() }}
+
+                                    <input type="hidden" name="ticket_id" value="{{ $ticket->ticket_id }}">
+
+                                    <select class="select2_single form-control" name="departamento_id" id="departamento_id">
+                                      @foreach($departments as $department)
+                                        <option value="{{$department->id}}">{{ ucwords($department->name)}}
+                                        </option>
+                                      @endforeach
+                                    </select>
+
+                                    <br>
+                                    </div>
+                                </div>
                               </div>
-                            </div>
-                            <br>
-                            <div class="modal-footer">
-                              <center>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                <button type="button" onclick="delegar()" class="btn btn-primary">Guardar Cambios</button>
-                              </center>
-                            </div>
+                              <br>
+                              <div class="modal-footer">
+                                <center>
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                </center>
+                              </div>
+
+                            </form>
 
                           </div>
                         </div>
@@ -332,6 +370,28 @@
                         {{ csrf_field() }}
                         <input type="hidden" name="ticket_id" value="{{ $ticket->ticket_id }}">
                         <button type="submit" class="btn btn-danger">Cerrar Ticket</button>
+                      </form>
+
+                      @php
+                        if($ticket->status === 'Pending'){
+                      @endphp
+                          <form action="{{ url('reabrirTicket') }}" method="POST">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="ticket_id" value="{{ $ticket->ticket_id }}">
+                            <button type="submit" class="btn btn-success">Reabrir Ticket</button>
+                          </form>
+                      @php
+                        }
+                      @endphp
+
+                    @endif
+
+                    @if(Auth::id() === $ticket->user_default_id || Auth::id() === $ticket->user_assigned_id)
+                      
+                      <form action="{{ url('ticketAtendido') }}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="ticket_id" value="{{ $ticket->ticket_id }}">
+                        <button type="submit" class="btn btn-warning">Finalizar Atención</button>
                       </form>
 
                     @endif
@@ -356,7 +416,7 @@
                 
                 </div>                  
 
-                <div class="x_content">      
+                <div class="x_content scrollbar" id="style-3">      
                 @php  
                   $mes[1]  = 'Ene';
                   $mes[2]  = 'Feb';
@@ -386,6 +446,7 @@
                         <p>El ticket se ha enviado a: {{ ucwords($current->primer_nombre . " " . $current->primer_apellido) }}</p>
                       </div>
                     </article>
+
                   @endforeach                                
                   
                 </div>
@@ -394,50 +455,117 @@
 
           </div>
 
-            <div class="x_panel">
+          <div class="x_panel">
               <div class="x_title">
-                <h2>Mensajes</h2>
+                <h2>Archivos Adjuntos</h2>
                 <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                   <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                   </li>                      
                 </ul>
-                <div class="clearfix"></div>
-              
+                <div class="clearfix"></div>              
               </div>                  
 
-              <div class="x_content">                            
-
-                <div class="row">
-
+              <div class="x_content scrollbar-attachments" id="style-3">                            
+                <div class="row">                          
                   <div class="col-md-12 col-sm-12 col-xs-12">
-                          
-                     <div class="col-md-12 col-sm-12 col-xs-12">
-                      @foreach ($comments as $comment)
-                          <div class="col-md-12 col-sm-12 col-xs-12 panel panel-@if($ticket->user->id === $comment->user_id) {{"default"}}@else{{"success"}}@endif">
-                              <div class="panel panel-heading" style="background-color: rgb(51, 204, 204); color: white; font-weight: bold">
-                                  {{ ucwords($comment->user->primer_nombre . " " . $comment->user->primer_apellido) }}
-                                  <span class="pull-right">{{ $comment->created_at->format('Y-m-d') }}</span>
-                              </div>
+                      
+                    @if(count($attachments) > 0)                        
+                      <table class="table table-striped">
+                        <thead>
+                          <tr style="background-color: rgb(51, 204, 204); color: white; font-weight: bold">
+                            <th>#</th>
+                            <th>Nombre del Archivo</th>
+                            <th>Subido por</th>                              
+                          </tr>
+                        </thead>
+                        
+                        <tbody>                                                
+                            
+                            @php 
+                              $i = 1;                                
+                            @endphp
 
-                              <div class="panel panel-body" style="background-color: #e6e6e6">
-                                  {{ ucfirst($comment->comment) }}     
-                              </div>
-                          </div>
-                      @endforeach
+                            @foreach ($attachments as $attachment)                                       
+                              @php
+                                $usuario = \App\User::find($attachment->user_id);
+                                $nombre = ucwords($usuario->primer_nombre . " " . $usuario->primer_apellido);
+                              @endphp
 
-                      @if(count($comments) === 0)
-                        {{"No hay mensajes para este ticket."}}
-                      @endif
-                    </div>                               
-                                                     
-                  </div>
-                  
+                              <tr>
+                                <th scope="row">{{$i}}</th>
+
+                                <td style="font-weight: bold;">                                
+                                  <form id="arc{{$i}}" action="{{ url('descargarAdjunto') }}" method="POST" target="_blank">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="filename" value="{{$attachment->filename}}">
+                                    <a href="javascript:{}" onclick="document.getElementById('arc{{$i}}').submit();">{{$attachment->filename}}</a>
+                                  </form>
+                                </td>
+
+                                <td>{{$nombre}}</td>
+                              </tr>
+                              
+                              @php
+                                $i++;
+                              @endphp                                                              
+                            @endforeach                                               
+                        </tbody>                      
+                      </table>
+                    @endif 
+
+                    @if(count($attachments) == 0)
+                      {{'No hay archivos adjuntos en éste ticket.'}}
+                    @endif
+
+                  </div>                                                 
+                </div>                
+              </div>                
+          </div>              
+
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Mensajes</h2>
+              <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>                      
+              </ul>
+              <div class="clearfix"></div>
+            
+            </div>                  
+
+            <div class="x_content scrollbar-comments" id="style-3">                            
+
+              <div class="row">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                        
+                   <div class="col-md-12 col-sm-12 col-xs-12">
+                    @foreach ($comments as $comment)
+                        <div class="col-md-12 col-sm-12 col-xs-12 panel panel-success">
+                            <div class="panel panel-heading" style="background-color: rgb(51, 204, 204); color: white; font-weight: bold">
+                                {{ ucwords($comment->user->primer_nombre . " " . $comment->user->primer_apellido) }}
+                                <span class="pull-right">{{ $comment->created_at->format('d-m-Y g:m a') }}</span>
+                            </div>
+
+                            <div class="panel panel-body" style="background-color: #e6e6e6">
+                                {{ ucfirst($comment->comment) }}     
+                            </div>
+                        </div>
+                    @endforeach
+
+                    @if(count($comments) === 0)
+                      {{"No hay mensajes para este ticket."}}
+                    @endif
+                </div>                               
+                
+
+
                 </div>
                 
               </div>
-
               
-            </div>        
+            </div>              
+          </div>        
       </div>
 
 

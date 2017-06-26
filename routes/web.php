@@ -54,3 +54,9 @@ Route::post('cerrarTicket', 'TicketController@close');
 Route::post('delegarTicket', 'TicketController@delegar');
 
 Route::post('escalarTicket', 'TicketController@escalar');
+
+Route::post('ticketAtendido', 'TicketController@atender');
+
+Route::post('reabrirTicket', 'TicketController@reabrir');
+
+Route::post('descargarAdjunto', 'TicketController@descargar');

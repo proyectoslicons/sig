@@ -44,4 +44,40 @@ window.Laravel =  <?php echo json_encode([
 
 </script>
 
+<style type="text/css">
+	.scrollbar{
+		max-height: 340px;	
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	.scrollbar-comments{
+		max-height: 500px;	
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	.scrollbar-attachments{
+		max-height: 150px;	
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	#style-3::-webkit-scrollbar-track{
+		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+		background-color: #F5F5F5;
+	}
+
+	#style-3::-webkit-scrollbar{
+		width: 6px;
+		background-color: #F5F5F5;
+	}
+
+	#style-3::-webkit-scrollbar-thumb
+	{
+		background-color: rgb(51, 204, 204);
+	}
+	
+
+</style>
 

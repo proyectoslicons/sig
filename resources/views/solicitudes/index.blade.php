@@ -48,8 +48,13 @@
                       
                       foreach ($tickets as $ticket){
                     @endphp
-                      <tr>
-                        
+
+                      @if($ticket->status === 'Pending')                      
+                        <tr style="background-color: #ffddcc;">                      
+                      @else
+                        <tr>
+                      @endif
+
                         <td>
                             <a style="color: rgb(51, 204, 204); font-weight: bold" href="{{ url('solicitudes/ticket/'. $ticket->ticket_id) }}">
                                 {{ $ticket->ticket_id }}
@@ -62,10 +67,16 @@
 
                         <td>
                             <center>
-                              @if ($ticket->status === 'Open')
+                              @if($ticket->status === 'Open')
                                   <div class="label label-success">{{ "Abierto" }}</div>
-                              @else
+                              @endif
+
+                              @if($ticket->status === 'Closed')
                                   <div class="label label-danger">{{ "Cerrado" }}</div>
+                              @endif
+                              
+                              @if($ticket->status === 'Pending')
+                                  <div class="label label-warning">{{ "Pendiente por Cerrar" }}</div>
                               @endif
                             </center>                          
                         </td>
@@ -146,11 +157,12 @@
 
                         </td>                 
 
-                        <td>
-                          {{ ucwords(DB::table('users')->where('id', $ticket->user_id)->value('primer_nombre')) . " " . ucwords(DB::table('users')->where('id', $ticket->user_id)->value('primer_apellido'))}}                    
+                        <td><center>
+                          {{ ucwords(DB::table('users')->where('id', $ticket->user_id)->value('primer_nombre')) . " " . ucwords(DB::table('users')->where('id', $ticket->user_id)->value('primer_apellido'))}}
+                          </center>                    
                         </td>                                    
 
-                        <td>{{ $ticket->created_at }}</td>
+                        <td><center>{{ $ticket->created_at->format('d-m-Y g:m a') }}</center></td>
                       </tr>
                   
                       

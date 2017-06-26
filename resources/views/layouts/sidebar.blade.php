@@ -1,11 +1,23 @@
 <div id="sidebar-menu" class="main_menu_side hidden-print ">
+
+  <div class="menu_section">
+    <h3>General</h3>
+    <ul class="nav side-menu ">      
+
+      <li>
+        <a href="{{ url('home') }}"><i class="fa fa-home"></i> Inicio</a>        
+      </li>
+      
+    </ul>
+  </div>
+
   @if(Auth::user()->is_admin)
     <div class="menu_section">
-      <h3>Administración</h3>
+      <h3>Administración SGI</h3>
       <ul class="nav side-menu ">      
 
         <li><a><i class="fa fa-gears"></i> Parámetros del Sistema <span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu" id="activar">
+          <ul class="nav child_menu">
             <li><a href="{{ url('parametros/unidades') }}">Unidades Funcionales</a></li>
             <li><a href="{{ url('parametros/cargos') }}">Cargos</a></li>
             <li><a href="{{ url('parametros/paises') }}">Países</a></li>
