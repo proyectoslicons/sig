@@ -7,7 +7,7 @@
       <div class="">
         <div class="page-title">
           <div class="title_left">
-            <h3>Gestión de Usuarios</h3>
+            <h3>Gestión de usuarios</h3>
           </div>
         </div>
 
@@ -30,7 +30,7 @@
               </div>                  
 
               <div class="x_content">                  
-                  <a href="{{ route('usuarios.create') }}" class="btn btn-success" style="background-color: rgb(51, 204, 204)"><i class="fa fa-plus-circle"></i> Registrar Usuario</a>
+                  <a href="{{ route('usuarios.create') }}" class="btn btn-success" style="background-color: rgb(51, 204, 204)"><i class="fa fa-plus-circle"></i> Registrar usuario</a>
               </div>
             </div>
 
@@ -92,8 +92,7 @@
                 searchable: false,
                 render: function (data) {
                     var actions = '';
-                    actions += '<a class="btn btn-warning col-sm-3 col-xs-5 btn-margin btn-xs" href="{{ route('usuarios.edit', ':id') }}"> Editar</a>';
-                    actions += '<a class="btn btn-danger col-sm-3 col-xs-5 btn-margin btn-xs" href="{{ route('usuarios.destroy', ':id') }}" onclick="return preguntar()"> Eliminar</a>';
+                    actions += '<a class="btn btn-warning col-sm-3 col-xs-5 btn-margin btn-xs" href="{{ route('usuarios.edit', ':id') }}"> Editar</a>';                    
                     return actions.replace(/:id/g, data.id);
                 }
               }

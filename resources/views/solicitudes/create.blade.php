@@ -7,7 +7,7 @@
       <div class="">
         <div class="page-title">
           <div class="title_left">
-            <h3>Gestión de Solicitudes</h3>
+            <h3>Gestión de solicitudes</h3>
           </div>
         </div>
 
@@ -17,7 +17,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Abrir Ticket</h2>
+                    <h2>Abrir ticket</h2>
                     <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
@@ -40,19 +40,19 @@
                           <input type="text" id="title" class="form-control col-md-7 col-xs-12" name="title" autofocus required="required">
                         </div>
                       </div>
-                      
+                    
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="department">Unidad Funcional <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="department">Unidad funcional <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select class="select2_single form-control" name="department" required="required">
-                            <option value="">Seleccionar Unidad Funcional</option>
+                          <select id="department" class="select2_single form-control" name="department" required="required">
+                            <option value="">Seleccionar unidad funcional</option>
                             @foreach($departments as $department)
                               <option value="{{$department->id}}">{{$department->name}}</option>
                             @endforeach
                           </select>
                         </div>
-                      </div>
+                      </div>                     
 
                       <div class="form-group">
                         <label for="priority" class="control-label col-md-3 col-sm-3 col-xs-12">Tipo <span class="required">*</span></label>
@@ -69,8 +69,8 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="category">Categoría <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select class="select2_single form-control" name="category" required="required">
-                            <option value="">Seleccionar Categoría</option>
+                          <select id="category" class="select2_single form-control" name="category" required="required">
+                            <option value="">Seleccionar categoría</option>
                             @foreach($categories as $category)
                               <option value="{{$category->id}}">{{$category->name}}</option>
                             @endforeach
@@ -82,13 +82,13 @@
                         <label for="priority" class="control-label col-md-3 col-sm-3 col-xs-12">Prioridad <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">                        
                           <select id="priority" type="" class="form-control" name="priority" required="required">
-                              <option value="">Seleccionar Prioridad</option>
-                              <option value="inmediato">Inmediato - Hasta   4 horas</option>
-                              <option value="imperativo">Imperativo - Hasta  24 horas</option>
-                              <option value="prudente">Prudente - Hasta  48 horas</option>
-                              <option value="moderado">Moderado - Hasta  72 horas</option>
-                              <option value="leve">Leve - Hasta 120 horas</option>
-                              <option value="premeditado">Premeditado - Hasta 720 horas</option>
+                              <option value="">Seleccionar prioridad</option>
+                              <option value="inmediato">Inmediato - hasta   4 horas</option>
+                              <option value="imperativo">Imperativo - hasta  24 horas</option>
+                              <option value="prudente">Prudente - hasta  48 horas</option>
+                              <option value="moderado">Moderado - hasta  72 horas</option>
+                              <option value="leve">Leve - hasta 120 horas</option>
+                              <option value="premeditado">Premeditado - hasta 720 horas</option>
                           </select>
                         </div>
                       </div>
@@ -111,7 +111,7 @@
                       
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5 col-xs-offset-5">
-                          <button type="submit" class="btn btn-success">Abrir Ticket</button>
+                          <button type="submit" class="btn btn-success">Abrir ticket</button>
                         </div>
                       </div>
 
@@ -124,4 +124,35 @@
       </div>
     </div>
 <br><br>
+  
+  {{ csrf_field() }}
+
+  <script>
+      
+      $('#department').change(function(){                                                              
+        var id = $('#department').val();
+        
+        var datos = {'department_id' : id, '_token' : $('input[name=_token]').val()};
+
+        $.post('/categoriasDepartamento', datos, function(data){
+            
+            $('#category').empty();
+            for(i = 0; i < data.length; i++){
+               
+                var string = data[i].name;
+                var categoria = string.charAt(0).toUpperCase() + string.slice(1);                                
+                $('#category').append("<option value='" + data[i].id +"'>" + categoria + "</option>");
+                
+            }
+
+            if(data.length == 0){
+              $('#category').append("<option value=''>Seleccionar Prioridad</option>");              
+            }
+
+        });
+
+      });
+
+  </script>
+
 @endsection

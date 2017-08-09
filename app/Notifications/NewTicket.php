@@ -16,18 +16,20 @@ class NewTicket extends Notification implements ShouldQueue
 
     public $user;
     public $ticket;
-    public $id_destination;  
+    public $id_destination;
+    public $mensaje;  
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($id_destino, $usuario_origen, $ticket)
+    public function __construct($id_destino, $usuario_origen, $ticket, $mensaje)
     {
         $this->user = $usuario_origen;
         $this->ticket = $ticket;
         $this->id_destination = $id_destino;
+        $this->mensaje = $mensaje;
     }
 
     /**
@@ -47,9 +49,9 @@ class NewTicket extends Notification implements ShouldQueue
 
         $data['nombre']  = ucwords($this->user->primer_nombre." ". $this->user->primer_apellido);
 
-        $data['mensaje'] = "Ha enviado un nuevo ticket";        
+        $data['mensaje'] = $this->mensaje;        
 
-        $data['foto']    = URL::asset('images/'.$this->user->cedula . $this->user->primer_nombre.' '. $this->user->primer_apellido.'.jpg');
+        $data['foto']    = URL::asset('images/' . $this->user->imagen);
 
         $data['fecha']   = date('d/m/Y');
 

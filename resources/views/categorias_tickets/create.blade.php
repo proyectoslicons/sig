@@ -7,7 +7,7 @@
       <div class="">
         <div class="page-title">
           <div class="title_left">
-            <h3>Gestión de Solicitudes</h3>
+            <h3>Gestión de solicitudes</h3>
           </div>
         </div>
 
@@ -17,7 +17,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Registrar Categoría</h2>
+                    <h2>Registrar categoría</h2>
                     <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
@@ -28,7 +28,24 @@
                     <form class="form-horizontal form-label-left" method="POST" action="{{ route('categorias.store') }}">
 
                       {{ csrf_field() }}
-                    
+                      
+                      @if(Auth::user()->is_admin)
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="department">Unidad funcional <span class="required">*</span>
+                          </label>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="select2_single form-control" name="department" required="required">
+                              <option value="">Seleccionar unidad funcional</option>
+                              @foreach($departments as $department)
+                                <option value="{{$department->id}}">{{$department->name}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+                      @else
+                        <input type="hidden" name="department" value="{{ Auth::user()->departamento_id }}">
+                      @endif
+
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nombre de la categoría<span class="required">*</span>
                         </label>

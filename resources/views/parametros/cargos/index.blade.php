@@ -55,7 +55,7 @@
                   </thead>
                   <tbody>
                     @php 
-                      $usuarios = App\Position::chunk(10, function($positions){
+                      $positions = App\Position::chunk(10, function($positions){
                       foreach ($positions as $pos){
                     @endphp
                       <tr>

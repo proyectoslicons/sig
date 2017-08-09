@@ -9,6 +9,9 @@
     <script src="{{ URL::asset('vendors/jquery.hotkeys/jquery.hotkeys.js') }}"></script>
     <script src="{{ URL::asset('vendors/google-code-prettify/src/prettify.js') }}"></script>
   
+  <!-- SmartWizard -->
+    <script src="{{ URL::asset('vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js') }}"></script>
+  
   <!-- Datatables -->
     <script src="{{ URL::asset('vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ URL::asset('vendors/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
@@ -37,7 +40,14 @@
 
       });
 
-      cont.count = {{ App\Ticket_Notification::where('user_id', Auth::id())->where('status', 0)->count() }};     
+      @php
+        $arr = [
+            'user_id' => Auth::id(),
+            'status'  => 0
+        ];
+      @endphp
+
+      cont.count = {{ App\Ticket_Notification::where($arr)->count() }};     
 
       var app = new Vue({
         el: '#root',
@@ -61,10 +71,8 @@
       
 
       @php
-        
 
-        $notificaciones = App\Ticket_Notification::where('user_id', Auth::id())
-                          ->where('status', 0)
+        $notificaciones = App\Ticket_Notification::where($arr)                          
                           ->orderBy('created_at', 'desc')
                           ->take(5)
                           ->get();        
@@ -98,6 +106,82 @@
       channel.bind('ticket_created', function(data) {
         app.addNotification(data);
       });
+
+
+      var cont2 = new Vue({
+        el: '#app2',
+
+        data : {
+            count : 0
+        }                       
+
+      });
+
+      cont2.count = {{ App\CommentNotification::where('user_id', Auth::id())->where('status', 0)->count() }};     
+
+      var app2 = new Vue({
+        el: '#root2',
+        
+        data: {       
+          notifications : []
+        },
+
+        methods:{
+          addNotification(data){
+
+            this.notifications.unshift(data);  
+            cont2.count++;   
+            var audio = new Audio("{{ URL::asset('sound/notification.mp3') }}");
+            audio.play();     
+
+          }
+        }
+      });
+
+      
+
+      @php
+        
+
+        $notificaciones = App\CommentNotification::where('user_id', Auth::id())
+                          ->where('status', 0)
+                          ->orderBy('created_at', 'desc')
+                          ->take(5)
+                          ->get();        
+        
+        foreach ($notificaciones as $noti) {
+          $data = [];
+          $data['nombre']     = $noti->nombre;
+          $data['mensaje']    = $noti->mensaje;        
+          $data['foto']       = $noti->foto;
+          $data['ticket_id']  = "" . url('solicitudes/ticket') . "/" . $noti->ticket_id;
+          $time               = strtotime($noti->created_at);
+          $newformat          = date('d/m/Y', $time);
+          $data['fecha']      = $newformat;
+      
+      @endphp
+
+          app2.notifications.push({
+              'nombre'    : '{{ $data['nombre'] }}',
+              'mensaje'   : '{{ $data['mensaje'] }}',
+              'foto'      : '{{ $data['foto'] }}',
+              'fecha'     : '{{ $data['fecha'] }}',
+              'ticket_id' : '{{ $data['ticket_id'] }}',
+            }
+          );  
+
+      @php  
+        }
+
+      @endphp
+
+
+
+      channel2.bind('ticket_commented', function(data) {
+        app2.addNotification(data);
+      });
+      
+      console.clear();
     </script> 
 
     

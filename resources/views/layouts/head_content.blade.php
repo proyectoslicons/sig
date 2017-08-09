@@ -33,7 +33,7 @@
 <script src="{{ URL::asset('js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ URL::asset('js/bootstrap-datepicker.es.min.js') }}"></script>
 
-<script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+<script src="{{ URL::asset('js/pusher.min.js') }}"></script>
 <script src="{{ URL::asset('build/js/vue.js') }}"></script>
 
 <script>
@@ -77,7 +77,10 @@ window.Laravel =  <?php echo json_encode([
 	{
 		background-color: rgb(51, 204, 204);
 	}
-	
 
+	.required{
+		color: red;
+		font-weight: bold;
+	}
 </style>
 

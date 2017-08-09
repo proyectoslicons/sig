@@ -8,7 +8,7 @@ class Categories extends Model
 {
     protected $table = 'category';
 
-    protected $fillable = ['name'];
+    protected $guarded = [];
 
     public function tickets(){
 	    return $this->hasMany(Ticket::class);

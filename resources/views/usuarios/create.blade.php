@@ -7,7 +7,7 @@
       <div class="">
         <div class="page-title">
           <div class="title_left">
-            <h3>Gestión de Usuarios</h3>
+            <h3>Gestión de usuarios</h3>
           </div>
         </div>
 
@@ -17,7 +17,7 @@
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
               <div class="x_title">
-                <h2>Registrar Usuarios</h2>
+                <h2>Registrar usuarios</h2>
                 <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                   <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                 </ul>
@@ -31,7 +31,7 @@
                   {{ csrf_field() }}
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="primer_nombre">Primer Nombre <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="primer_nombre">Primer nombre <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input type="text" id="primer_nombre" required="required" class="form-control col-md-7 col-xs-12" name="primer_nombre">
@@ -39,7 +39,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="segundo_nombre">Segundo Nombre 
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="segundo_nombre">Segundo nombre 
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input type="text" id="segundo_nombre" class="form-control col-md-7 col-xs-12" name="segundo_nombre">
@@ -47,7 +47,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="primer_apellido">Primer Apellido <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="primer_apellido">Primer apellido <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input type="text" id="primer_apellido" required="required" class="form-control col-md-7 col-xs-12" name="primer_apellido">
@@ -55,7 +55,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="segundo_apellido">Segundo Apellido 
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="segundo_apellido">Segundo apellido 
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input type="text" id="segundo_apellido" class="form-control col-md-7 col-xs-12" name="segundo_apellido">
@@ -91,7 +91,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_nacimiento">Fecha de Nacimiento <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_nacimiento">Fecha de nacimiento <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input id="fecha_nacimiento" type="text" class="form-control has-feedback-left" name="fecha_nacimiento">
@@ -130,7 +130,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_ingreso">Fecha de Ingreso <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_ingreso">Fecha de ingreso <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input id="fecha_ingreso" type="text" class="form-control has-feedback-left" name="fecha_ingreso">
@@ -156,7 +156,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telefono_habitacion">Teléfono de Habitación <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telefono_habitacion">Teléfono de habitación <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input type="text" id="telefono_habitacion" required="required" class="form-control col-md-7 col-xs-12" name="telefono_habitacion">
@@ -164,7 +164,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telefono_movil">Teléfono Móvil <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telefono_movil">Teléfono móvil <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input type="text" id="telefono_movil" required="required" class="form-control col-md-7 col-xs-12" name="telefono_movil">
@@ -172,7 +172,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telefono_corporativo">Teléfono Corporativo
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telefono_corporativo">Teléfono corporativo
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input type="text" id="telefono_corporativo" class="form-control col-md-7 col-xs-12" name="telefono_corporativo">
@@ -201,7 +201,7 @@
                   </div>                   
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="departamento_id">Unidad Funcional <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="departamento_id">Unidad funcional <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <select class="select2_single form-control" name="departamento_id" id="departamento_id">                              
@@ -234,7 +234,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cargas">Cargas Familiares <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cargas">Cargas familiares <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input type="number" id="cargas" required="required" class="form-control col-md-7 col-xs-12" name="cargas" min=0>
@@ -242,7 +242,7 @@
                   </div>                    
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="estado_civil">Estado Civil <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="estado_civil">Estado civil <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <select class="select2_single form-control" id="estado_civil" name="estado_civil">
@@ -255,19 +255,33 @@
                   </div>                  
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lugar_nacimiento">Lugar Nacimiento <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lugar_nacimiento">Lugar nacimiento <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="select2_single form-control" id="lugar_nacimiento" name="lugar_nacimiento">                            
-                        @foreach($cities as $city)
-                          <option value="{{$city->id}}">{{$city->name}}</option>
+                      <select class="select2_single form-control" id="lugar_nacimiento" name="lugar_nacimiento">
+
+                        @foreach($states as $state)
+
+                        <optgroup label="{{ucwords($state->name)}}">
+                          
+                          @php                            
+                            $cities = \App\City::where('state_id', $state->id)->orderBy('state_id', 'ASC')->get();
+                          @endphp
+
+                          @foreach($cities as $city)                          
+                            <option value="{{$city->id}}">{{$city->name}}</option>
+                          @endforeach
+
+                        </optgroup>
+
                         @endforeach
+
                       </select>   
                     </div>
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email_personal">Email Personal 
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email_personal">Email personal 
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input type="email" id="email_personal" class="form-control col-md-7 col-xs-12" name="email_personal">
@@ -275,7 +289,7 @@
                   </div>  
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email Corporativo <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email corporativo <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input type="email" id="email" class="form-control col-md-7 col-xs-12" name="email">
@@ -294,7 +308,7 @@
                   </div>                  
 
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_egreso">Fecha de Egreso 
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha_egreso">Fecha de egreso 
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <input id="fecha_egreso" type="text" class="form-control has-feedback-left" name="fecha_egreso">
@@ -319,19 +333,21 @@
                     </div>
                   </div>
                   
-                  <div class="form-group">
-                    <label for="password" class="control-label col-md-3 col-sm-3 col-xs-12">Contraseña</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input id="password" required="required" class="form-control col-md-7 col-xs-12" type="password" name="password">
+                  @if(Auth::user()->is_admin)
+                    <div class="form-group">
+                      <label for="password" class="control-label col-md-3 col-sm-3 col-xs-12">Contraseña</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="password" required="required" class="form-control col-md-7 col-xs-12" type="password" name="password">
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div class="form-group">
-                    <label for="password_confirmation" class="control-label col-md-3 col-sm-3 col-xs-12">Confirmar Contraseña</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input id="password_confirmation" class="form-control col-md-7 col-xs-12" type="password" name="password_confirmation" required="required">
+                    
+                    <div class="form-group">
+                      <label for="password_confirmation" class="control-label col-md-3 col-sm-3 col-xs-12">Confirmar contraseña</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="password_confirmation" class="form-control col-md-7 col-xs-12" type="password" name="password_confirmation" required="required">
+                      </div>
                     </div>
-                  </div>
+                  @endif
 
                   <div class="ln_solid"></div>
                   

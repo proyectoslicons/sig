@@ -20,8 +20,8 @@
 
 
         <!-- Fonts -->
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-        <script src="https://use.fontawesome.com/40d2e93120.js"></script>
+        <!link href="{{ URL::asset('css/fonts_google.css') }}" rel="stylesheet">
+        <!script src="{{ URL::asset('js/awesome.js') }}"></script>
 
         <!--[if lt IE 9]>
           <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>

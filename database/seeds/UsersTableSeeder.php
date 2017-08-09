@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {   
-        App\User::create([
+        /*App\User::create([
             'primer_nombre'         => 'Joel', 
             'segundo_nombre'        => 'Xavier', 
             'primer_apellido'       => 'Heredia', 
@@ -40,7 +40,8 @@ class UsersTableSeeder extends Seeder
             'email'                 => 'joel.heredia@grupolaitaliana.com', 
             'password'              => bcrypt('admin'), 
             'is_admin'              => 1,             
-            'is_auditor'            => 0, 
+            'is_auditor'            => 0,
+            'is_department_head'    => 0, 
             'is_active'             => 1,
         ]);
 
@@ -73,8 +74,9 @@ class UsersTableSeeder extends Seeder
             'password'              => bcrypt('admin'), 
             'is_admin'              => 1,             
             'is_auditor'            => 0, 
+            'is_department_head'    => 1,
             'is_active'             => 1,
-        ]);
+        ]);*/
 
         /*$faker = Faker::create();
 

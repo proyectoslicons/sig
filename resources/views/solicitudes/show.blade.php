@@ -7,7 +7,7 @@
       <div class="">
         <div class="page-title">
           <div class="title_left">
-            <h3>Gestión de Solicitudes</h3>
+            <h3>Gestión de solicitudes</h3>
           </div>
         </div>
 
@@ -42,7 +42,7 @@
                           
                           <div style="width:100%; font-size: 14px;">           
                             <div style="float:left;  color: rgb(51, 204, 204); font-weight: bold">
-                              Código de Ticket:
+                              Código de ticket:
                             </div>
                             <div style="margin-left: 150px; font-weight: bold; word-wrap: break-word;  "> 
                               {{ $ticket->ticket_id }}
@@ -133,8 +133,39 @@
                               @endif
                             </div>
                           </div>
-                          <br>
-                                                                                              
+                          <br>                          
+                            
+                          @php
+                            if($ticket->priority === 'inmediato')
+                              $total = 4;
+                            
+                            if($ticket->priority === 'imperativo')
+                              $total = 24;
+                            
+                            if($ticket->priority === 'prudente')
+                              $total = 48;
+                            
+                            if($ticket->priority === 'moderado')
+                              $total = 72;
+                            
+                            if($ticket->priority === 'leve')
+                              $total = 120;
+                            
+                            if($ticket->priority === 'premeditado')
+                              $total = 720;
+                                  
+                            $date1 = new DateTime(date('Y-m-d H:i:s'));
+                            $date2 = new DateTime($ticket->fecha_atencion);
+                            
+                            $interval = new DateInterval('PT1H');                
+                            $periods = new DatePeriod($date1, $interval, $date2);
+                            $hours = iterator_count($periods);
+
+                            $diferencia = $total - $hours;
+                            $treinta = $total * 0.33;
+                            $sesenta  = $total * 0.66;
+                          @endphp
+
                           <div style="width:100%; font-size: 14px;">           
                             <div style="float:left;  color: rgb(51, 204, 204); font-weight: bold">
                               Categoría:
@@ -144,10 +175,30 @@
                             </div>
                           </div>
                           <br>
+                                                                                              
+                          <div style="width:100%; font-size: 14px;">           
+                            <div style="float:left;  color: rgb(51, 204, 204); font-weight: bold">
+                              Horas de atención:
+                            </div>
+                            <div style="margin-left: 150px; font-weight: bold"> 
+                              @if($diferencia < $treinta)
+                                <div class="label label-success">{{ $hours . ' horas'}}</div>
+                              @endif
+
+                              @if($diferencia >= $treinta && $diferencia < $sesenta)
+                                <div class="label label-warning">{{ $hours . ' horas'}}</div>
+                              @endif
+
+                              @if($diferencia >= $sesenta)
+                                <div class="label label-danger">{{ $hours . ' horas'}}</div>
+                              @endif
+                            </div>
+                          </div>
+                          <br>
                                                                                                                         
                           <div style="width:100%; font-size: 14px;">           
                             <div style="float:left;  color: rgb(51, 204, 204); font-weight: bold">
-                              Fecha de Creación:
+                              Fecha de creación:
                             </div>
                             <div style="margin-left: 150px; font-weight: bold"> 
                               {{ ucfirst($ticket->created_at->diffForHumans()) }}
@@ -157,7 +208,7 @@
 
                           <div style="width:100%; font-size: 14px;">           
                             <div style="float:left;  color: rgb(51, 204, 204); font-weight: bold">
-                              Última Actualización:
+                              Última actualización:
                             </div>
                             <div style="margin-left: 150px; font-weight: bold"> 
                               {{ ucfirst($ticket->updated_at->diffForHumans()) }}
@@ -184,60 +235,71 @@
               </div>
               </div>
             </div>
-          
-            <div class="col-md-4 col-sm-12 col-xs-12">
-              <div class="x_panel">
-                <div class="x_title">
-                  <h2>Enviar Comentario</h2>
-                  <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>                      
-                  </ul>
-                  <div class="clearfix"></div>
-                
-                </div>                  
+            
+            @php
+              if($ticket->status !== 'Closed'){
+            @endphp
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2>Enviar comentario</h2>
+                      <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>                      
+                      </ul>
+                      <div class="clearfix"></div>
+                    
+                    </div>                  
 
-                <div class="x_content">                            
+                    <div class="x_content">                            
 
-                  <div class="row">
+                      <div class="row">
 
-                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
 
-                      <form action="{{ url('comentar') }}" method="POST" class="form" enctype="multipart/form-data">
-                            {{ csrf_field() }}
+                          <form action="{{ url('comentar') }}" method="POST" class="form" enctype="multipart/form-data">
+                                {{ csrf_field() }}
 
-                            <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
-                            <input type="hidden" name="ticket" value="{{$ticket->ticket_id}}">
+                                <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
+                                <input type="hidden" name="ticket" value="{{$ticket->ticket_id}}">
 
-                            <div class="form-group">
-                                <textarea rows="10" id="comment" class="form-control" name="comment" required></textarea>                                
-                            </div>
+                                <div class="form-group">
+                                    <textarea rows="10" id="comment" class="form-control" name="comment" required></textarea>                                
+                                </div>
 
-                            <div class="form-group">
-                              <div style="top: 4px">
-                                <input type="file" name="archivos[]" id="archivos" multiple>
-                              </div>
-                            </div>
+                                <div class="form-group">
+                                  <div style="top: 4px">
+                                    <input type="file" name="archivos[]" id="archivos" multiple>
+                                  </div>
+                                </div>
 
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Envíar</button>
-                            </div>
-                        </form>
-                                                       
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Envíar</button>
+                                </div>
+                            </form>
+                                                           
+                        </div>
+
+
+                        
+                      </div>
+
+
+                      
                     </div>
 
 
-                    
                   </div>
-
-
-                  
                 </div>
-
-
-              </div>
-            </div>
-          
+            @php
+              }
+            @endphp
+            
+            @php
+              if($ticket->status !== 'Closed'){
+            @endphp
+            
+            
             <div class="col-md-4 col-sm-12 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
@@ -303,7 +365,7 @@
                               <div class="modal-footer">
                                 <center>
                                   <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                  <button type="submit" class="btn btn-primary">Guardar cambios</button>
                                 </center>
                               </div>
                             
@@ -312,8 +374,9 @@
                           </div>
                         </div>
                       </div>                                      
-                    
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-escalar-modal-sm">Escalar Ticket</button>
+                      
+
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-escalar-modal-sm">Escalar ticket</button>
 
                       <div class="modal fade bs-escalar-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-md">
@@ -322,18 +385,18 @@
                             <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                               </button>
-                              <h4 class="modal-title" id="myModalLabel2">Escalar Ticket</h4>
+                              <h4 class="modal-title" id="myModalLabel2">Escalar ticket</h4>
                             </div>
 
-                            <form action="{{ url('escalarTicket') }}" method="POST">
+                            <form action="{{ url('escalarTicket') }}" method="POST" enctype="multipart/form-data">
+                              
+                              {{ csrf_field() }}
 
                               <div class="modal-body">
                                 <div class="form-group">
-                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="departamento_id">Unidad Funcional
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="departamento_id">Unidad funcional
                                   </label>
-                                  <div class="col-md-9 col-sm-6 col-xs-12">
-
-                                    {{ csrf_field() }}
+                                  <div class="col-md-9 col-sm-6 col-xs-12">                                    
 
                                     <input type="hidden" name="ticket_id" value="{{ $ticket->ticket_id }}">
 
@@ -343,16 +406,44 @@
                                         </option>
                                       @endforeach
                                     </select>
-
+                                    
                                     <br>
+
                                     </div>
+                                    
+                                    <div class="form-group">
+                                      <div id="row">
+                                        <div class="col-md-3">
+                                          <label style="left: -9px" class="control-label col-md-3 col-sm-3 col-xs-12" for="mensaje_escalar">Mensaje
+                                          </label>
+                                        </div>
+                                        <div class="col-md-9">
+                                          <textarea rows="4" style="resize: none;" class="form-control"  name="mensaje_escalar"></textarea>
+                                          <br>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                    <br><br>
+                                    
                                 </div>
+                                    
+                                    <div class="form-group" style="">
+                                      <br><br>
+                                      <label for="archivos" class="control-label col-md-3 col-sm-3 col-xs-12">Adjuntos</label>
+                                      <div class="col-md-6 col-sm-6 col-xs-12" style="top: 4px">
+                                        <input type="file" name="archivos[]" id="archivos" multiple>
+                                      </div>
+                                    </div>
+
+                                    <br><br><br><br> 
+                                
                               </div>
                               <br>
                               <div class="modal-footer">
                                 <center>
                                   <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                  <button type="submit" class="btn btn-primary">Guardar cambios</button>
                                 </center>
                               </div>
 
@@ -369,7 +460,7 @@
                       <form action="{{ url('cerrarTicket') }}" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="ticket_id" value="{{ $ticket->ticket_id }}">
-                        <button type="submit" class="btn btn-danger">Cerrar Ticket</button>
+                        <button type="submit" class="btn btn-danger">Cerrar ticket</button>
                       </form>
 
                       @php
@@ -378,7 +469,7 @@
                           <form action="{{ url('reabrirTicket') }}" method="POST">
                             {{ csrf_field() }}
                             <input type="hidden" name="ticket_id" value="{{ $ticket->ticket_id }}">
-                            <button type="submit" class="btn btn-success">Reabrir Ticket</button>
+                            <button type="submit" class="btn btn-success">Reabrir ticket</button>
                           </form>
                       @php
                         }
@@ -388,11 +479,13 @@
 
                     @if(Auth::id() === $ticket->user_default_id || Auth::id() === $ticket->user_assigned_id)
                       
-                      <form action="{{ url('ticketAtendido') }}" method="POST">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="ticket_id" value="{{ $ticket->ticket_id }}">
-                        <button type="submit" class="btn btn-warning">Finalizar Atención</button>
-                      </form>
+                      @if($ticket->status !== 'Pending')
+                        <form action="{{ url('ticketAtendido') }}" method="POST">
+                          {{ csrf_field() }}
+                          <input type="hidden" name="ticket_id" value="{{ $ticket->ticket_id }}">
+                          <button type="submit" class="btn btn-warning">Finalizar atención</button>
+                        </form>
+                      @endif
 
                     @endif
 
@@ -404,10 +497,14 @@
               </div>
             </div>
 
+            @php
+              }
+            @endphp
+
             <div class="col-md-4 col-sm-12 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Recorrido de Atención</h2>
+                  <h2>Recorrido de atención</h2>
                   <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>                      
@@ -442,8 +539,8 @@
                         <p class="day">{{ $bit->created_at->day }}</p>
                       </a>
                       <div class="media-body">
-                        <a class="title" href="#">Ticket enviado a:</a>
-                        <p>El ticket se ha enviado a: {{ ucwords($current->primer_nombre . " " . $current->primer_apellido) }}</p>
+                        <a class="title" href="#">Acción:</a>
+                        <p>{{ $bit->mensaje . " " . ucwords($current->primer_nombre . " " . $current->primer_apellido)}}</p>
                       </div>
                     </article>
 
@@ -457,7 +554,7 @@
 
           <div class="x_panel">
               <div class="x_title">
-                <h2>Archivos Adjuntos</h2>
+                <h2>Archivos adjuntos</h2>
                 <ul class="nav navbar-right panel_toolbox" style="margin-right: -50px">
                   <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                   </li>                      
@@ -474,7 +571,7 @@
                         <thead>
                           <tr style="background-color: rgb(51, 204, 204); color: white; font-weight: bold">
                             <th>#</th>
-                            <th>Nombre del Archivo</th>
+                            <th>Nombre del archivo</th>
                             <th>Subido por</th>                              
                           </tr>
                         </thead>
@@ -544,7 +641,7 @@
                         <div class="col-md-12 col-sm-12 col-xs-12 panel panel-success">
                             <div class="panel panel-heading" style="background-color: rgb(51, 204, 204); color: white; font-weight: bold">
                                 {{ ucwords($comment->user->primer_nombre . " " . $comment->user->primer_apellido) }}
-                                <span class="pull-right">{{ $comment->created_at->format('d-m-Y g:m a') }}</span>
+                                <span class="pull-right">{{ $comment->created_at->format('d-m-Y g:i:s a') }}</span>
                             </div>
 
                             <div class="panel panel-body" style="background-color: #e6e6e6">
@@ -554,7 +651,7 @@
                     @endforeach
 
                     @if(count($comments) === 0)
-                      {{"No hay mensajes para este ticket."}}
+                      {{"No hay mensajes para éste ticket."}}
                     @endif
                 </div>                               
                 

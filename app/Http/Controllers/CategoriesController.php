@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Session;
 use Auth;
+use App\Categories;
 
 class CategoriesController extends Controller
 {
@@ -15,7 +16,20 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        return view('categorias_tickets/index');
+        $departamento_usuario = \App\Department::where('id', Auth::user()->departamento_id)->First();
+        if(Auth::user()->is_admin || Auth::user()->id == $departamento_usuario->id_department_head){
+            if(Auth::user()->is_admin){
+                $categorias = Categories::all();
+                return view('categorias_tickets/index', compact('categorias'));
+            }
+            else{
+                $categorias = Categories::where('department_id', Auth::user()->departamento_id)->get();
+                return view('categorias_tickets/index', compact('categorias'));    
+            }
+        }
+        else{
+            return redirect()->intended('home');
+        }
     }
 
     /**
@@ -24,8 +38,15 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('categorias_tickets/create');
+    {   
+        $departamento_usuario = \App\Department::where('id', Auth::user()->departamento_id)->First();
+        if(Auth::user()->is_admin || Auth::user()->id == $departamento_usuario->id_department_head){
+            $departments = \App\Department::orderBy('name', 'asc')->get();;
+            return view('categorias_tickets/create', compact('departments'));
+        }
+        else{
+            return redirect()->intended('home');
+        }
     }
 
     /**
@@ -35,15 +56,16 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
         $this->validateInput($request);
         \App\Categories::create([
-            'name' => $request['name']
+            'name'          => $request['name'],
+            'department_id' => $request['department'],
         ]);
 
         Session::flash('status', "Se ha registrado una nueva categoría.");
 
-        return redirect()->intended('solicitudes/categorias');
+        return redirect()->back();
     }
 
     /**
@@ -84,12 +106,25 @@ class CategoriesController extends Controller
     public function update(Request $request, $id)
     {
         $category = \App\Categories::findOrFail($id);
-        $this->validateInput($request);
+        
+        $reglas = [
+            'name'          => 'required|max:150',            
+        ];
+
+        $mensajes = [
+            'name.required'         => 'El nombre de la categoría es requerido',
+            'name.max'              => 'Tamaño máximo del nombre: 60 caracteres',            
+        ];
+
+        $this->validate($request, $reglas, $mensajes);
+
         $input = [
             'name' => $request['name']
         ];
-        \App\Categories::where('id', $id)
-            ->update($input);
+        
+        \App\Categories::where('id', $id)->update($input);
+
+        Session::flash('status', "Se ha modificado exitosamente la categoría.");
         
         return redirect()->intended('solicitudes/categorias');
     }
@@ -107,8 +142,18 @@ class CategoriesController extends Controller
     }
 
     private function validateInput($request) {
-        $this->validate($request, [
-            'name' => 'required|max:60|unique:category'
-        ]);
+        $reglas = [
+            'name'          => 'required|max:150',
+            'department'    => 'required|numeric'
+        ];
+
+        $mensajes = [
+            'name.required'         => 'El nombre de la categoría es requerido',
+            'name.max'              => 'Tamaño máximo del nombre: 60 caracteres',
+            'department.required'   => 'El departamento asociado a la categoría es requerido',
+            'department.numeric'    => 'Error en los datos del departamento asociado, contacte al administrador',
+        ];
+
+        $this->validate($request, $reglas, $mensajes);
     }
 }

@@ -8,8 +8,8 @@
   <body class="nav-md footer_fixed" style="max-height: 1000px; overflow-x: hidden;">
     <div class="container body">
       <div class="main_container">
-        <div class="col-md-3 left_col menu_fixed">
-          <div class="left_col scroll-view">
+        <div class="col-md-3 left_col" >
+          <div class="left_col scroll-view" style="height: 150%">
             @include('layouts.navbar_title')
 
             <div class="clearfix"></div>

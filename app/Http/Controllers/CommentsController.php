@@ -6,7 +6,7 @@ use App\User;
 use App\Ticket;
 use App\Comment;
 use App\Attachment;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 use Illuminate\Http\Request;
 
 class CommentsController extends Controller
@@ -39,6 +39,17 @@ class CommentsController extends Controller
             'user_id'   => Auth::user()->id,
             'comment'   => $request->input('comment'),
         ]);
+
+        $current = Ticket::where('id', $request->input('ticket_id'))->First();
+
+        if(Auth::id() === $current->user_id){
+            User::find($current->user_assigned_id)
+            ->notify(new \App\Notifications\TicketCommented($current->user_assigned_id, Auth::user(), $current->ticket_id));
+        }
+        else{
+            User::find($current->user_id)
+            ->notify(new \App\Notifications\TicketCommented($current->user_id, Auth::user(), $current->ticket_id));            
+        }
 
         $files = $request->file('archivos');        
 

@@ -32,8 +32,13 @@ class DepartmentSeeder extends Seeder
         ]);
 
         App\Department::create([
-            'name'      => 'Compras y Almacen',
-            'iniciales' => 'CYA',            
+            'name'      => 'Compras',
+            'iniciales' => 'COM',            
+        ]);
+
+        App\Department::create([
+            'name'      => 'Almacen',
+            'iniciales' => 'ALM',            
         ]);
 
         App\Department::create([
@@ -47,7 +52,7 @@ class DepartmentSeeder extends Seeder
         ]);
 
         App\Department::create([
-            'name'      => 'Dierección General',
+            'name'      => 'Dirección General',
             'iniciales' => 'DIG',            
         ]);
 
@@ -57,13 +62,58 @@ class DepartmentSeeder extends Seeder
         ]);
 
         App\Department::create([
-            'name'      => 'MP e Incidencias SIMET',
-            'iniciales' => 'MPS',            
+            'name'      => 'SIMET',
+            'iniciales' => 'SIM',            
+        ]);
+
+        App\Department::create([            
+            'name'      => 'SIMET Maracaibo',
+            'iniciales' => 'SMA',            
+        ]);
+        
+        App\Department::create([
+            'name'      => 'SIMET San Cristobal',
+            'iniciales' => 'SSC',            
+        ]);
+        
+        App\Department::create([
+            'name'      => 'SIMET El Vigia',
+            'iniciales' => 'SEV',            
+        ]);
+        
+        App\Department::create([
+            'name'      => 'SIMET Mérida',
+            'iniciales' => 'SME',            
+        ]);
+        
+        App\Department::create([
+            'name'      => 'SIMET Valera',
+            'iniciales' => 'SVA',            
+        ]);        
+        
+        App\Department::create([
+            'name'      => 'SIMET Col',
+            'iniciales' => 'SCL',            
         ]);
 
         App\Department::create([
-            'name'      => 'MCP y Empresas SIMET',
+            'name'      => 'SIMET Coro',
+            'iniciales' => 'SCR',            
+        ]);
+        
+        App\Department::create([
+            'name'      => 'SIMET Punto Fijo',
+            'iniciales' => 'SPF',            
+        ]);
+
+        App\Department::create([
+            'name'      => 'Mantenimiento Correctivo Programado y Empresas SIMET',
             'iniciales' => 'MCS',            
+        ]);
+
+        App\Department::create([
+            'name'      => 'Mantenimiento Preventivo e Incidencias SIMET',
+            'iniciales' => 'MPS',            
         ]);
     }
 }

@@ -8,10 +8,12 @@ use Session;
 use Image;
 use App\Department;
 use App\Position;
+use App\State;
 use App\City;
 use App\Occupation;
 use App\User;
 use Auth;
+use Hash;
 
 class UserController extends Controller
 {
@@ -39,12 +41,18 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->is_admin){
+        if(Auth::user()->is_admin || Auth::user()->departamento_id === 3){
             return view('usuarios/index');
         }
         else{
             return redirect()->intended('/home');
         }
+    }
+
+
+    public function change()
+    {
+        return view('usuarios/changePassword');   
     }
 
     /**
@@ -54,13 +62,13 @@ class UserController extends Controller
      */
     public function create()
     {
-        $departments = Department::all();
-        $positions = Position::all();
-        $cities = City::all();
-        $occupations = Occupation::all();
+        $departments = Department::orderBy('name', 'asc')->get();
+        $positions = Position::orderBy('name', 'asc')->get();
+        $states = State::orderBy('name', 'asc')->get();
+        $occupations = Occupation::orderBy('name', 'asc')->get();
 
-        if(Auth::user()->is_admin){
-            return view('usuarios/create', compact('departments', 'positions', 'cities', 'occupations'));
+        if(Auth::user()->is_admin || Auth::user()->departamento_id == 3){
+            return view('usuarios/create', compact('departments', 'positions', 'occupations', 'states'));
         }
         else{
             return redirect()->intended('/home');
@@ -75,14 +83,23 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {        
-
+        if(!isset($request['password'])){
+            $request->request->add(['password' => '123456']);
+            $request->request->add(['password_confirmation' => '123456']);
+        }
+        
         $this->validateInput($request);
 
         if ($request->hasFile('foto')){
             $imageName =    $request['tipo']."-".$request['cedula'] . 
                             $request['primer_nombre'] . 
                             " " . $request['primer_apellido'] . 
-                            '.' . $request->file('foto')->getClientOriginalExtension();
+                            '.' . $request->file('foto')->getClientOriginalExtension();            
+
+            $arr1 = ['á', 'é', 'í', 'ó', 'ú', 'ñ'];
+            $arr2 = ['a', 'e', 'i', 'o', 'u', 'n'];
+
+            $imageName = str_replace($arr1, $arr2, $imageName);
 
             $image = $request->file('foto');
             $path = public_path('images/' . $imageName);
@@ -119,7 +136,8 @@ class UserController extends Controller
             'email_personal'        => $request['email_personal'],
             'email'                 => $request['email'],
             'password'              => bcrypt($request['password']),
-            'is_active'             => $request['estatus'],             
+            'is_active'             => $request['estatus'],
+            'imagen'                => $imageName             
         ]);
 
         Session::flash('status', "Se ha registrado un nuevo usuario.");
@@ -141,13 +159,13 @@ class UserController extends Controller
             return redirect()->intended('/usuarios');
         }
 
-        $departments = Department::all();
-        $positions = Position::all();
-        $cities = City::all();
-        $occupations = Occupation::all();
+        $departments = Department::orderBy('name', 'asc')->get();
+        $positions = Position::orderBy('name', 'asc')->get();
+        $states = State::orderBy('name', 'asc')->get();
+        $occupations = Occupation::orderBy('name', 'asc')->get();
 
-        if(Auth::user()->is_admin){
-            return view('usuarios/edit', compact('user', 'departments', 'positions', 'cities', 'occupations'));
+        if(Auth::user()->is_admin || Auth::user()->departamento_id === 3){
+            return view('usuarios/edit', compact('user', 'departments', 'positions', 'states', 'occupations'));
         }
         else{
             return redirect()->intended('/home');
@@ -166,10 +184,10 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $constraints = [
-            'primer_nombre'         => 'required|max:20|alpha', 
-            'segundo_nombre'        => 'nullable|max:20|alpha', 
-            'primer_apellido'       => 'required|max:20|alpha', 
-            'segundo_apellido'      => 'nullable|max:20|alpha', 
+            'primer_nombre'         => 'required|max:20|string', 
+            'segundo_nombre'        => 'nullable|max:20|string', 
+            'primer_apellido'       => 'required|max:20|string', 
+            'segundo_apellido'      => 'nullable|max:20|string', 
             'cedula'                => 'required|max:8',
             'rif'                   => 'required|max:12', 
             'fecha_nacimiento'      => 'required|date', 
@@ -193,14 +211,14 @@ class UserController extends Controller
         $mensajes = [
             'primer_nombre.required'        => 'El primer nombre no puede estar vacío.', 
             'primer_nombre.max'             => 'Primer nombre: Máximo 20 caracteres por nombre.',
-            'primer_nombre.alpha'           => 'Primer nombre: Sólo se permiten caracteres alfabéticos.',
+            'primer_nombre.string'           => 'Primer nombre: Sólo se permiten caracteres alfabéticos.',
             'segundo_nombre.max'            => 'Segundo nombre: Máximo 20 caracteres por nombre.',
-            'segundo_nombre.alpha'          => 'Segundo nombre: Sólo se permiten caracteres alfabéticos.',
+            'segundo_nombre.string'          => 'Segundo nombre: Sólo se permiten caracteres alfabéticos.',
             'primer_apellido.required'      => 'El primer apellido no puede estar vacío.', 
             'primer_apellido.max'           => 'Primer apellido: Máximo 20 caracteres por apellido.',
-            'primer_apellido.alpha'         => 'Primer apellido: Sólo se permiten caracteres alfabéticos.',
+            'primer_apellido.string'         => 'Primer apellido: Sólo se permiten caracteres alfabéticos.',
             'segundo_apellido.max'          => 'Segundo apellido: Máximo 20 caracteres por apellido.',
-            'segundo_apellido.alpha'        => 'Segundo apellido: Sólo se permiten caracteres alfabéticos.',
+            'segundo_apellido.string'        => 'Segundo apellido: Sólo se permiten caracteres alfabéticos.',
             'cedula.required'               => 'La cédula no puede estar vacía',
             'cedula.max'                    => 'Cédula: Máximo 8 caracteres.',
             'rif.required'                  => 'El RIF no puede estar vacío',
@@ -233,7 +251,7 @@ class UserController extends Controller
             'lugar_nacimiento.max'          => 'Lugar de Nacimiento: Máximo 200 caracteres.',
             'fecha_egreso.date'             => 'Fecha de egreso: el formato de la fecha no es válido.', 
             'foto.required'                 => 'Debe seleccionar una foto.',
-            'foto.mimes'                    => 'Sólo se aceptan formatos de imagen .jpg.',
+            'foto.mimes'                    => 'Sólo se aceptan formatos de imagen .jpg, .png.',
             'email_personal.email'          => 'Email Personal: el campo no tiene un formato válido.', 
             'email_personal.max'            => 'Email Personal: máximo 255 caracteres.', 
             'email_personal.unique'         => 'Email Personal: ya se ha asociado ese correo a otro usuario', 
@@ -288,7 +306,7 @@ class UserController extends Controller
         }        
 
         if ($request->hasFile('foto')){
-            $constraints['foto'] = 'required|mimes:jpeg';
+            $constraints['foto'] = 'required|mimes:jpeg,png';
             $input['foto'] = $request['foto'];
         }        
 
@@ -301,7 +319,7 @@ class UserController extends Controller
 
         unset($input['foto']);
 
-        \App\User::where('id', $id)->update($input);
+        
 
         if ($request->hasFile('foto')){
             $imageName =    $input['cedula'] . 
@@ -309,15 +327,53 @@ class UserController extends Controller
                             " " . $request['primer_apellido'] . 
                             '.' . $request->file('foto')->getClientOriginalExtension();
 
+            $arr1 = ['á', 'é', 'í', 'ó', 'ú', 'ñ'];
+            $arr2 = ['a', 'e', 'i', 'o', 'u', 'n'];
+
+            $imageName = str_replace($arr1, $arr2, $imageName);
+
             $image = $request->file('foto');
             $path = public_path('images/' . $imageName);
             
+            $input['imagen'] =  $imageName;
+
             Image::make($image->getRealPath())->resize(152, 152)->save($path);
         }
+
+        \App\User::where('id', $id)->update($input);
         
         Session::flash('status', "Se ha modificado correctamente al usuario: " . $request['primer_nombre'] . " " . $request['primer_apellido']);
 
         return redirect()->intended('/usuarios');
+    }
+
+    public function updatePassword(Request $request)
+    {        
+        $user = User::findOrFail(Auth::id());       
+
+        $mensajes = [
+            'password_old.required'         => 'La contraseña actual no coíncide, no es posible realizar el cambio de contraseña.',
+            'password.required'             => 'El campo de contraseña no puede estar vacío.',
+            'password.min'                  => 'Contraseña: La cantidad de caracteres mínima es de 6.',
+            'password.confirmed'            => 'Las confirmación de contraseña no coíncide.',
+        ];
+
+        $constraints['password'] = 'required|min:6|confirmed';
+        $constraints['password_old'] = 'required';
+
+        $input['password'] =  bcrypt($request['password']);   
+
+        if(Hash::check($request['password_old'], $user->password) === false){
+            $request->offsetUnset('password_old');
+        }
+
+        $this->validate($request, $constraints, $mensajes);        
+
+        \App\User::where('id', Auth::id())->update($input);
+       
+        Session::flash('status', "Se ha modificado correctamente su contraseña.");
+
+        return redirect()->intended('/home');
     }
 
 
@@ -331,15 +387,8 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {   
-        if(Auth::user()->is_admin){
-            \App\User::where('id', $id)->delete();
-            return redirect()->intended('/usuarios');    
-        }
-        else{
-            return redirect()->intended('/home');
-        }
-        
+    {          
+
     }
 
     /**
@@ -347,13 +396,7 @@ class UserController extends Controller
      * 
     */
     public function show($id){
-        if(Auth::user()->is_admin){
-            \App\User::where('id', $id)->delete();
-            return redirect()->intended('/usuarios');
-        }
-        else{
-            return redirect()->intended('/home');
-        }   
+ 
     }
 
     private function validateInput($request) {
@@ -381,7 +424,7 @@ class UserController extends Controller
             'estado_civil'          => 'required|alpha', 
             'lugar_nacimiento'      => 'required|max:200', 
             'fecha_egreso'          => 'nullable|date',
-            'foto'                  => 'required|mimes:jpeg', 
+            'foto'                  => 'required|mimes:jpeg,png', 
             'email_personal'        => 'nullable|email|max:255|unique:users',                      
             'email'                 => 'nullable|email|max:255|unique:users',            
             'password'              => 'required|min:6|confirmed'
@@ -430,7 +473,7 @@ class UserController extends Controller
             'lugar_nacimiento.max'          => 'Lugar de Nacimiento: Máximo 200 caracteres.',
             'fecha_egreso.date'             => 'Fecha de egreso: el formato de la fecha no es válido.', 
             'foto.required'                 => 'Debe seleccionar una foto.',
-            'foto.mimes'                    => 'Sólo se aceptan formatos de imagen .jpg.', 
+            'foto.mimes'                    => 'Sólo se aceptan formatos de imagen .jpg, .png.', 
             'email_personal.email'          => 'Email Personal: el campo no tiene un formato válido.', 
             'email_personal.max'            => 'Email Personal: máximo 255 caracteres.', 
             'email_personal.unique'         => 'Email Personal: ya se ha asociado ese correo a otro usuario',  

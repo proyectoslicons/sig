@@ -10,7 +10,10 @@ use Session;
 use Auth;
 use App\User;
 use App\TicketBitacora;
+use App\Ticket_Notification;
 use App\Attachment;
+use App\Position;
+use App\Comment;
 use DB;
 use Storage;
 
@@ -21,8 +24,10 @@ class TicketController extends Controller
 	}
 
     public function index(){	   
-	    $categories = Categories::all();
-	    $departments = Department::all();
+	    
+	    $departments = Department::orderBy('name', 'asc')->get();
+        $primer_departamento = Department::orderBy('name', 'asc')->First();
+        $categories = Categories::where('department_id', $primer_departamento->id)->orderBy('name', 'asc')->get();
 
 	    return view('solicitudes.create', compact('categories', 'departments'));
 	}
@@ -59,21 +64,9 @@ class TicketController extends Controller
             $reglas['archivo'.$i] = 'mimes:jpeg,png,doc,docx,xls,xlsx,ppt,pptx,pdf';
             $mensajes['archivo'.$i.'.mimes'] = 'Sólo se aceptan formatos jpeg, png, doc, docx, xls, xlsx, ppt, pptx, pdf.';   
             $i++;             
-        } 		
-
-    	$id_encargado = "";
-
-    	$ids = DB::table('department')
-    		->join('users', function($join){
-    			$join->on('department.id', '=', 'users.departamento_id')
-    			->where('users.cargo_id', '=', 4);                
-    		})            
-            ->where('departamento_id', '=', $request['department'])
-    		->select('users.id')->get();
-            
-		foreach ($ids as $default) {
-	    	$id_encargado = $default->id;
-		}
+        }
+        
+        $id_encargado  = Department::where('id', $request['department'])->First()->id_department_head; 		
         
         $request->request->add(['encargado' => $id_encargado]);
 
@@ -81,7 +74,7 @@ class TicketController extends Controller
 
 	    array_except($request->all(), ['encargado']);
     		
-        $department = \App\Department::where('id', Auth::user()->departamento_id)->get();
+        $department = Department::where('id', Auth::user()->departamento_id)->get();
 
         foreach ($department as $dep) {
             $iniciales = $dep->iniciales;
@@ -149,9 +142,14 @@ class TicketController extends Controller
             'status'    		=> "Open",
         ]);
 
+        $encargado = User::where('id', $id_encargado)->First();
+
+        $mensaje = "El ticket se ha enviado a: ";
+
         $bitacora = new TicketBitacora([
             'user_id'   => $id_encargado,
             'ticket_id' => $ticket->ticket_id,
+            'mensaje'   => $mensaje,
         ]);
 
         $files = $request->file('archivos');
@@ -172,7 +170,9 @@ class TicketController extends Controller
 
         $ticket->save();
 
-        User::find($id_encargado)->notify(new \App\Notifications\NewTicket($id_encargado, Auth::user(), $ticket->ticket_id));
+        $mensaje = "ha creado un nuevo ticket.";
+
+        User::find($id_encargado)->notify(new \App\Notifications\NewTicket($id_encargado, Auth::user(), $ticket->ticket_id, $mensaje));
 
         return redirect()->back()->with("status", "Se ha abierto un nuevo ticket con el código: " . $ticket->ticket_id);
 	}
@@ -184,8 +184,13 @@ class TicketController extends Controller
 	    
         $category = Categories::where('id', $ticket->category_id)->firstOrFail();
         
+        $arr = [
+            ['id', 'NOT LIKE', Auth::id()],
+            ['is_active', '=', '1']
+        ];
+
         $empleados = User::where('departamento_id', $ticket->department_id)
-                    ->where('id', 'NOT LIKE', Auth::id())
+                    ->where($arr)
                     ->get();
         
         $bitacora = TicketBitacora::where('ticket_id', $ticket_id)->get();
@@ -194,11 +199,24 @@ class TicketController extends Controller
         
         $departments = \App\Department::where('id', "NOT LIKE", $ticket->department_id)->get();
 
-        $usuario_notificado = \App\Ticket_Notification::where('ticket_id', $ticket_id)->First();
+        $arr = [
+            'ticket_id' => $ticket_id,
+            'user_id'   => Auth::id(),
+            'status'    => 0
+        ];
+        
+        $notificaciones = Ticket_Notification::where($arr)->get();
 
-        if($usuario_notificado->user_id === Auth::id() && $usuario_notificado->status === 0){
+        foreach ($notificaciones as $notificacion) {            
             $input = ['status' => 1];
-            \App\Ticket_Notification::where('ticket_id', $ticket_id)->update($input);  
+            Ticket_Notification::where('ticket_id', $ticket_id)->update($input);                 
+        }
+
+        $comentarios_notificados = \App\CommentNotification::where($arr)->get();
+
+        foreach ($comentarios_notificados as $comentario) {            
+            $input = ['status' => 1];
+            \App\CommentNotification::where('ticket_id', $ticket_id)->update($input);                 
         }
 
         $attachments = Attachment::where('ticket_id', $ticket_id)->get();      
@@ -209,14 +227,21 @@ class TicketController extends Controller
     public function delegar(Request $request){
         $input = ['user_assigned_id' => $request['id_asignar']];
 
+        $encargado = User::where('id', $request['id_asignar'])->First();
+
+        $mensaje = "El ticket se ha delegado a: ";
+
         $bitacora = new TicketBitacora([
             'user_id'   => $request['id_asignar'],
             'ticket_id' => $request['ticket_id'],
+            'mensaje'   => $mensaje,
         ]);
 
         $bitacora->save();
 
-        User::find($request['id_asignar'])->notify(new \App\Notifications\NewTicket($request['id_asignar'], Auth::user(), $request['ticket_id']));
+        $mensaje = "te ha delegado la atención de un ticket.";
+
+        User::find($request['id_asignar'])->notify(new \App\Notifications\NewTicket($request['id_asignar'], Auth::user(), $request['ticket_id'], $mensaje));
 
         \App\Ticket::where('ticket_id', $request['ticket_id'])->update($input);
         $encargado = User::find($request['id_asignar']);
@@ -225,20 +250,8 @@ class TicketController extends Controller
     }
 
     public function escalar(Request $request){
-        
-        $id_encargado = "";
-
-        $ids = DB::table('department')
-            ->join('users', function($join){
-                $join->on('department.id', '=', 'users.departamento_id')
-                ->where('users.cargo_id', '=', 4);                
-            })            
-            ->where('departamento_id', '=', $request['departamento_id'])
-            ->select('users.id')->get();
-            
-        foreach ($ids as $default) {
-            $id_encargado = $default->id;
-        }
+        $departamento = Department::where('id', $request['departamento_id'])->First();
+        $id_encargado  = Department::where('id', $request['departamento_id'])->First()->id_department_head;
 
         $input = [
             'user_default_id'   => $id_encargado, 
@@ -246,18 +259,65 @@ class TicketController extends Controller
             'department_id'     => $request['departamento_id']
         ];
 
+        $encargado = User::where('id', $id_encargado)->First();
+
+        $mensaje = "El ticket se ha escalado a la unidad funcional: " . ucwords($departamento->name) . ", a cargo de: ";
+
+        $files = $request->file('archivos');
+        $i = 0;
+
+        if(count($files) > 0 ){
+            foreach ($files as $file) {
+                $request->request->add(['archivo'.$i => $file]); 
+                $reglas['archivo'.$i] = 'mimes:jpeg,png,doc,docx,xls,xlsx,ppt,pptx,pdf';
+                $mensajes['archivo'.$i.'.mimes'] = 'Sólo se aceptan formatos jpeg, png, doc, docx, xls, xlsx, ppt, pptx, pdf.';   
+                $i++;             
+            }
+
+            $this->validate($request, $reglas, $mensajes);
+
+            $files = $request->file('archivos');
+
+            foreach ($files as $file) {
+                $nombre_archivo = $request['ticket_id']. "_" . $file->getClientOriginalName();
+                $file->storeAs('', $nombre_archivo);
+                $adjunto = new Attachment([
+                    'ticket_id' => $request['ticket_id'],
+                    'user_id'   => Auth::user()->id,
+                    'filename'  => $nombre_archivo
+                ]);
+                $adjunto->save();
+            }
+        }
+
+        if($request['mensaje_escalar'] !== null){                        
+            User::find($id_encargado)
+            ->notify(new \App\Notifications\TicketCommented($id_encargado, Auth::user(), $request['ticket_id']));
+            
+            $ticket = Ticket::where('ticket_id', $request['ticket_id'])->First();
+
+            $comment = Comment::create([
+                'ticket_id' => $ticket->id,
+                'user_id'   => Auth::user()->id,
+                'comment'   => $request['mensaje_escalar'],
+            ]);
+        } 
+
         $bitacora = new TicketBitacora([
             'user_id'   => $id_encargado,
-            'ticket_id' => $request['ticket_id'],            
+            'ticket_id' => $request['ticket_id'],
+            'mensaje'   => $mensaje,            
         ]);
 
         $bitacora->save();
 
-        User::find($id_encargado)->notify(new \App\Notifications\NewTicket($id_encargado, Auth::user(), $request['ticket_id']));
+        $mensaje = "ha escalado un ticket.";
+
+        User::find($id_encargado)->notify(new \App\Notifications\NewTicket($id_encargado, Auth::user(), $request['ticket_id'], $mensaje));
 
         \App\Ticket::where('ticket_id', $request['ticket_id'])->update($input);
         
-        $departamento = \App\Department::find($request['departamento_id']);        
+        $departamento = \App\Department::find($request['departamento_id']); 
 
         Session::flash('status', "Se ha escalado el ticket " . $request['ticket_id'] . " a la unidad funcional: " . $departamento->name);
         return redirect()->intended('solicitudes/listarTickets');
@@ -267,11 +327,32 @@ class TicketController extends Controller
     public function close(Request $request)
     {   
         $ticket = Ticket::where('ticket_id', $request['ticket_id'])->firstOrFail();
-        $ticket->status = 'Closed';
-        $ticket->save();
+        if($ticket->user_id === Auth::id()){
+            $ticket->status = 'Closed';
+            $ticket->save();
 
-        Session::flash('status', "El ticket " . $request['ticket_id'] . " se ha cerrado.");
-        return redirect()->intended('solicitudes/listarTickets');
+            $mensaje = "El ticket ha sido cerrado por:";
+
+            $bitacora = new TicketBitacora([
+                'user_id'   => Auth::id(),
+                'ticket_id' => $request['ticket_id'],
+                'mensaje'   => $mensaje,            
+            ]);
+
+            $bitacora->save();
+
+            $mensaje = "ha cerrado el ticket";
+
+            User::find($ticket->user_default_id)->notify(new \App\Notifications\NewTicket($ticket->user_default_id, Auth::user(), $ticket->ticket_id, $mensaje));
+
+            User::find($ticket->user_assigned_id)->notify(new \App\Notifications\NewTicket($ticket->user_assigned_id, Auth::user(), $ticket->ticket_id, $mensaje));
+
+            Session::flash('status', "El ticket " . $request['ticket_id'] . " se ha cerrado.");
+            return redirect()->intended('solicitudes/listarTickets');
+        }
+        else{
+            return redirect()->intended('/home');
+        }
     }
 
     public function atender(Request $request)
@@ -279,6 +360,18 @@ class TicketController extends Controller
         $ticket = Ticket::where('ticket_id', $request['ticket_id'])->firstOrFail();
         $ticket->status = 'Pending';
         $ticket->save();
+
+        $mensaje = "ha finalizado la atención del ticket:";
+
+        $bitacora = new TicketBitacora([
+            'user_id'   => Auth::id(),
+            'ticket_id' => $request['ticket_id'],
+            'mensaje'   => $mensaje,            
+        ]);
+
+        $bitacora->save();
+
+        User::find($ticket->user_id)->notify(new \App\Notifications\NewTicket($ticket->user_id, Auth::user(), $ticket->ticket_id, $mensaje));
 
         Session::flash('status', "Ha finalizado la atención del ticket " . $request['ticket_id'] . " correctamente.");
         return redirect()->intended('solicitudes/listarTickets');
@@ -289,6 +382,20 @@ class TicketController extends Controller
         $ticket = Ticket::where('ticket_id', $request['ticket_id'])->firstOrFail();
         $ticket->status = 'Open';
         $ticket->save();
+
+        $mensaje = "ha realizado la reapertura del ticket";
+
+        $bitacora = new TicketBitacora([
+            'user_id'   => Auth::id(),
+            'ticket_id' => $request['ticket_id'],
+            'mensaje'   => $mensaje,            
+        ]);
+
+        $bitacora->save();
+
+        User::find($ticket->user_default_id)->notify(new \App\Notifications\NewTicket($ticket->user_default_id, Auth::user(), $ticket->ticket_id, $mensaje));
+
+        User::find($ticket->user_assigned_id)->notify(new \App\Notifications\NewTicket($ticket->user_assigned_id, Auth::user(), $ticket->ticket_id, $mensaje));
 
         Session::flash('status', "Ha realizado la reapertura del ticket " . $request['ticket_id'] . " correctamente.");
         return redirect()->intended('solicitudes/listarTickets');

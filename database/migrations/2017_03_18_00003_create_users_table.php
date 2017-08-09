@@ -43,7 +43,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('password');
             $table->integer('is_admin')->unsigned()->default(0);
-            $table->integer('is_auditor')->unsigned()->default(0);
+            $table->integer('is_auditor')->unsigned()->default(0);            
             $table->integer('is_active')->unsigned()->default(1);
             $table->foreign('profesion_id')->references('id')->on('occupation');
             $table->foreign('departamento_id')->references('id')->on('department');
@@ -51,6 +51,10 @@ class CreateUsersTable extends Migration
             $table->foreign('lugar_nacimiento')->references('id')->on('city');
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        Schema::table('department', function($table) {
+            $table->foreign('id_department_head')->references('id')->on('users');
         });
     }
 
